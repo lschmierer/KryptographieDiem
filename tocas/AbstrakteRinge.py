@@ -29,8 +29,10 @@ class Ring(UnveraenderbaresObjekt):
         
         Ring.null, Ring.eins = None, None
       
-    
-    @abstractmethod
+
+    # Das ist ein sehr rudimentärer Gleichheitstest.
+    # Der reicht dann nur bei Ganzzahlring aus.
+
     def __eq__(self,other):
 
         if not type(self) == type(other):
@@ -38,7 +40,13 @@ class Ring(UnveraenderbaresObjekt):
 
         return True
 
-    
+
+    # Für einen Ring R soll mit R.element(info)
+    # eine durch info definierte Instanz der 
+    # entsprechenden von RingElement abgeleiteten Klasse
+    # zurückgegeben werden.
+    # Siehe z.B. in Restklassenring.
+ 
     @abstractmethod
     def element(self,*info):
         pass
@@ -46,7 +54,7 @@ class Ring(UnveraenderbaresObjekt):
     
     def tupel(self,*koeffizienten):
 
-        return RingTupel(*koeffizienten,self)
+        return RingTupel(*(koeffizienten+(self,)))
     
 
 #-------------------------------------------------------
@@ -81,7 +89,7 @@ class RingElement(UnveraenderbaresObjekt):
         pass
 
 
-    def drucke_element_mit_klammen(self):
+    def drucke_element_mit_klammern(self):
 
         return self.drucke_element()
 
@@ -159,6 +167,7 @@ class RingElement(UnveraenderbaresObjekt):
             raise TypeError("Das erste Objekt ist keine Zahl und kein Ringelement.")
 
         return True
+
 
     # invers und truediv könnten in einer
     # Implementierung auch "geht nicht"
@@ -297,9 +306,7 @@ class Ganzzahlring(Ring):
         return "Z"
 
 
-    def __eq__(self,other):
-        return super().__eq__(other)
-    
+ 
 
     def element(self,ele):
 
