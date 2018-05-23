@@ -16,20 +16,10 @@ class Bruchzahlring(Ring):
     def __eq__(self, other):
         return super().__eq__(other)
 
-#Vorschlag Benny:
-    def element(self, p, q):
-        if not (isinstance(p,int) & isinstance(q,int)) :
+    def element(self, p, q=1):
+        if not (isinstance(p, int) and isinstance(q, int)):
             raise TypeError("Elemente sind keine ganzen Zahlen.")
-        return BruchzahlringElement(p,q, self)
-
-# alte Version (kann nur ganze Zahlen)
-#    def element(self, e):
-#        if not type(e) == int:
-#            raise TypeError("Element ist keine ganze Zahl.")
-#        return BruchzahlringElement(e, 1, self)
-
-
-Q = Bruchzahlring
+        return BruchzahlringElement(p, q, self)
 
 
 class BruchzahlringElement(RingElement):
@@ -51,9 +41,6 @@ class BruchzahlringElement(RingElement):
     def drucke_element(self):
         return '{}/{}'.format(self.a, self.b)
 
-    def __str__(self):
-        return self.drucke_element() + "  in " + self.ring.__str__()
-
     def __eq__(self, other):
         if not super().__eq__(other):
             return False
@@ -63,14 +50,16 @@ class BruchzahlringElement(RingElement):
         return BruchzahlringElement(-self.a, self.b, self.ring)
 
     def __add__(self, other):
-        super().__add__(other) #?
+        super().__add__(other)
+
         if type(other) == int:
             return BruchzahlringElement(self.a + other * self.b, self.b, self.ring)
         elif isinstance(other, BruchzahlringElement):
             return BruchzahlringElement(self.a * other.b + other.a * self.b, self.b * other.b, self.ring)
 
     def __rmul__(self, other):
-        super().__rmul__(other) #?
+        super().__rmul__(other)
+
         if type(other) == int:
             return BruchzahlringElement(self.a * other, self.b, self.ring)
         elif isinstance(other, BruchzahlringElement):
@@ -78,3 +67,6 @@ class BruchzahlringElement(RingElement):
 
     def invers(self):
         return BruchzahlringElement(self.b, self.a, self.ring)
+
+
+Q = Bruchzahlring()
