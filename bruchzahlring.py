@@ -17,6 +17,9 @@ class Bruchzahlring(Ring):
         return super().__eq__(other)
 
     def element(self, p, q=1):
+        if isinstance(p, BruchzahlringElement):
+            return p
+
         if not (isinstance(p, int) and isinstance(q, int)):
             raise TypeError("Elemente sind keine ganzen Zahlen.")
         return BruchzahlringElement(p, q, self)
