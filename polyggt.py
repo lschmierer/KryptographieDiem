@@ -33,9 +33,9 @@ def polyExtGGT(a: PolynomringElement, b: PolynomringElement):
         raise ValueError(
             'PolynomringElement haben nicht den gleichen Grundring')
 
-    u, v = PolynomringElement(1, a.ring), PolynomringElement(0, a.ring)
-    s, t = PolynomringElement(0, a.ring), PolynomringElement(1, a.ring)
-    while b != PolynomringElement(0, a.ring):
+    u, v = a.ring.eins, a.ring.null
+    s, t = a.ring.null, a.ring.eins
+    while b != a.ring.null:
         q = a // b
         a, b = b, a - q * b
         u, s = s, u - q * s
@@ -44,3 +44,4 @@ def polyExtGGT(a: PolynomringElement, b: PolynomringElement):
 
 
 Polynomring.ExtGGT = staticmethod(polyExtGGT)
+Polynomring.ext_ggt = polyExtGGT
