@@ -3,7 +3,7 @@ import copy
 from tocas import Polynomring, PolynomringElement
 
 
-def polyFloorDiv(a: PolynomringElement, b: PolynomringElement):
+def polynom_div(a: PolynomringElement, b: PolynomringElement):
     """Polynomdivision ohne Rest"""
     a_koeffizienten = copy.copy(a.koeffizienten.koeffizienten)
     b_koeffizienten = b.koeffizienten.koeffizienten
@@ -19,10 +19,21 @@ def polyFloorDiv(a: PolynomringElement, b: PolynomringElement):
 
         del a_koeffizienten[-1]
 
-    return PolynomringElement(q_koeffizienten, a.ring)
+    q = PolynomringElement(q_koeffizienten, a.ring)
+
+    return q, a - q * b
 
 
-PolynomringElement.__floordiv__ = polyFloorDiv
+def polynom_floordiv(a: PolynomringElement, b: PolynomringElement):
+    return polynom_div(a, b)[0]
+
+
+def polynom_mod(a: PolynomringElement, b: PolynomringElement):
+    return polynom_div(a, b)[1]
+
+
+PolynomringElement.__floordiv__ = polynom_floordiv
+PolynomringElement.__mod__ = polynom_mod
 
 
 def polyExtGGT(a: PolynomringElement, b: PolynomringElement):
@@ -40,7 +51,7 @@ def polyExtGGT(a: PolynomringElement, b: PolynomringElement):
         a, b = b, a - q * b
         u, s = s, u - q * s
         v, t = t, v - q * t
-    return a, u, v
+    return a.ring.eins, u // a, v // a
 
 
 Polynomring.ExtGGT = staticmethod(polyExtGGT)
