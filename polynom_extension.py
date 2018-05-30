@@ -20,8 +20,9 @@ def polynom_div(a: PolynomringElement, b: PolynomringElement):
         del a_koeffizienten[-1]
 
     q = PolynomringElement(q_koeffizienten, a.ring)
+    r = PolynomringElement(a_koeffizienten, a.ring)
 
-    return q, a - q * b
+    return q, r
 
 
 def polynom_floordiv(a: PolynomringElement, b: PolynomringElement):
