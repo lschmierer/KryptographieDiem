@@ -1,4 +1,4 @@
-from tocas import Ring, RingElement, PolynomringElement
+from tocas import Ring, RingElement, PolynomringElement, RingTupel
 
 import polynom_extension
 
@@ -9,8 +9,8 @@ class PolynomRestklassenring(Ring):
             raise RuntimeError("Das angegebene Objekt ist kein Polynom.")
 
         self.modulus = f
-        self.null = f.ring.null
-        self.eins = f.ring.eins
+        self.null = PolynomRestklassenringElement(f.ring.null, self)
+        self.eins = PolynomRestklassenringElement(f.ring.eins, self)
 
         self._frier()
 
@@ -28,12 +28,13 @@ class PolynomRestklassenring(Ring):
 
 class PolynomRestklassenringElement(RingElement):
     def __init__(self, p, r: PolynomRestklassenring):
-        if p.basisring != r.modulus.basisring:
-            raise RuntimeError("Polynom und Ring nicht vom selben Basisring.")
-
         self.ring = r
 
         if isinstance(p, PolynomRestklassenringElement):
+            if p.basisring != r.modulus.basisring:
+                raise RuntimeError(
+                    "Polynom und Ring nicht vom selben Basisring.")
+
             if p.ring.modulus % self.ring.modulus == 0:
                 self.wert = p.wert % self.ring.modulus
 
@@ -49,6 +50,11 @@ class PolynomRestklassenringElement(RingElement):
     def drucke_element(self):
         return "[{0}]_{1}".format(self.wert, self.ring.modulus)
 
+    def __eq__(self, other):
+        if not super().__eq__(other):
+            return False
+        return self.wert == other.wert
+
     def __neg__(self):
         return PolynomRestklassenringElement(-self.wert, self.ring)
 
@@ -59,11 +65,28 @@ class PolynomRestklassenringElement(RingElement):
     def __rmul__(self, other):
         super().__rmul__(other)
 
-        if not isinstance(other, PolynomRestklassenringElement):
-            raise RuntimeError(
-                "Das Element is kein PolynomRestklassenElement.")
+        if type(other) == int:
+            return PolynomRestklassenringElement(RingElement.intmult(other, self.wert), self.ring)
 
-        # TODO https://en.wikipedia.org/wiki/Elliptic_curve_point_multiplication#Double-and-add 
+        if not isinstance(other, RingElement):
+            raise TypeError(
+                "Der erste Faktor ist keine Zahl und kein Ringelement.")
 
+        if other.ring == self.ring.modulus.basisring:
+            return PolynomRestklassenringElement(other*self.wert.koeffizienten, self.ring)
 
+        if self == self.ring.null or other == self.ring.null:
+            return self.ring.null
+
+        r = PolynomRestklassenringElement((self.wert.grad + 1)*[self.wert.basisring.null], self.ring)
+
+        for d in range(other.wert.grad, 0, -1):
+            r += other.wert.koeffizient(d) * self
+            r = PolynomRestklassenringElement(RingTupel([r.wert.basisring.null] + r.wert.koeffizienten.koeffizienten), self.ring)
         
+        r += other.wert.koeffizient(0) * self
+
+        return r
+
+    def invers(self):
+        pass
