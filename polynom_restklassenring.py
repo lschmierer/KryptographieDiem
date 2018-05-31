@@ -1,4 +1,4 @@
-from tocas import Ring, RingElement, PolynomringElement, RingTupel
+from tocas import Ring, RingElement, Polynomring, PolynomringElement, RingTupel
 
 import polynom_extension
 
@@ -78,15 +78,18 @@ class PolynomRestklassenringElement(RingElement):
         if self == self.ring.null or other == self.ring.null:
             return self.ring.null
 
-        r = PolynomRestklassenringElement((self.wert.grad + 1)*[self.wert.basisring.null], self.ring)
+        r = PolynomRestklassenringElement(
+            (self.wert.grad + 1)*[self.wert.basisring.null], self.ring)
 
         for d in range(other.wert.grad, 0, -1):
             r += other.wert.koeffizient(d) * self
-            r = PolynomRestklassenringElement(RingTupel([r.wert.basisring.null] + r.wert.koeffizienten.koeffizienten), self.ring)
-        
+            r = PolynomRestklassenringElement(RingTupel(
+                [r.wert.basisring.null] + r.wert.koeffizienten.koeffizienten), self.ring)
+
         r += other.wert.koeffizient(0) * self
 
         return r
 
     def invers(self):
-        pass
+        _, u, _ = Polynomring.ExtGGT(self.wert, self.ring.modulus)
+        return PolynomRestklassenringElement(u, self.ring)
