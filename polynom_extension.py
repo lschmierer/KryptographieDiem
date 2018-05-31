@@ -37,7 +37,7 @@ PolynomringElement.__floordiv__ = polynom_floordiv
 PolynomringElement.__mod__ = polynom_mod
 
 
-def polyExtGGT(a: PolynomringElement, b: PolynomringElement):
+def polynom_ExtGGT(a: PolynomringElement, b: PolynomringElement):
     if not (isinstance(a, PolynomringElement) and isinstance(b, PolynomringElement)):
         raise TypeError('Argumente nicht vom Typ PolynomringElement')
 
@@ -55,5 +55,15 @@ def polyExtGGT(a: PolynomringElement, b: PolynomringElement):
     return a.ring.eins, u // a, v // a
 
 
-Polynomring.ExtGGT = staticmethod(polyExtGGT)
-Polynomring.ext_ggt = polyExtGGT
+def polynom_ext_ggt(self: Polynomring, a: PolynomringElement, b: PolynomringElement):
+    if not (isinstance(a, PolynomringElement) and isinstance(b, PolynomringElement)):
+        raise TypeError('Argumente nicht vom Typ PolynomringElement')
+
+    if a.ring != self or b.ring != self:
+        raise TypeError('PolynomringElement nicht im Polynomring')
+
+    return Polynomring.ExtGGT(a, b)
+
+
+Polynomring.ExtGGT = staticmethod(polynom_ExtGGT)
+Polynomring.ext_ggt = polynom_ext_ggt
