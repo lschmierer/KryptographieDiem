@@ -10,6 +10,10 @@ class PolynomRestklassenring(Ring):
         if not isinstance(f, PolynomringElement):
             raise RuntimeError("Das angegebene Objekt ist kein Polynom.")
 
+        if f.grad > 0 and f.koeffizienten.koeffizienten[f.grad] != 1:
+            for d in range(f.grad + 1):
+                f.koeffizienten.koeffizienten[d] /= f.koeffizienten.koeffizienten[f.grad]
+
         self.modulus = f
         self.null = PolynomRestklassenringElement(f.ring.null, self)
         self.eins = PolynomRestklassenringElement(f.ring.eins, self)
@@ -32,9 +36,9 @@ class PolynomRestklassenring(Ring):
             raise TypeError(
                 "random ist nur für PolynomRestklassenringe mit Restklassenring als Basisring implementiert")
 
-        r = RingTupel(self.modulus.grad*[self.modulus.basisring.null])
+        r = RingTupel((self.modulus.grad + 1)*[self.modulus.basisring.null])
 
-        for d in range(self.modulus.grad):
+        for d in range(self.modulus.grad + 1):
             r.koeffizienten[d] = random.randint(
                 0, self.modulus.basisring.modulus - 1)
 
