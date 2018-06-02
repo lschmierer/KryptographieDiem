@@ -41,8 +41,14 @@ class BruchzahlringElement(RingElement):
             ring = Bruchzahlring()
         self.ring = ring
 
+    def __str__(self):
+        return '{} in {}'.format(self.drucke_element(), self.ring)
+
     def drucke_element(self):
         return '{}/{}'.format(self.a, self.b)
+
+    def drucke_element_mit_klammern(self):
+        return '({}/{})'.format(self.a, self.b)
 
     def __eq__(self, other):
         if not super().__eq__(other):

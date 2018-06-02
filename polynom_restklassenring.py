@@ -17,7 +17,7 @@ class PolynomRestklassenring(Ring):
         self._frier()
 
     def __str__(self):
-        return "{}/({})".format(self.modulus.basisring, self.modulus)
+        return "{}/({})".format(self.modulus.ring, self.modulus.drucke_element())
 
     def __eq__(self, other):
         if not super().__eq__(other):
@@ -62,8 +62,11 @@ class PolynomRestklassenringElement(RingElement):
 
             self.wert = p % self.ring.modulus
 
+    def __str__(self):
+        return '{} in {}'.format(self.drucke_element(), self.ring)
+
     def drucke_element(self):
-        return "[{0}]_{1}".format(self.wert, self.ring.modulus)
+        return '{}'.format(self.wert.drucke_element())
 
     def __eq__(self, other):
         if not super().__eq__(other):
