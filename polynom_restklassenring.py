@@ -1,4 +1,6 @@
-from tocas import Ring, RingElement, Polynomring, PolynomringElement, RingTupel
+import random
+
+from tocas import Ring, RingElement, Restklassenring, Polynomring, PolynomringElement, RingTupel
 
 import polynom_extension
 
@@ -24,6 +26,19 @@ class PolynomRestklassenring(Ring):
 
     def element(self, a):
         return PolynomRestklassenringElement(a, self)
+
+    def random(self):
+        if not isinstance(self.modulus.basisring, Restklassenring):
+            raise TypeError(
+                "random ist nur für PolynomRestklassenringe mit Restklassenring als Basisring implementiert")
+
+        r = RingTupel(self.modulus.grad*[self.modulus.basisring.null])
+
+        for d in range(self.modulus.grad):
+            r.koeffizienten[d] = random.randint(
+                0, self.modulus.basisring.modulus - 1)
+
+        return PolynomRestklassenringElement(r, self)
 
 
 class PolynomRestklassenringElement(RingElement):
