@@ -59,7 +59,8 @@ class BruchzahlringElement(RingElement):
         return BruchzahlringElement(-self.a, self.b, self.ring)
 
     def __add__(self, other):
-        super().__add__(other)
+        if not isinstance(other, int):
+            super().__add__(other)
 
         if type(other) == int:
             return BruchzahlringElement(self.a + other * self.b, self.b, self.ring)
@@ -75,7 +76,10 @@ class BruchzahlringElement(RingElement):
             return BruchzahlringElement(self.a * other.a, self.b * other.b, self.ring)
 
     def invers(self):
-        return BruchzahlringElement(self.b, self.a, self.ring)
+        if self.a > 0:
+            return BruchzahlringElement(self.b, self.a, self.ring)
+        else:
+            return BruchzahlringElement(-self.b, -self.a, self.ring)
 
 
 Q = Bruchzahlring()

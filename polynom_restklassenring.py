@@ -17,6 +17,7 @@ class PolynomRestklassenring(Ring):
         self.modulus = f
         self.null = PolynomRestklassenringElement(f.ring.null, self)
         self.eins = PolynomRestklassenringElement(f.ring.eins, self)
+        self.erzeuger = PolynomRestklassenringElement(f.ring.variable, self)
 
         self._frier()
 
@@ -32,17 +33,26 @@ class PolynomRestklassenring(Ring):
         return PolynomRestklassenringElement(a, self)
 
     def random(self):
-        if not isinstance(self.modulus.basisring, Restklassenring):
+        if isinstance(self.modulus.basisring, Restklassenring):
+            r = RingTupel((self.modulus.grad + 1) *
+                          [self.modulus.basisring.null])
+
+            for d in range(self.modulus.grad + 1):
+                r.koeffizienten[d] = random.randint(
+                    0, self.modulus.basisring.modulus - 1)
+
+            return PolynomRestklassenringElement(r, self)
+        elif isinstance(self.modulus.basisring, PolynomRestklassenring):
+            r = RingTupel((self.modulus.grad + 1) *
+                          [self.modulus.basisring.null])
+
+            for d in range(self.modulus.grad + 1):
+                r.koeffizienten[d] = self.modulus.basisring.random()
+
+            return PolynomRestklassenringElement(r, self)
+        else:
             raise TypeError(
-                "random ist nur für PolynomRestklassenringe mit Restklassenring als Basisring implementiert")
-
-        r = RingTupel((self.modulus.grad + 1)*[self.modulus.basisring.null])
-
-        for d in range(self.modulus.grad + 1):
-            r.koeffizienten[d] = random.randint(
-                0, self.modulus.basisring.modulus - 1)
-
-        return PolynomRestklassenringElement(r, self)
+                "random ist nur für PolynomRestklassenringe mit Restklassenringen als Basisring implementiert")
 
 
 class PolynomRestklassenringElement(RingElement):
@@ -50,11 +60,11 @@ class PolynomRestklassenringElement(RingElement):
         self.ring = r
 
         if isinstance(p, PolynomRestklassenringElement):
-            if p.basisring != r.modulus.basisring:
+            if p.ring.modulus.basisring != r.modulus.basisring:
                 raise RuntimeError(
                     "Polynom und Ring nicht vom selben Basisring.")
 
-            if p.ring.modulus % self.ring.modulus == 0:
+            if p.ring.modulus % self.ring.modulus == self.ring.modulus.ring.null:
                 self.wert = p.wert % self.ring.modulus
 
             else:
@@ -81,7 +91,11 @@ class PolynomRestklassenringElement(RingElement):
         return PolynomRestklassenringElement(-self.wert, self.ring)
 
     def __add__(self, other):
+        if isinstance(other, RingElement) and other.ring == self.ring.modulus.basisring:
+            return self + other * self.ring.eins
+
         super().__add__(other)
+
         return PolynomRestklassenringElement(self.wert+other.wert, self.ring)
 
     def __rmul__(self, other):

@@ -27,5 +27,5 @@ RestklassenringElement.__str__ = restklassenring_element_str
 def polynomring_element_str(self):
     return '{} in {}'.format(self.drucke_element(), self.ring)
 
-PolynomringElement.__str__ = polynomring_element_str
 
+PolynomringElement.__str__ = polynomring_element_str
