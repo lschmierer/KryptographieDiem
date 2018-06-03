@@ -55,7 +55,7 @@ class Ring(UnveraenderbaresObjekt):
     def tupel(self,*koeffizienten):
 
         return RingTupel(*(koeffizienten+(self,)))
-    
+
 
 #-------------------------------------------------------
 # Abstrakte Klasse RingElement
@@ -141,23 +141,30 @@ class RingElement(UnveraenderbaresObjekt):
     def __sub__(self,other):
         
         return self + (- other)
-    
+
+
 
     # Multiplikation mit Ringelement links (d.h. other ist rechts).
     # Wichtig: Die normale Multiplikation __mul__ darf nur für
-    # Ringelemente implemtiert sein. Das lässt dann offen, was bei
+    # Ringelemente des Typs von self oder ganze Zahlen implementiert sein.
+    # Das lässt dann offen, was bei
     # e*x, x kein Ringlement, passiert.
-    # "Lögischer" wäre eigentlich: __mul__ wird gar nicht implemtiert
+    # "Lögischer" wäre eigentlich: __mul__ wird gar nicht implementiert
     # und dann ruft python immer __rmul__ auf. Das funktioniert aber
     # nicht, wenn self und other denselben Typ haben.
     
     
     def __mul__(self,other):
         
-        if not type(self) == type(other):
+        if not (type(self) == type(other) or type(other) == int):
+            # geändert: Jetzt sind auch Multiplikation "von rechts" mit ganzen Zahlen möglich.
             return NotImplemented
-    
-        return other.__rmul__(self)
+
+        if type(other) == int:
+            return self.__rmul__(other)
+
+        if type(other) == type(self):
+            return other.__rmul__(self)
 
     
     @abstractmethod
@@ -182,13 +189,26 @@ class RingElement(UnveraenderbaresObjekt):
     # dividieren:
     
     def __truediv__(self,other):
-    
-        if type(self) != type(other):
-            raise TypeError()
-    
-        return self*other.invers()
 
-            
+        # geändert:
+        # Nun kann der Divisor auch eine ganze Zahl sein.
+        
+        if not (type(self) == type(other) or type(other) == int):
+            raise TypeError("Das zweite Objekt ist keine Zahl und kein Ringelement.")
+        if type(self) == type(other):
+            return self * (other ** -1)
+
+        if type(other) == int:
+            return self * (self.ring.element(other) ** -1)
+
+
+    def __rtruediv__(self,other):
+        
+        if not (type(self) == type(other) or type(other) == int):
+            raise TypeError("Das erste Objekt ist keine Zahl und kein Ringelement.")
+        return other * (self ** -1)
+
+
     #Dies ist für a^b, Eingabe: a ** b:
  
     def __pow__(self,exponent):
@@ -227,15 +247,15 @@ class RingElement(UnveraenderbaresObjekt):
     @staticmethod        
     def intmult(n,ele):
 
-        if not isinstance(ele,RingElement):
-            return TypeError("Zweites Objekt ist kein Ringelement.")
+        if not RingElement.test(ele):
+            raise TypeError("Zweites Objekt ist kein Ringelement.")
 
         if not type(n) == int:
-            return TypeError("Das erste Objekt ist keine ganze Zahl...")
+            raise TypeError("Das erste Objekt ist keine ganze Zahl...")
 
         zweiadisch = ZweiAdisch(n)
 
-        c = ele.ring.null
+        c = RingElement.ring(ele).null
 
         for i in range (0,len(zweiadisch)-1):
             if zweiadisch[i] == '1':
@@ -250,6 +270,61 @@ class RingElement(UnveraenderbaresObjekt):
 
         return c
 
+    
+    @staticmethod        
+    # Methode invers
+
+    # Diese Methode ist neu:
+    # Die Funktion vermeidet eine Fallunterscheidung beim Berechnen des Inversen,
+    # wenn das Element eine ganz Zahl sein könnte.
+
+    def invers(ringelement):
+        if not (isinstance(ringelement,RingElement) or type(ringelement) == int):
+            raise TypeError("Die Eingabe ist kein Ringelement.")
+
+        if type(ringelement) == int:
+            if not (ringelement == 1 or ringelement == -1):
+                raise InvertierungsFehler(ringelement)
+            return ringelement
+        
+        if isinstance(ringelement,RingElement):
+            return ringelement.invers()
+
+
+    @staticmethod     
+    #----------------------------------------------
+    # Methode test
+
+    # Diese Methode ist neu.
+    # Mit ihr kann getestet werden, ob ein Objekt vom Typ RingElement oder int ist,
+    #d.h. ob es im mathematischen Sinne ein Ringelement ist.
+
+    def test(ringelement):
+
+        return isinstance(ringelement,RingElement) or type(ringelement) == int
+
+    
+    @staticmethod     
+    # ------------------------------------------------------------------
+    # Methode ring
+    
+    # Diese Methode ist neu:
+    # Sie vermeidet Fallunterscheidungen bei der Anwendung von ringelement.ring,
+    # wenn ringelement eine ganz Zahl sein könnte.
+
+    # Sie gibt entweder ringelement.ring oder Z zurück.
+
+    def ring(ringelement):
+        if not (isinstance(ringelement,RingElement) or type(ringelement) == int):
+            raise TypeError("Die Eingabe ist kein Ringelement.")
+
+        if type(ringelement) == int:
+            return Z
+
+        if isinstance(ringelement,RingElement):
+            return ringelement.ring
+            
+    
 #----------------------------------------------
 # class InvertierungsFehler
 # Fehler für das Fehlschlagen der Invertierung
@@ -331,6 +406,9 @@ class Ganzzahlring(Ring):
             a, b = b, a-q*b
             u, s = s, u-q*s
             v, t = t, v-q*t
+
+        # geändert: Der ggT ist nun immer positiv
+        if a < 0: a,u,v = -a,-u,-v
         return a, u, v
 
 
@@ -349,8 +427,8 @@ class RingTupel(MeinABCObjekt):
 
         # Es gibt mehrere sinnvolle Eingaben:
         
-        # eingabe1 : Liste (list) von Ringelementen, möglicherweise eingabe2 : Ring
-        # eingabe1 : Tupel (tuple) von Ringelementen, möglicherweise eingabe2 : Ring
+        # eingabe1 : Liste (list) von Ringelementen, möglicherweise eingabe2 oder ring: Ring
+        # eingabe1 : Tupel (tuple) von Ringelementen, möglicherweise eingabe2 oder ring: Ring
         # Hier kann "Ringelement" entweder eine Instanz von RingElement
         # oder von int sein.
 
