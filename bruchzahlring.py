@@ -33,6 +33,10 @@ class BruchzahlringElement(RingElement):
             raise TypeError(
                 "Die angegebenen Parameter sind keine ganzen Zahlen.")
 
+        if b < 0:
+            a = -a
+            b = -b
+
         ggt = Ganzzahlring.ExtGGT(a, b)[0]
 
         self.a = a // ggt
