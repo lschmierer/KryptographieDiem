@@ -1,4 +1,4 @@
-from tocas import Ganzzahlring, Restklassenring, RestklassenringElement, PolynomringElement
+from tocas import Ganzzahlring, Restklassenring, RestklassenringElement, Polynomring, PolynomringElement
 
 from bruchzahlring import Bruchzahlring
 
@@ -22,6 +22,16 @@ def restklassenring_element_str(self):
 
 
 RestklassenringElement.__str__ = restklassenring_element_str
+
+
+def polynomring_str(self):
+    if isinstance(self.basisring, Ganzzahlring) or isinstance(self.basisring, Bruchzahlring):
+        return "{0}[{1}]".format(self.basisring, self.variablenname)
+    else:
+        return "[{0}][{1}]".format(self.basisring, self.variablenname)
+
+
+Polynomring.__str__ = polynomring_str
 
 
 def polynomring_element_str(self):
