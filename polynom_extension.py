@@ -3,7 +3,7 @@ import copy
 from tocas import Polynomring, PolynomringElement
 
 
-def polyFloorDiv(a: PolynomringElement, b: PolynomringElement):
+def polynom_div(a: PolynomringElement, b: PolynomringElement):
     """Polynomdivision ohne Rest"""
     a_koeffizienten = copy.copy(a.koeffizienten.koeffizienten)
     b_koeffizienten = b.koeffizienten.koeffizienten
@@ -19,13 +19,25 @@ def polyFloorDiv(a: PolynomringElement, b: PolynomringElement):
 
         del a_koeffizienten[-1]
 
-    return PolynomringElement(q_koeffizienten, a.ring)
+    q = PolynomringElement(q_koeffizienten, a.ring)
+    r = PolynomringElement(a_koeffizienten, a.ring)
+
+    return q, r
 
 
-PolynomringElement.__floordiv__ = polyFloorDiv
+def polynom_floordiv(a: PolynomringElement, b: PolynomringElement):
+    return polynom_div(a, b)[0]
 
 
-def polyExtGGT(a: PolynomringElement, b: PolynomringElement):
+def polynom_mod(a: PolynomringElement, b: PolynomringElement):
+    return polynom_div(a, b)[1]
+
+
+PolynomringElement.__floordiv__ = polynom_floordiv
+PolynomringElement.__mod__ = polynom_mod
+
+
+def polynom_ExtGGT(a: PolynomringElement, b: PolynomringElement):
     if not (isinstance(a, PolynomringElement) and isinstance(b, PolynomringElement)):
         raise TypeError('Argumente nicht vom Typ PolynomringElement')
 
@@ -40,8 +52,18 @@ def polyExtGGT(a: PolynomringElement, b: PolynomringElement):
         a, b = b, a - q * b
         u, s = s, u - q * s
         v, t = t, v - q * t
-    return a, u, v
+    return a.ring.eins, u // a, v // a
 
 
-Polynomring.ExtGGT = staticmethod(polyExtGGT)
-Polynomring.ext_ggt = polyExtGGT
+def polynom_ext_ggt(self: Polynomring, a: PolynomringElement, b: PolynomringElement):
+    if not (isinstance(a, PolynomringElement) and isinstance(b, PolynomringElement)):
+        raise TypeError('Argumente nicht vom Typ PolynomringElement')
+
+    if a.ring != self or b.ring != self:
+        raise TypeError('PolynomringElement nicht im Polynomring')
+
+    return Polynomring.ExtGGT(a, b)
+
+
+Polynomring.ExtGGT = staticmethod(polynom_ExtGGT)
+Polynomring.ext_ggt = polynom_ext_ggt

@@ -33,6 +33,10 @@ class BruchzahlringElement(RingElement):
             raise TypeError(
                 "Die angegebenen Parameter sind keine ganzen Zahlen.")
 
+        if b < 0:
+            a = -a
+            b = -b
+
         ggt = Ganzzahlring.ExtGGT(a, b)[0]
 
         self.a = a // ggt
@@ -41,8 +45,14 @@ class BruchzahlringElement(RingElement):
             ring = Bruchzahlring()
         self.ring = ring
 
+    def __str__(self):
+        return '{} in {}'.format(self.drucke_element(), self.ring)
+
     def drucke_element(self):
         return '{}/{}'.format(self.a, self.b)
+
+    def drucke_element_mit_klammern(self):
+        return '({}/{})'.format(self.a, self.b)
 
     def __eq__(self, other):
         if not super().__eq__(other):
@@ -53,7 +63,8 @@ class BruchzahlringElement(RingElement):
         return BruchzahlringElement(-self.a, self.b, self.ring)
 
     def __add__(self, other):
-        super().__add__(other)
+        if not isinstance(other, int):
+            super().__add__(other)
 
         if type(other) == int:
             return BruchzahlringElement(self.a + other * self.b, self.b, self.ring)
@@ -69,7 +80,10 @@ class BruchzahlringElement(RingElement):
             return BruchzahlringElement(self.a * other.a, self.b * other.b, self.ring)
 
     def invers(self):
-        return BruchzahlringElement(self.b, self.a, self.ring)
+        if self.a > 0:
+            return BruchzahlringElement(self.b, self.a, self.ring)
+        else:
+            return BruchzahlringElement(-self.b, -self.a, self.ring)
 
 
 Q = Bruchzahlring()

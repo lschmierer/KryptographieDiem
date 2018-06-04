@@ -16,8 +16,8 @@ class Polynomring(Ring):
              
         self.basisring = R
         
-        self.null = PolynomringElement(0,self)
-        self.eins = PolynomringElement(1,self)
+        self.null = PolynomringElement(self.basisring.null,self) # geändert
+        self.eins = PolynomringElement(self.basisring.eins,self) # geändert
 
         
         if not type(variablenname) == str:
@@ -196,8 +196,15 @@ class PolynomringElement(RingElement):
 
     def __add__(self,other):
 
-        super().__add__(other)
+        if not RingElement.test(other):
+            raise TypeError("Der erste Faktor ist keine Zahl und kein Ringelement.")
 
+        if not (RingElement.ring(other) == self.basisring or RingElement.ring(other) == self.ring):
+            return NotImplemented
+        
+        if RingElement.ring(other) == self.basisring:
+            other = other * self.ring.eins
+            
         g = max(self.grad,other.grad)
 
         koeff1 = deepcopy(self.koeffizienten)
@@ -212,15 +219,15 @@ class PolynomringElement(RingElement):
 
     def __rmul__(self,other):
 
-        if type(other) == int:
-            return RingElement.intmult(other,self)
-
-        if not isinstance(other,RingElement):
+        if not RingElement.test(other):
             raise TypeError("Der erste Faktor ist keine Zahl und kein Ringelement.")
 
-        if other.ring == self.basisring:
+        if not (type(other) == int or RingElement.ring(other) == self.basisring or RingElement.ring(other) == self.ring):
+            raise TypeError("Die Elemente liegen in inkompatiblen Ringen.")
+        
+        if type(other) == int or RingElement.ring(other) == self.basisring:
             return(PolynomringElement(other*self.koeffizienten,self.ring))
-
+        
         if self == self.ring.null or other == self.ring.null:
             return self.ring.null
 
@@ -247,15 +254,8 @@ class PolynomringElement(RingElement):
         # Das zu invertierende Ringelement:
         element = self.koeffizienten.koeffizienten[0]
             
-        if self.basisring == Z:
-            # Über Z kann man nur +1 und -1 invertieren, das Ergebnis ist \
-            # dann das Element selbst.
-            if not (element == 1 or element == -1):
-                raise RuntimeError("Das Element ist nicht invertierbar.")
-            return self
-        else:                
-            return PolynomringElement(element.invers(),self.ring)
-        
-        
-        
+        return PolynomringElement(RingElement.invers(element),self.ring)
+
+
+
     

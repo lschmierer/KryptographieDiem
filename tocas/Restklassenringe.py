@@ -48,8 +48,7 @@ class Restklassenring(Ring):
 # Instanziierbare Klasse RestklassenringElement
 
 class RestklassenringElement(RingElement):
- 
- 
+  
     
     def __init__(self,a,n):
         
@@ -85,11 +84,6 @@ class RestklassenringElement(RingElement):
     def drucke_element(self):
 
         return "[{0}]_{1}".format(self.wert,self.ring.modulus)
-
-
-    def __str__(self):
-        
-        return self.drucke_element() + "  in " + self.ring.__str__()
 
 
     def __eq__(self,other):

@@ -1,4 +1,3 @@
-from .AbstrakterAnfang import *
 from .Restklassenringe import *
 from .Polynomringe import *
 
@@ -40,11 +39,11 @@ class Homomorphismus(UnveraenderbaresObjekt):
             # Ansonsten erstmal checken, dass das überhaupt anwendbar ist:
         
             if not (type(self.quelle) == Ganzzahlring or type(self.quelle) == Restklassenring or \
-                                     type(self.quelle) == Polynomring) \
-                    or not (type(self.ziel) == Ganzzahlring or \
-                                     type(self.ziel) == Restklassenring or \
-                                     type(self.ziel) == Polynomring):
-                raise ("Homomorphismus ist für diesen Typ von Ringen nicht implementiert.")
+                                     type(self.quelle) == Polynomring): #\
+#                    or not (type(self.ziel) == Ganzzahlring or \
+#                                     type(self.ziel) == Restklassenring or \
+#                                     type(self.ziel) == Polynomring):
+                raise RuntimeError("Homomorphismus ist für diesen Typ von Ringen nicht implementiert.")
 
             # Fallunterscheidung nach type(quelle):
             # - Ganzzahlring
