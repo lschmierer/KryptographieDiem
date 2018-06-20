@@ -84,12 +84,14 @@ def _polynom_irreduzibel(f: PolynomringElement):
     n = [int(f.grad / p) for p in _polynom_primes(f.grad)]
 
     for i in range(1, len(n) + 1):
-        h = (f.ring.variable ** f.basisring.modulus **
-             n[i] - f.ring.variable) % f
+        h = (((f.ring.variable ** f.basisring.modulus)
+              ** n[i]) - f.ring.variable) % f
         g = Polynomring.ExtGGT(f, h)
         if g != f.ring.eins:
             return False
-    g = (f.ring.variable ** f.basisring.modulus ** f.grad - f.ring.variable) % f
+    print(f.ring.variable ** f.basisring.modulus)
+    g = (((f.ring.variable ** f.basisring.modulus)
+          ** f.grad) - f.ring.variable) % f
     if g == f.ring.null:
         return True
     return False
