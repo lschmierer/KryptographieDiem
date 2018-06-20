@@ -54,6 +54,9 @@ class PolynomRestklassenring(Ring):
             raise TypeError(
                 "random ist nur für PolynomRestklassenringe mit Restklassenringen als Basisring implementiert")
 
+    def ist_endlicher_koerper(self):
+        return self.modulus.basisring.ist_endlicher_koerper() and self.modulus.irreduzibel()
+
 
 class PolynomRestklassenringElement(RingElement):
     def __init__(self, p, r: PolynomRestklassenring):
