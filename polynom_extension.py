@@ -5,6 +5,43 @@ from tocas import Polynomring, PolynomringElement, Restklassenring
 from polynom_restklassenring import *
 
 
+def _polynomring_ExtGGT(a: PolynomringElement, b: PolynomringElement):
+    if not (isinstance(a, PolynomringElement) and isinstance(b, PolynomringElement)):
+        raise TypeError('Argumente nicht vom Typ PolynomringElement')
+
+    if a.basisring != b.basisring:
+        raise ValueError(
+            'PolynomringElement haben nicht den gleichen Grundring')
+
+    u, v = a.ring.eins, a.ring.null
+    s, t = a.ring.null, a.ring.eins
+    while b != a.ring.null:
+        q = a // b
+        a, b = b, a - q * b
+        u, s = s, u - q * s
+        v, t = t, v - q * t
+    return a.ring.eins, u // a, v // a
+
+
+def _polynomring_ext_ggt(self: Polynomring, a: PolynomringElement, b: PolynomringElement):
+    if not (isinstance(a, PolynomringElement) and isinstance(b, PolynomringElement)):
+        raise TypeError('Argumente nicht vom Typ PolynomringElement')
+
+    if a.ring != self or b.ring != self:
+        raise TypeError('PolynomringElement nicht im Polynomring')
+
+    return Polynomring.ExtGGT(a, b)
+
+
+def _polynomring_ist_endlicher_koerper(_):
+    return False
+
+
+Polynomring.ExtGGT = staticmethod(_polynomring_ExtGGT)
+Polynomring.ext_ggt = _polynomring_ext_ggt
+Polynomring.ist_endlicher_koerper = _polynomring_ist_endlicher_koerper
+
+
 def _polynom_div(a: PolynomringElement, b: PolynomringElement):
     """Polynomdivision ohne Rest"""
     a_koeffizienten = copy.copy(a.koeffizienten.koeffizienten)
@@ -103,7 +140,8 @@ def _polynom_irreduzibel(f: PolynomringElement):
     KX_f = PolynomRestklassenring(f)
     var = PolynomRestklassenringElement(f.ring.variable, KX_f)
 
-    n = [int(f.grad / p) for p in _primes(f.grad)]
+    n = [int(f.grad / p) for p in _polynom_primes(f.grad)]
+
 
     for i in range(0, len(n)):
         h = (((var ** f.basisring.modulus) **  n[i]) - var)
@@ -115,4 +153,6 @@ def _polynom_irreduzibel(f: PolynomringElement):
     return True
 
 
+PolynomringElement.__floordiv__ = _polynom_floordiv
+PolynomringElement.__mod__ = _polynom_mod
 PolynomringElement.irreduzibel = _polynom_irreduzibel
