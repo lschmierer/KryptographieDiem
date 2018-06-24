@@ -1,4 +1,5 @@
 import math
+import random
 
 from tocas import Restklassenring, Polynomring, PolynomringElement, Ring
 
@@ -42,16 +43,15 @@ def EndlicherKoerper(p, n=None, prime_test=prime.miller_rabin):
 
     RX = Polynomring(R)
 
-    koeffizienten = [0] * (n+1)
-    koeffizienten[-1] = 1
+    koeffizienten = [0] * (n + 1)
 
-    index = 0
-    while index < len(koeffizienten):
+    random.seed(0)
+    while True:
+        koeffizienten[random.randint(0, n)] += 1
+
+        if koeffizienten[-1] == 0:
+            koeffizienten[-1] += 1
+
         f = PolynomringElement(koeffizienten, RX)
         if f.irreduzibel():
             return PolynomRestklassenring(f)
-
-        if koeffizienten[index] == p - 1:
-            index += 1
-        else:
-            koeffizienten[index] += 1
