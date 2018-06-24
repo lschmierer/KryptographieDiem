@@ -69,7 +69,7 @@ def _phi(r):
     return phi
 
 
-def aks(n):
+def AKS(n):
     if not isinstance(n, int):
         raise TypeError('Argumente nicht vom Typ int')
 
@@ -104,3 +104,5 @@ def aks(n):
             return False
 
     return True
+
+IstPrim = miller_rabin
