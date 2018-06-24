@@ -125,7 +125,7 @@ def _polynom_GGT(a: PolynomringElement, b: PolynomringElement):
 
 Polynomring.GGT = staticmethod(_polynom_GGT)
 
-def _primes(n):
+def _polynom_primes(n):
     divisors = [d for d in range(2, n+1) if n % d == 0]
     return [d for d in divisors if
             all(d % od != 0 for od in divisors if od != d)]
@@ -141,7 +141,6 @@ def _polynom_irreduzibel(f: PolynomringElement):
     var = PolynomRestklassenringElement(f.ring.variable, KX_f)
 
     n = [int(f.grad / p) for p in _polynom_primes(f.grad)]
-
 
     for i in range(0, len(n)):
         h = (((var ** f.basisring.modulus) **  n[i]) - var)
