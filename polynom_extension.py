@@ -2,7 +2,7 @@ import copy
 import math
 
 from tocas import Polynomring, PolynomringElement, Restklassenring
-from polynom_restklassenring import *
+from polynom_restklassenring import PolynomRestklassenring, PolynomRestklassenringElement
 
 
 def _polynomring_ExtGGT(a: PolynomringElement, b: PolynomringElement):
@@ -77,7 +77,9 @@ PolynomringElement.__mod__ = _polynom_mod
 
 
 '''Berechnung von ggT(a,b) und u,v mit ua + vb = ggT(a,b) '''
-def _polynom_ExtGGT(a: PolynomringElement, b: PolynomringElement):
+
+
+def _polynom_ExtGGT(a: PolynomringElement, b: PolynomringElement, norm=True):
     if not (isinstance(a, PolynomringElement) and isinstance(b, PolynomringElement)):
         raise TypeError('Argumente nicht vom Typ PolynomringElement')
 
@@ -92,38 +94,25 @@ def _polynom_ExtGGT(a: PolynomringElement, b: PolynomringElement):
         a, b = b, a - q * b
         u, s = s, u - q * s
         v, t = t, v - q * t
-    '''Benny: normierung habe ich probeweise entfernt'''
-    '''a.ring.eins, u // a, v // a'''
-    return a , u , v
+
+    if norm:
+        a, u, v = a.ring.eins, u // a, v // a
+    return a, u, v
 
 
-
-def _polynom_ext_ggt(self: Polynomring, a: PolynomringElement, b: PolynomringElement):
+def _polynom_ext_ggt(self: Polynomring, a: PolynomringElement, b: PolynomringElement, norm=True):
     if not (isinstance(a, PolynomringElement) and isinstance(b, PolynomringElement)):
         raise TypeError('Argumente nicht vom Typ PolynomringElement')
 
     if a.ring != self or b.ring != self:
         raise TypeError('PolynomringElement nicht im Polynomring')
 
-    return Polynomring.ExtGGT(a, b)
+    return Polynomring.ExtGGT(a, b, norm)
 
 
 Polynomring.ExtGGT = staticmethod(_polynom_ExtGGT)
 Polynomring.ext_ggt = _polynom_ext_ggt
 
-def _polynom_GGT(a: PolynomringElement, b: PolynomringElement):
-    if not (isinstance(a, PolynomringElement) and isinstance(b, PolynomringElement)):
-        raise TypeError('Argumente nicht vom Typ PolynomringElement')
-
-    if a.basisring != b.basisring:
-        raise ValueError(
-            'PolynomringElement haben nicht den gleichen Grundring')
-        
-    if b==b.ring.null:
-        return a
-    return _polynom_GGT(b, a % b)
-
-Polynomring.GGT = staticmethod(_polynom_GGT)
 
 def _polynom_primes(n):
     divisors = [d for d in range(2, n+1) if n % d == 0]
@@ -132,20 +121,20 @@ def _polynom_primes(n):
 
 
 def _polynom_irreduzibel(f: PolynomringElement):
-    if not isinstance(f.basisring, Restklassenring):
-        raise TypeError('Bassisring muss Restklassenring sein')
-    if f.grad==0:
+    if not f.basisring.ist_endlicher_koerper():
+        raise TypeError('Bassisring muss endlicher Körper sein')
+    if f.grad == 0:
         return False
-    
+
     KX_f = PolynomRestklassenring(f)
     var = PolynomRestklassenringElement(f.ring.variable, KX_f)
 
     n = [int(f.grad / p) for p in _polynom_primes(f.grad)]
 
     for i in range(0, len(n)):
-        h = (((var ** f.basisring.modulus) **  n[i]) - var)
-        g = Polynomring.GGT(f, h.wert)
-        if g.grad!=0:
+        h = (((var ** f.basisring.modulus) ** n[i]) - var)
+        g, _, _ = Polynomring.ExtGGT(f, h.wert, False)
+        if g.grad != 0:
             return False
 
     g = (((var ** f.basisring.modulus) ** f.grad) - var)
