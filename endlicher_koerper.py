@@ -8,7 +8,7 @@ import prime
 from polynom_restklassenring import PolynomRestklassenring
 
 
-def EndlicherKoerper(p, n=None, prime_test=prime.miller_rabin):
+def EndlicherKoerper(p, n=None, prime_test=prime.miller_rabin, variablenname = "x"):
     if isinstance(p, Ring):
         if p.ist_endlicher_koerper():
             R = p
@@ -41,7 +41,7 @@ def EndlicherKoerper(p, n=None, prime_test=prime.miller_rabin):
     if n == 1:
         return R
 
-    RX = Polynomring(R)
+    RX = Polynomring(R, variablenname = variablenname)
 
     koeffizienten = [0] * (n + 1)
 
