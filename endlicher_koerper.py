@@ -21,7 +21,6 @@ def EndlicherKoerper(p, n=None, prime_test=prime.miller_rabin):
             q = p
 
             for i in range(int(math.sqrt(q))+1, 1, -1):
-                print(i)
                 n = math.log(q, i)
                 if n.is_integer() and prime_test(i):
                     n = int(n)
