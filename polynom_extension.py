@@ -131,13 +131,18 @@ def _polynom_irreduzibel(f: PolynomringElement):
 
     n = [int(f.grad / p) for p in _polynom_primes(f.grad)]
 
+    if isinstance(f.basisring, PolynomRestklassenring):
+        q= f.basisring.modulus.basisring.modulus ** f.basisring.modulus.grad
+    else:
+        q=f.basisring.modulus
+    
     for i in range(0, len(n)):
-        h = (((var ** f.basisring.modulus) ** n[i]) - var)
+        h = (((var ** q) ** n[i]) - var)
         g, _, _ = Polynomring.ExtGGT(f, h.wert, False)
         if g.grad != 0:
             return False
 
-    g = (((var ** f.basisring.modulus) ** f.grad) - var)
+    g = (((var ** q) ** f.grad) - var)
     return True
 
 
