@@ -6,6 +6,7 @@ from tocas import Restklassenring, Polynomring, PolynomringElement, Ring
 
 import polynom_extension
 import prime
+import restklassen_extension
 from polynom_restklassenring import PolynomRestklassenring
 
 
@@ -42,7 +43,7 @@ def EndlicherKoerper(p, n=None, prime_test=prime.miller_rabin, variablenname = "
 
     RX = Polynomring(R, variablenname = variablenname)
 
-    koeffizienten = [0] * (n + 1)
+    koeffizienten = [RX.basisring.null] * (n + 1)
 
     random.seed(0)
     while True:
@@ -50,11 +51,13 @@ def EndlicherKoerper(p, n=None, prime_test=prime.miller_rabin, variablenname = "
         '''    koeffizienten[i] += random.randint(0, R.modulus-1) '''
         '''    koeffizienten[i] %= R.modulus '''
         
-        koeffizienten[random.randint(0,n)] += 1
+        koeffizienten[random.randint(0,n)] += RX.basisring.eins
+        if isinstance(R, PolynomRestklassenring):
+            koeffizienten[random.randint(0,n)] += R.erzeuger
         
-        if koeffizienten[-1] == 0:
-            koeffizienten[-1] += 1
-
+        if koeffizienten[-1] == RX.basisring.null:
+            koeffizienten[-1] += RX.basisring.eins
+        
         f = PolynomringElement(koeffizienten, RX)
         if f.irreduzibel():
             return PolynomRestklassenring(f)
