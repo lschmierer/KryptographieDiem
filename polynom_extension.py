@@ -142,8 +142,10 @@ def _polynom_irreduzibel(f: PolynomringElement):
         if g.grad != 0:
             return False
 
-    g = (((var ** q) ** f.grad) - var)
-    return True
+    g = ((var ** (q ** f.grad)) - var)
+    if g==var.ring.null:
+        return True
+    return False
 
 
 PolynomringElement.__floordiv__ = _polynom_floordiv

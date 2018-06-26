@@ -1,5 +1,6 @@
 import math
 import random
+import decimal
 
 from tocas import Restklassenring, Polynomring, PolynomringElement, Ring
 
@@ -19,12 +20,11 @@ def EndlicherKoerper(p, n=None, prime_test=prime.miller_rabin, variablenname = "
     else:
         if not n:
             q = p
-
-            for i in range(int(math.sqrt(q))+1, 1, -1):
-                n = math.log(q, i)
-                if n.is_integer() and prime_test(i):
-                    n = int(n)
-                    p = i
+            for exp in range(2, int(math.log(q,2)) +1):
+                basis = decimal.Decimal(q) ** (decimal.Decimal(1)/decimal.Decimal(exp))
+                if basis % 1 == 0 and prime_test(int(basis)):
+                    p=int(basis)
+                    n=exp
                     break
             else:
                 if prime_test(p):
@@ -47,8 +47,13 @@ def EndlicherKoerper(p, n=None, prime_test=prime.miller_rabin, variablenname = "
 
     random.seed(0)
     while True:
-        koeffizienten[random.randint(0, n)] += 1
-
+        for i in range(0, n):
+            koeffizienten[i] += random.randint(0, R.modulus-1)
+            koeffizienten[i] %= R.modulus
+        
+        '''alte Version:'''
+        '''koeffizienten[random.randint(0,n)] += 1'''
+        
         if koeffizienten[-1] == 0:
             koeffizienten[-1] += 1
 

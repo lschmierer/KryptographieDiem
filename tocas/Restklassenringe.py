@@ -83,7 +83,7 @@ class RestklassenringElement(RingElement):
 
     def drucke_element(self):
 
-        return "[{0}]_{1}".format(self.wert,self.ring.modulus)
+        return "[{0}]".format(self.wert)
 
 
     def __eq__(self,other):
