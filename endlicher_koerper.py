@@ -10,21 +10,22 @@ import restklassen_extension
 from polynom_restklassenring import PolynomRestklassenring
 
 
-def EndlicherKoerper(p, n=None, prime_test=prime.miller_rabin, variablenname = "x"):
+def EndlicherKoerper(p, n=None, variablenname='x', prime_test=prime.miller_rabin):
     if isinstance(p, Ring):
         if p.ist_endlicher_koerper():
-             R=p
+            R = p
         else:
             raise TypeError(
                 'Erstes Argument muss ein endlicher Körper sein')
     else:
         if not n:
             q = p
-            for exp in range(2, int(math.log(q,2)) +1):
-                basis = decimal.Decimal(q) ** (decimal.Decimal(1)/decimal.Decimal(exp))
+            for exp in range(2, int(math.log(q, 2)) + 1):
+                basis = decimal.Decimal(
+                    q) ** (decimal.Decimal(1)/decimal.Decimal(exp))
                 if basis % 1 == 0 and prime_test(int(basis)):
-                    p=int(basis)
-                    n=exp
+                    p = int(basis)
+                    n = exp
                     break
             else:
                 if prime_test(p):
@@ -41,23 +42,17 @@ def EndlicherKoerper(p, n=None, prime_test=prime.miller_rabin, variablenname = "
     if n == 1:
         return R
 
-    RX = Polynomring(R, variablenname = variablenname)
+    RX = Polynomring(R, variablenname)
 
     koeffizienten = [RX.basisring.null] * (n + 1)
 
     random.seed(0)
     while True:
-        '''for i in range(0, n): '''
-        '''    koeffizienten[i] += random.randint(0, R.modulus-1) '''
-        '''    koeffizienten[i] %= R.modulus '''
-        
-        koeffizienten[random.randint(0,n)] += RX.basisring.eins
-        if isinstance(R, PolynomRestklassenring):
-            koeffizienten[random.randint(0,n)] += R.erzeuger
-        
+        koeffizienten[random.randint(0, n)] = RX.basisring.random()
+
         if koeffizienten[-1] == RX.basisring.null:
             koeffizienten[-1] += RX.basisring.eins
-        
+
         f = PolynomringElement(koeffizienten, RX)
-        if f.irreduzibel():
+        if f.irreduzibel(prime_test):
             return PolynomRestklassenring(f)

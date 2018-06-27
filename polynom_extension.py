@@ -2,6 +2,8 @@ import copy
 import math
 
 from tocas import Polynomring, PolynomringElement, Restklassenring
+
+import prime
 from polynom_restklassenring import PolynomRestklassenring, PolynomRestklassenringElement
 
 
@@ -114,13 +116,12 @@ Polynomring.ExtGGT = staticmethod(_polynom_ExtGGT)
 Polynomring.ext_ggt = _polynom_ext_ggt
 
 
-def _polynom_primes(n):
+def _primes(n, prime_test):
     divisors = [d for d in range(2, n+1) if n % d == 0]
-    return [d for d in divisors if
-            all(d % od != 0 for od in divisors if od != d)]
+    return [d for d in divisors if prime_test(d)]
 
 
-def _polynom_irreduzibel(f: PolynomringElement):
+def _polynom_irreduzibel(f: PolynomringElement, prime_test=prime.miller_rabin):
     if not f.basisring.ist_endlicher_koerper():
         raise TypeError('Bassisring muss endlicher Körper sein')
     if f.grad == 0:
@@ -129,13 +130,13 @@ def _polynom_irreduzibel(f: PolynomringElement):
     KX_f = PolynomRestklassenring(f)
     var = PolynomRestklassenringElement(f.ring.variable, KX_f)
 
-    n = [int(f.grad / p) for p in _polynom_primes(f.grad)]
+    n = [int(f.grad / p) for p in _primes(f.grad, prime_test)]
 
     if isinstance(f.basisring, PolynomRestklassenring):
-        q= f.basisring.modulus.basisring.modulus ** f.basisring.modulus.grad
+        q = f.basisring.modulus.basisring.modulus ** f.basisring.modulus.grad
     else:
-        q=f.basisring.modulus
-    
+        q = f.basisring.modulus
+
     for i in range(0, len(n)):
         h = (((var ** q) ** n[i]) - var)
         g, _, _ = Polynomring.ExtGGT(f, h.wert, False)
@@ -143,7 +144,7 @@ def _polynom_irreduzibel(f: PolynomringElement):
             return False
 
     g = ((var ** (q ** f.grad)) - var)
-    if g==var.ring.null:
+    if g == var.ring.null:
         return True
     return False
 
