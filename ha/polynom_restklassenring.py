@@ -2,7 +2,7 @@ import random
 
 from tocas import Ring, RingElement, Restklassenring, Polynomring, PolynomringElement, RingTupel
 
-import polynom_extension
+import ha.polynom_extension
 
 
 class PolynomRestklassenring(Ring):

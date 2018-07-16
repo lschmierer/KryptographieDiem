@@ -1,6 +1,6 @@
 from tocas import Restklassenring
 
-import prime
+from ha import prime
 
 
 def _restklassenring_ist_endlicher_koerper(k, prime_test=prime.miller_rabin):

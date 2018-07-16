@@ -3,8 +3,7 @@ import math
 
 from tocas import Ganzzahlring, Polynomring, Restklassenring
 
-import polynom_extension
-from polynom_restklassenring import PolynomRestklassenring
+import ha.polynom_extension
 
 
 def miller_rabin(n, k=40):
@@ -70,6 +69,8 @@ def _phi(r):
 
 
 def aks(n):
+    from ha.polynom_restklassenring import PolynomRestklassenring
+
     if not isinstance(n, int):
         raise TypeError('Argumente nicht vom Typ int')
 

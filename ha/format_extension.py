@@ -1,6 +1,6 @@
 from tocas import Ganzzahlring, Restklassenring, RestklassenringElement, Polynomring, PolynomringElement
 
-from bruchzahlring import Bruchzahlring
+from ha.bruchzahlring import Bruchzahlring
 
 
 def ganzzahlring_str(self):

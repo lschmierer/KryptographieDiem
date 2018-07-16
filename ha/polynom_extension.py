@@ -3,9 +3,6 @@ import math
 
 from tocas import Polynomring, PolynomringElement, Restklassenring
 
-import prime
-from polynom_restklassenring import PolynomRestklassenring, PolynomRestklassenringElement
-
 
 def _polynomring_ExtGGT(a: PolynomringElement, b: PolynomringElement):
     if not (isinstance(a, PolynomringElement) and isinstance(b, PolynomringElement)):
@@ -121,7 +118,13 @@ def _primes(n, prime_test):
     return [d for d in divisors if prime_test(d)]
 
 
-def _polynom_irreduzibel(f: PolynomringElement, prime_test=prime.miller_rabin):
+def _polynom_irreduzibel(f: PolynomringElement, prime_test=None):
+    import ha.prime as prime
+    from ha.polynom_restklassenring import PolynomRestklassenring, PolynomRestklassenringElement
+
+    if not prime_test:
+        prime_test = prime.miller_rabin
+    
     if not f.basisring.ist_endlicher_koerper():
         raise TypeError('Bassisring muss endlicher Körper sein')
     if f.grad == 0:

@@ -4,10 +4,10 @@ import decimal
 
 from tocas import Restklassenring, Polynomring, PolynomringElement, Ring
 
-import polynom_extension
-import prime
-import restklassen_extension
-from polynom_restklassenring import PolynomRestklassenring
+import ha.polynom_extension
+import ha.restklassen_extension
+from ha import prime
+from ha.polynom_restklassenring import PolynomRestklassenring
 
 
 def EndlicherKoerper(p, n=None, variablenname='x', prime_test=prime.miller_rabin):
