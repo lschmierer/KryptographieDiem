@@ -1,4 +1,4 @@
-from tocas.AbstrakteRinge import Ring, RingElement
+from tocas.AbstrakteRinge import Ring, RingElement, ZweiAdisch
 
 import ha.polynom_extension
 import ha.restklassen_extension
@@ -98,9 +98,17 @@ class EdwardsKurvengruppenElement(GruppenElement):
     def __mul__(self, other):
         super().__mul__(other)
 
-        res = self
+        zweiadisch = ZweiAdisch(other)
 
-        for _ in range(other):
-            res += self
+        res = self.gruppe.neutral
+        for i in range(0, len(zweiadisch)-1):
+            if zweiadisch[i] == '1':
+                res = res + self
+            res = res + res
+
+        # Am Ende muss man noch einmal addieren, ohne zu multiplizieren.
+        if (len(zweiadisch) > 0
+                and zweiadisch[len(zweiadisch)-1] == '1'):
+            res = res + self
 
         return res
