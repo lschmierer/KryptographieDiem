@@ -1,5 +1,5 @@
 from tocas.AbstrakterAnfang import UnveraenderbaresObjekt
-from tocas.AbstrakteRinge import Ring, RingElement
+from tocas.AbstrakteRinge import Ring, RingElement, ZweiAdisch
 
 
 class WeierstrassKurvengruppe(UnveraenderbaresObjekt):
@@ -108,8 +108,8 @@ class WeierstrassKurvengruppenElement(UnveraenderbaresObjekt):
             else: 
                 return self.gruppe.neutral
                 
-        s = y1 - y2 / ( x1 - x2 )
-        newX = s**2 - x1 -x2
+        s = (y1 - y2) / ( x1 - x2 )
+        newX = (s**2) - x1 -x2
         return WeierstrassKurvengruppenElement( newX,
             s*(x1 - newX) - y1,
             self.gruppe)
@@ -117,11 +117,19 @@ class WeierstrassKurvengruppenElement(UnveraenderbaresObjekt):
     def __rmul__(self, other):
         if type(other) != int:
             raise TypeError('Multiplikation nur mit Skalaren möglich')
-        res = self
+        zweiadisch = ZweiAdisch(other)
+        
+        res = self.gruppe.neutral
+        for i in range (0,len(zweiadisch)-1):
+            if zweiadisch[i] == '1':
+                res = res + self
+            res = res + res
 
-        for _ in range(other):
-            res += self
-
+        # Am Ende muss man noch einmal addieren, ohne zu multiplizieren.
+        if (len(zweiadisch) > 0 
+                and zweiadisch[len(zweiadisch)-1] == '1'):
+            res = res + self
+        
         return res
 
     def double(self):
@@ -129,7 +137,7 @@ class WeierstrassKurvengruppenElement(UnveraenderbaresObjekt):
             return self
         if self.y==self.y.ring.null:
             return self
-        s = (3 * self.x**2 + self.gruppe.a ) / (2* self.y)
+        s = (3 * (self.x**2) + self.gruppe.a ) / (2* self.y)
         newX = s**2 - 2 * self.x
         return WeierstrassKurvengruppenElement( newX,
             s * (self.x - newX) - self.y,
