@@ -29,7 +29,7 @@ class Bruchzahlring(Ring):
 
 
 class BruchzahlringElement(RingElement):
-    """Rationalen Zahl"""
+    """Rationale Zahl"""
 
     def __init__(self, a, b, ring=None):
         if not (isinstance(a, int) and isinstance(b, int)):
@@ -47,6 +47,8 @@ class BruchzahlringElement(RingElement):
         if not ring:
             ring = Bruchzahlring()
         self.ring = ring
+
+        self._frier()
 
     def __str__(self):
         return '{} in {}'.format(self.drucke_element(), self.ring)

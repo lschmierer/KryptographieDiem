@@ -79,6 +79,8 @@ class PolynomRestklassenringElement(RingElement):
 
             self.wert = p % self.ring.modulus
 
+        self._frier()
+
     def __str__(self):
         return '{} in {}'.format(self.drucke_element(), self.ring)
 
