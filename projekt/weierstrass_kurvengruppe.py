@@ -1,8 +1,13 @@
 from tocas.AbstrakterAnfang import UnveraenderbaresObjekt
 from tocas.AbstrakteRinge import Ring, RingElement, ZweiAdisch
 
+import ha.polynom_extension
+import ha.restklassen_extension
 
-class WeierstrassKurvengruppe(UnveraenderbaresObjekt):
+from projekt.abstrakte_gruppe import Gruppe, GruppenElement
+
+
+class WeierstrassKurvengruppe(Gruppe):
     """Ring der eliptischen Kurven in (kurzer) Weierstrass Darstellung"""
 
     def __init__(self, ring: Ring, a: RingElement, b: RingElement):
@@ -21,7 +26,8 @@ class WeierstrassKurvengruppe(UnveraenderbaresObjekt):
         self.a = a
         self.b = b
 
-        self.neutral = WeierstrassKurvengruppenElement(ring.eins, ring.eins, self, isPointAtInfinity=True)
+        self.neutral = WeierstrassKurvengruppenElement(
+            ring.eins, ring.eins, self, isPointAtInfinity=True)
 
         self._frier()
 
@@ -40,11 +46,11 @@ class WeierstrassKurvengruppe(UnveraenderbaresObjekt):
                 'Elemente sind nicht im Basisring {}'.format(self.basisring))
         return WeierstrassKurvengruppenElement(x, y, self)
 
-    def ist_endlicher_koerper(self):
-        return False
+    def ist_endlich(self):
+        return self.basisring.ist_endlicher_koerper()
 
 
-class WeierstrassKurvengruppenElement(UnveraenderbaresObjekt):
+class WeierstrassKurvengruppenElement(GruppenElement):
     """Punkt auf einer elliptischen Kurve in (kurzer) Weierstrass Darstellung."""
 
     def __init__(self, x: RingElement, y: RingElement, gruppe: WeierstrassKurvengruppe, isPointAtInfinity=False):
@@ -95,50 +101,50 @@ class WeierstrassKurvengruppenElement(UnveraenderbaresObjekt):
 
         if self.isPointAtInfinity:
             return other
-        
+
         if other.isPointAtInfinity:
             return self
-            
+
         x1, y1 = self.x, self.y
         x2, y2 = other.x, other.y
 
         if x1 == x2:
-            if y1==y2:
+            if y1 == y2:
                 return self.double()
-            else: 
+            else:
                 return self.gruppe.neutral
-                
-        s = (y1 - y2) / ( x1 - x2 )
-        newX = (s**2) - x1 -x2
-        return WeierstrassKurvengruppenElement( newX,
-            s*(x1 - newX) - y1,
-            self.gruppe)
-                            
-    def __rmul__(self, other):
-        if type(other) != int:
-            raise TypeError('Multiplikation nur mit Skalaren möglich')
+
+        s = (y1 - y2) / (x1 - x2)
+        newX = (s**2) - x1 - x2
+        return WeierstrassKurvengruppenElement(newX,
+                                               s*(x1 - newX) - y1,
+                                               self.gruppe)
+
+    def __mul__(self, other):
+        super().__mul__(other)
+
         zweiadisch = ZweiAdisch(other)
-        
+
         res = self.gruppe.neutral
-        for i in range (0,len(zweiadisch)-1):
+        for i in range(0, len(zweiadisch)-1):
             if zweiadisch[i] == '1':
                 res = res + self
             res = res + res
 
         # Am Ende muss man noch einmal addieren, ohne zu multiplizieren.
-        if (len(zweiadisch) > 0 
+        if (len(zweiadisch) > 0
                 and zweiadisch[len(zweiadisch)-1] == '1'):
             res = res + self
-        
+
         return res
 
     def double(self):
         if self.isPointAtInfinity:
             return self
-        if self.y==self.y.ring.null:
+        if self.y == self.y.ring.null:
             return self
-        s = (3 * (self.x**2) + self.gruppe.a ) / (2* self.y)
+        s = (3 * (self.x**2) + self.gruppe.a) / (2 * self.y)
         newX = s**2 - 2 * self.x
-        return WeierstrassKurvengruppenElement( newX,
-            s * (self.x - newX) - self.y,
-            self.gruppe )
+        return WeierstrassKurvengruppenElement(newX,
+                                               s * (self.x - newX) - self.y,
+                                               self.gruppe)

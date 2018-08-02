@@ -77,4 +77,4 @@ class GruppenElement(UnveraenderbaresObjekt):
             raise TypeError('Multiplikation nur mit Skalaren möglich.')
 
     def __rmul__(self, other):
-        self.__mul__(other)
+        return self.__mul__(other)
