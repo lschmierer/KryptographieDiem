@@ -1,8 +1,12 @@
-from tocas.AbstrakterAnfang import UnveraenderbaresObjekt
 from tocas.AbstrakteRinge import Ring, RingElement
 
+import ha.polynom_extension
+import ha.restklassen_extension
 
-class EdwardsKurvengruppe(UnveraenderbaresObjekt):
+from projekt.abstrakte_gruppe import Gruppe, GruppenElement
+
+
+class EdwardsKurvengruppe(Gruppe):
     """Ring der eliptischen Kurven in Edwards Darstellung"""
 
     def __init__(self, ring: Ring, d: RingElement):
@@ -35,11 +39,11 @@ class EdwardsKurvengruppe(UnveraenderbaresObjekt):
                 'Elemente sind nicht im Basisring {}'.format(self.basisring))
         return EdwardsKurvengruppenElement(x, y, self)
 
-    def ist_endlicher_koerper(self):
-        return False
+    def ist_endlich(self):
+        return self.basisring.ist_endlicher_koerper()
 
 
-class EdwardsKurvengruppenElement(UnveraenderbaresObjekt):
+class EdwardsKurvengruppenElement(GruppenElement):
     """Punkt auf einer elliptischen Kurve in Edwards Darstellung."""
 
     def __init__(self, x: RingElement, y: RingElement, gruppe: EdwardsKurvengruppe):
@@ -69,9 +73,7 @@ class EdwardsKurvengruppenElement(UnveraenderbaresObjekt):
         return self.drucke_element()
 
     def __eq__(self, other):
-        if type(self) != type(other):
-            return False
-        if self.gruppe != other.gruppe:
+        if not super().__eq__():
             return False
         return self.x == other.x and self.y == other.y
 
@@ -93,9 +95,8 @@ class EdwardsKurvengruppenElement(UnveraenderbaresObjekt):
                                    self.gruppe.d * x1 * x2 * y1 * y2),
             (y1 * y2 + x1 * x2) / (self.gruppe.basisring.eins - self.gruppe.d * x1 * x2 * y1 * y2), self.gruppe)
 
-    def __rmul__(self, other):
-        if type(other) != int:
-            raise TypeError('Multiplikation nur mit Skalaren möglich')
+    def __mul__(self, other):
+        super().__mul__(other)
 
         res = self
 
