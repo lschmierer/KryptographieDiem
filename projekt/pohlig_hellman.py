@@ -1,6 +1,9 @@
 from tocas.AbstrakteRinge import RingElement, Ganzzahlring
 from tocas.Restklassenringe import Restklassenring
 
+import ha.polynom_extension
+import ha.restklassen_extension
+
 from projekt.abstrakte_gruppen import AdditiveGruppenElement
 
 
@@ -18,6 +21,9 @@ def pohlig_hellman(g, h, l):
         if g.ring != h.ring:
             raise ValueError('g und h sind nicht im selben Ring')
 
+        if not g.ring.ist_endlicher_koerper():
+            raise ValueError('RingElemente nicht aus endlichen Körper')
+
         def mult(a, b):
             return a * b
 
@@ -33,6 +39,9 @@ def pohlig_hellman(g, h, l):
                 'Parameter h ist nicht vom selben Typ wie Parameter g')
         if g.gruppe != h.gruppe:
             raise ValueError('g und h sind nicht zur selben Gruppe')
+
+        if not g.gruppe.ist_endlich():
+            raise ValueError('Elemente nicht aus endlicher Gruppe')
 
         def mult(a, b):
             return a + b
