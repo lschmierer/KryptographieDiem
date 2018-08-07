@@ -7,7 +7,44 @@ import ha.restklassen_extension
 from projekt.abstrakte_gruppen import AdditiveGruppenElement
 
 
-def pohlig_hellman(g, h, l):
+def exhaustive_search(g, h):
+    """Simple erschöpfende Suche nach dem diskreten Logarithmus h = g ^ a."""
+
+    if isinstance(g, RingElement):
+        if not isinstance(h, RingElement):
+            raise TypeError(
+                'Parameter h ist nicht vom selben Typ wie Parameter g')
+        if g.ring != h.ring:
+            raise ValueError('g und h sind nicht im selben Ring')
+
+        def mult(a, b):
+            return a * b
+
+    elif isinstance(g, AdditiveGruppenElement):
+        if not isinstance(h, AdditiveGruppenElement):
+            raise TypeError(
+                'Parameter h ist nicht vom selben Typ wie Parameter g')
+        if g.gruppe != h.gruppe:
+            raise ValueError('g und h sind nicht zur selben Gruppe')
+
+        def mult(a, b):
+            return a + b
+
+    else:
+        raise TypeError(
+            'Parameter sind nicht vom Typ RingElement oder AdditiveGruppeElement')
+
+    b = 1
+    T = g
+
+    while h != T:
+        b = b + 1
+        T = mult(T, g)
+
+    return b
+
+
+def pohlig_hellman(g, h, l, dlp_search_alg=exhaustive_search):
     """Pohlig Hellman Algirthmus für das diskrete Logarithmus Problem.
 
     h = g ^ a
@@ -98,14 +135,7 @@ def pohlig_hellman(g, h, l):
             if h_0 != neutral(h):
                 g_0 = gNl[i][0]
 
-                b = 1
-                T = g_0
-
-                while h_0 != T:
-                    b = b + 1
-                    T = mult(T, g_0)
-
-                a[i] = a[i] + b * l[i][0] ** j
+                a[i] = a[i] + dlp_search_alg(g_0, h_0) * l[i][0] ** j
 
     a_res = 0
 
