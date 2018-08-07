@@ -122,6 +122,9 @@ class WeierstrassKurvengruppenElement(AdditiveGruppenElement):
     def __mul__(self, other):
         super().__mul__(other)
 
+        if (other < 0):
+            other=-other
+            self=-self
         zweiadisch = ZweiAdisch(other)
 
         res = self.gruppe.neutral
