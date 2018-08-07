@@ -48,6 +48,9 @@ class WeierstrassKurvengruppe(AdditiveGruppe):
     def ist_endlich(self):
         return self.basisring.ist_endlicher_koerper()
 
+    def __hash__(self):
+        return hash((self.basisring, self.a, self.b))
+
 
 class WeierstrassKurvengruppenElement(AdditiveGruppenElement):
     """Punkt auf einer elliptischen Kurve in (kurzer) Weierstrass Darstellung."""
@@ -123,8 +126,8 @@ class WeierstrassKurvengruppenElement(AdditiveGruppenElement):
         super().__mul__(other)
 
         if (other < 0):
-            other=-other
-            self=-self
+            other = -other
+            self = -self
         zweiadisch = ZweiAdisch(other)
 
         res = self.gruppe.neutral
@@ -150,3 +153,6 @@ class WeierstrassKurvengruppenElement(AdditiveGruppenElement):
         return WeierstrassKurvengruppenElement(newX,
                                                s * (self.x - newX) - self.y,
                                                self.gruppe)
+
+    def __hash__(self):
+        return hash((self.x, self.y, self.gruppe))

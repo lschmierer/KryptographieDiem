@@ -42,6 +42,9 @@ class EdwardsKurvengruppe(AdditiveGruppe):
     def ist_endlich(self):
         return self.basisring.ist_endlicher_koerper()
 
+    def __hash__(self):
+        return hash((self.basisring, self.d))
+
 
 class EdwardsKurvengruppenElement(AdditiveGruppenElement):
     """Punkt auf einer elliptischen Kurve in Edwards Darstellung."""
@@ -99,9 +102,9 @@ class EdwardsKurvengruppenElement(AdditiveGruppenElement):
         super().__mul__(other)
 
         if (other < 0):
-            other=-other
-            self=-self
-            
+            other = -other
+            self = -self
+
         zweiadisch = ZweiAdisch(other)
 
         res = self.gruppe.neutral
@@ -116,3 +119,6 @@ class EdwardsKurvengruppenElement(AdditiveGruppenElement):
             res = res + self
 
         return res
+
+    def __hash__(self):
+        return hash((self.x, self.y, self.gruppe))
