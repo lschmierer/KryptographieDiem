@@ -3,7 +3,7 @@ from abc import abstractmethod
 from tocas.AbstrakterAnfang import UnveraenderbaresObjekt
 
 
-class Gruppe(UnveraenderbaresObjekt):
+class AdditiveGruppe(UnveraenderbaresObjekt):
 
     def __eq__(self, other):
         if not type(self) == type(other):
@@ -22,7 +22,7 @@ class Gruppe(UnveraenderbaresObjekt):
         pass
 
 
-class GruppenElement(UnveraenderbaresObjekt):
+class AdditiveGruppenElement(UnveraenderbaresObjekt):
 
     @abstractmethod
     def __init__(self):

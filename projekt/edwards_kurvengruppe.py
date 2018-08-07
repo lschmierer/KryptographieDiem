@@ -3,10 +3,10 @@ from tocas.AbstrakteRinge import Ring, RingElement, ZweiAdisch
 import ha.polynom_extension
 import ha.restklassen_extension
 
-from projekt.abstrakte_gruppe import Gruppe, GruppenElement
+from projekt.abstrakte_gruppen import AdditiveGruppe, AdditiveGruppenElement
 
 
-class EdwardsKurvengruppe(Gruppe):
+class EdwardsKurvengruppe(AdditiveGruppe):
     """Ring der eliptischen Kurven in Edwards Darstellung"""
 
     def __init__(self, ring: Ring, d: RingElement):
@@ -43,7 +43,7 @@ class EdwardsKurvengruppe(Gruppe):
         return self.basisring.ist_endlicher_koerper()
 
 
-class EdwardsKurvengruppenElement(GruppenElement):
+class EdwardsKurvengruppenElement(AdditiveGruppenElement):
     """Punkt auf einer elliptischen Kurve in Edwards Darstellung."""
 
     def __init__(self, x: RingElement, y: RingElement, gruppe: EdwardsKurvengruppe):
@@ -98,6 +98,10 @@ class EdwardsKurvengruppenElement(GruppenElement):
     def __mul__(self, other):
         super().__mul__(other)
 
+        if (other < 0):
+            other=-other
+            self=-self
+            
         zweiadisch = ZweiAdisch(other)
 
         res = self.gruppe.neutral

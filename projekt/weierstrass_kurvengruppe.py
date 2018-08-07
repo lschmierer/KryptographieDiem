@@ -1,13 +1,12 @@
-from tocas.AbstrakterAnfang import UnveraenderbaresObjekt
 from tocas.AbstrakteRinge import Ring, RingElement, ZweiAdisch
 
 import ha.polynom_extension
 import ha.restklassen_extension
 
-from projekt.abstrakte_gruppe import Gruppe, GruppenElement
+from projekt.abstrakte_gruppen import AdditiveGruppe, AdditiveGruppenElement
 
 
-class WeierstrassKurvengruppe(Gruppe):
+class WeierstrassKurvengruppe(AdditiveGruppe):
     """Ring der eliptischen Kurven in (kurzer) Weierstrass Darstellung"""
 
     def __init__(self, ring: Ring, a: RingElement, b: RingElement):
@@ -50,7 +49,7 @@ class WeierstrassKurvengruppe(Gruppe):
         return self.basisring.ist_endlicher_koerper()
 
 
-class WeierstrassKurvengruppenElement(GruppenElement):
+class WeierstrassKurvengruppenElement(AdditiveGruppenElement):
     """Punkt auf einer elliptischen Kurve in (kurzer) Weierstrass Darstellung."""
 
     def __init__(self, x: RingElement, y: RingElement, gruppe: WeierstrassKurvengruppe, isPointAtInfinity=False):
@@ -123,6 +122,9 @@ class WeierstrassKurvengruppenElement(GruppenElement):
     def __mul__(self, other):
         super().__mul__(other)
 
+        if (other < 0):
+            other=-other
+            self=-self
         zweiadisch = ZweiAdisch(other)
 
         res = self.gruppe.neutral
