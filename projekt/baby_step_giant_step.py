@@ -13,41 +13,41 @@ from projekt.weierstrass_kurvengruppe import WeierstrassKurvengruppenElement
 from projekt.edwards_kurvengruppe import EdwardsKurvengruppenElement
 
 
-def _hash_RingTupel(self):
+def _ring_tupel_hash(self):
     return hash((self.laenge, tuple(self.koeffizienten)))
 
 
-def _hash_Restklassenring(self):
+def _restklassenring_hash(self):
     return hash(self.modulus)
 
 
-def _hash_RestklassenringElement(self):
+def _restklassenring_element_hash(self):
     return hash((self.wert, self.ring))
 
 
-def _hash_Polynomring(self):
+def _polynomring_hash(self):
     return hash(self.basisring)
 
 
-def _hash_PolynomringElement(self):
+def _polynomring_element_hash(self):
     return hash((self.koeffizienten, self.ring))
 
 
-def _hash_PolynomRestklassenring(self):
+def _polynom_restklassenring_hash(self):
     return hash(self.modulus)
 
 
-def _hash_PolynomRestklassenringElement(self):
+def _polynom_restklassenring_element_hash(self):
     return hash((self.wert, self.ring))
 
 
-RingTupel.__hash__ = _hash_RingTupel
-Restklassenring.__hash__ = _hash_Restklassenring
-RestklassenringElement.__hash__ = _hash_RestklassenringElement
-Polynomring.__hash__ = _hash_Polynomring
-PolynomringElement.__hash__ = _hash_PolynomringElement
-PolynomRestklassenring.__hash__ = _hash_PolynomRestklassenring
-PolynomRestklassenringElement.__hash__ = _hash_PolynomRestklassenringElement
+RingTupel.__hash__ = _ring_tupel_hash
+Restklassenring.__hash__ = _restklassenring_hash
+RestklassenringElement.__hash__ = _restklassenring_element_hash
+Polynomring.__hash__ = _polynomring_hash
+PolynomringElement.__hash__ = _polynomring_element_hash
+PolynomRestklassenring.__hash__ = _polynom_restklassenring_hash
+PolynomRestklassenringElement.__hash__ = _polynom_restklassenring_element_hash
 
 
 def baby_step_giant_step(g, h, r: int):
