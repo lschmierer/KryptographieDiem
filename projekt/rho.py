@@ -40,8 +40,8 @@ PolynomringElement.zwei_adisch = _polynomring_element_zwei_adisch
 PolynomRestklassenringElement.zwei_adisch = _polynom_restklassenring_element_zwei_adisch
 
 
-def g_vorberechnen(g, h, r, n_s):
-    """Werte für g_j vorberechnen um die walk Funktion zu beschleunigen.
+def generiere_original_walk(g, h, r, n_s):
+    """Gibt eine walk Funktion zurück
 
     (Gleiche Werte müssen nicht mehrfach neu berechnet werden.)
     """
@@ -86,71 +86,49 @@ def g_vorberechnen(g, h, r, n_s):
 
         g_pre.append(mult(exp(g, u), exp(h, v)))
 
-    return g_pre
+    def walk(x, a: RestklassenringElement, b: RestklassenringElement):
+        """Die ursprüngliche (originale) Walk Funktion von Pollard.
 
-
-def original_walk(x, a: RestklassenringElement, b: RestklassenringElement, g_pre, n_s: int):
-    """Die ursprüngliche (originale) Walk Funktion von Pollard.
-
-    Parameter g_pre ist eine Liste von vorberechneten Werten, die
-    mit der Funktion g_vorberechnen vorberechnet werden muss.
-    """
-    if isinstance(x, RingElement):
-        def mult(a, b):
-            return a * b
-
-        def exp(a, b):
-            return a ** b
-
-    elif isinstance(x, AdditiveGruppenElement):
-        def mult(a, b):
-            return a + b
-
-        def exp(a, b):
-            return a * b
-
-    else:
-        raise TypeError(
-            'Parameter x ist nicht vom Typ RingElement oder AdditiveGruppeElement')
-
-    if not isinstance(a, RestklassenringElement):
-        raise TypeError(
-            'Parameter a ist nicht vom Typ  RestklassenringElement')
-    if not isinstance(b, RestklassenringElement):
-        raise TypeError(
-            'Parameter b ist nicht vom Typ  RestklassenringElement')
-    if a.ring != b.ring:
-        raise TypeError(
-            'Elemente a und b liegen nicht im selben Restklassenring')
-    if not isinstance(g_pre, list):
-        raise TypeError('Parameter g_pre ist keine Liste')
-    for g in g_pre:
-        if not isinstance(g, type(x)):
+        Parameter g_pre ist eine Liste von vorberechneten Werten, die
+        mit der Funktion g_vorberechnen vorberechnet werden muss.
+        """
+        if not isinstance(x, type(g)):
             raise TypeError(
-                'Element in Liste g_pre nicht vom selben Type wie Parameter x')
-    if not isinstance(n_s, int):
-        raise TypeError('Parameter n_s ist nicht vom Typ  int')
+                'Parameter x ist nicht vom selben Typ wie g')
+        if not isinstance(a, RestklassenringElement):
+            raise TypeError(
+                'Parameter a ist nicht vom Typ  RestklassenringElement')
+        if not isinstance(b, RestklassenringElement):
+            raise TypeError(
+                'Parameter b ist nicht vom Typ  RestklassenringElement')
+        if a.ring != b.ring:
+            raise TypeError(
+                'Elemente a und b liegen nicht im selben Restklassenring')
+        if not isinstance(n_s, int):
+            raise TypeError('Parameter n_s ist nicht vom Typ  int')
 
-    S_x = x.zwei_adisch()[0] % n_s
+        S_x = x.zwei_adisch()[0] % n_s
 
-    # gleiche pseudo Zufallswerte wie in Funktion g_vorberechnen
-    random.seed(S_x)
-    u = a.ring.element(random.randrange(0, a.ring.modulus))
-    v = a.ring.element(random.randrange(0, a.ring.modulus))
+        # gleiche pseudo Zufallswerte wie in Funktion g_vorberechnen
+        random.seed(S_x)
+        u = a.ring.element(random.randrange(0, a.ring.modulus))
+        v = a.ring.element(random.randrange(0, a.ring.modulus))
 
-    if S_x == 0:
-        a = 2 * a
-        b = 2 * b
-        x = exp(x, 2)
-    else:
-        a = a + u
-        b = b + v
-        x = mult(x, g_pre[S_x])
+        if S_x == 0:
+            a = 2 * a
+            b = 2 * b
+            x = exp(x, 2)
+        else:
+            a = a + u
+            b = b + v
+            x = mult(x, g_pre[S_x])
 
-    return (x, a, b)
+        return (x, a, b)
+
+    return walk
 
 
-def floyd_cycle_rho(g, h, r: int, n_s=256):
+def floyd_cycle_rho(g, h, r: int, n_s=256, walk_generator=generiere_original_walk):
     """Pollards Rho Methode mittels Floyd Cycle Suche."""
     if isinstance(g, RingElement):
         if not isinstance(h, RingElement):
@@ -168,22 +146,17 @@ def floyd_cycle_rho(g, h, r: int, n_s=256):
 
     F_r = Restklassenring(r)
 
-    g_pre = g_vorberechnen(g, h, r, n_s)
-
-    i = 1
+    walk = walk_generator(g, h, r, n_s)
 
     x_1 = g
     a_1 = F_r.eins
     b_1 = F_r.null
 
-    (x_2, a_2, b_2) = original_walk(x_1, a_1, b_1, g_pre, n_s)
+    (x_2, a_2, b_2) = walk(x_1, a_1, b_1)
 
     while x_1 != x_2:
-        i += 1
-
-        (x_1, a_1, b_1) = original_walk(x_1, a_1, b_1, g_pre, n_s)
-        (x_2, a_2, b_2) = original_walk(
-            *original_walk(x_2, a_2, b_2, g_pre, n_s), g_pre, n_s)
+        (x_1, a_1, b_1) = walk(x_1, a_1, b_1)
+        (x_2, a_2, b_2) = walk(*walk(x_2, a_2, b_2))
 
     if b_1 == b_2:
         raise ValueError('h kann nicht aus g erzeugt werden')
