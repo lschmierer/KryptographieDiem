@@ -7,7 +7,7 @@ import ha.restklassen_extension
 from projekt.abstrakte_gruppen import AdditiveGruppenElement
 
 
-def exhaustive_search(g, h):
+def exhaustive_search(g, h, r):
     """Simple erschöpfende Suche nach dem diskreten Logarithmus h = g ^ a."""
 
     if isinstance(g, RingElement):
@@ -135,7 +135,8 @@ def pohlig_hellman(g, h, l, dlp_search_alg=exhaustive_search):
             if h_0 != neutral(h):
                 g_0 = gNl[i][0]
 
-                a[i] = a[i] + dlp_search_alg(g_0, h_0) * l[i][0] ** j
+                a[i] = a[i] + \
+                    dlp_search_alg(g_0, h_0, l[i][1] ** (j + 1)) * l[i][0] ** j
 
     a_res = 0
 
