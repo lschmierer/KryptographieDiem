@@ -146,10 +146,11 @@ class WeierstrassKurvengruppenElement(AdditiveGruppenElement):
     def double(self):
         if self.isPointAtInfinity:
             return self
-        if self.y == self.y.ring.null:
-            return self
+        if self.y == self.gruppe.basisring.null:
+            return WeierstrassKurvengruppenElement(self.gruppe.basisring.null, self.gruppe.basisring.eins, self.gruppe, isPointAtInfinity=True)
+
         s = (3 * (self.x**2) + self.gruppe.a) / (2 * self.y)
-        newX = s**2 - 2 * self.x
+        newX = (s**2) - (2 * self.x)
         return WeierstrassKurvengruppenElement(newX,
                                                s * (self.x - newX) - self.y,
                                                self.gruppe)

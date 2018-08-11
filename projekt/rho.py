@@ -40,10 +40,11 @@ PolynomringElement.zwei_adisch = _polynomring_element_zwei_adisch
 PolynomRestklassenringElement.zwei_adisch = _polynom_restklassenring_element_zwei_adisch
 
 
-def generiere_original_walk(g, h, r, n_s):
-    """Gibt eine walk Funktion zurück
+def generiere_original_walk(g, h, F_r, n_s):
+    """Generiert die ie ursprüngliche (originale) Walk Funktion von Pollard.
 
-    (Gleiche Werte müssen nicht mehrfach neu berechnet werden.)
+    Parameter g_pre ist eine Liste von vorberechneten Werten, die
+    mit der Funktion g_vorberechnen vorberechnet werden muss.
     """
     if isinstance(g, RingElement):
         if not isinstance(h, RingElement):
@@ -71,27 +72,21 @@ def generiere_original_walk(g, h, r, n_s):
         raise TypeError(
             'Parameter sind nicht vom Typ RingElement oder AdditiveGruppeElement')
 
-    if not isinstance(r, int):
-        raise TypeError('Parameter r ist nicht vom Typ  int')
+    if not isinstance(F_r, Restklassenring):
+        raise TypeError('Parameter F_r ist nicht vom Typ  Restklassenring')
     if not isinstance(n_s, int):
         raise TypeError('Parameter n_s ist nicht vom Typ  int')
 
-    g_pre = []
-    for j in range(n_s):
-        # deterministischer (psuedo) Zufallswert
-        # identischer Wert für identischen Index j
-        random.seed(j)
-        u = random.randrange(0, r)
-        v = random.randrange(0, r)
+    random.seed(0)
 
-        g_pre.append(mult(exp(g, u), exp(h, v)))
+    g_pre = []
+    for _ in range(n_s):
+        u = F_r.element(random.randrange(0, F_r.modulus))
+        v = F_r.element(random.randrange(0, F_r.modulus))
+
+        g_pre.append((u, v, mult(exp(g, u.wert), exp(h, v.wert))))
 
     def walk(x, a: RestklassenringElement, b: RestklassenringElement):
-        """Die ursprüngliche (originale) Walk Funktion von Pollard.
-
-        Parameter g_pre ist eine Liste von vorberechneten Werten, die
-        mit der Funktion g_vorberechnen vorberechnet werden muss.
-        """
         if not isinstance(x, type(g)):
             raise TypeError(
                 'Parameter x ist nicht vom selben Typ wie g')
@@ -109,10 +104,7 @@ def generiere_original_walk(g, h, r, n_s):
 
         S_x = x.zwei_adisch()[0] % n_s
 
-        # gleiche pseudo Zufallswerte wie in Funktion g_vorberechnen
-        random.seed(S_x)
-        u = a.ring.element(random.randrange(0, a.ring.modulus))
-        v = a.ring.element(random.randrange(0, a.ring.modulus))
+        (u, v, g_S_x) = g_pre[S_x]
 
         if S_x == 0:
             a = 2 * a
@@ -121,7 +113,7 @@ def generiere_original_walk(g, h, r, n_s):
         else:
             a = a + u
             b = b + v
-            x = mult(x, g_pre[S_x])
+            x = mult(x, g_S_x)
 
         return (x, a, b)
 
@@ -146,7 +138,7 @@ def floyd_cycle_rho(g, h, r: int, n_s=256, walk_generator=generiere_original_wal
 
     F_r = Restklassenring(r)
 
-    walk = walk_generator(g, h, r, n_s)
+    walk = walk_generator(g, h, F_r, n_s)
 
     x_1 = g
     a_1 = F_r.eins
