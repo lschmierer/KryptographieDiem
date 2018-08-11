@@ -7,6 +7,7 @@ from tocas.Polynomringe import PolynomringElement
 
 from ha.polynom_restklassenring import PolynomRestklassenringElement
 
+import projekt.hash_extension
 from projekt.abstrakte_gruppen import AdditiveGruppenElement
 
 
@@ -257,6 +258,71 @@ def brent_cycle_rho(g, h, r: int, walk_generator=generiere_original_walk, n_s=25
             step = 0
         (x_2, a_2, b_2) = walk(x_2, a_2, b_2)
         step += 1
+
+    if b_1 == b_2:
+        raise ValueError('h kann nicht aus g erzeugt werden')
+
+    return ((a_2 - a_1) * (b_1 - b_2) ** -1).wert
+
+
+def distinguished_rho(g, h, r: int, n_d: int, walk_generator=generiere_original_walk, n_s=256):
+    """Pollards Rho Methode mit Brent's optimierter Suche.
+    
+    Parameter n_d gibt die Anzahl an least-significant bits an
+    die null sein müssen, sodass ein Element als distinguished
+    Element makiert wird.
+    Da wir hier die Python hash Funktion nutzen (die sehr große
+    Ganzzahlen als Hash erzeugt), kann es sein, dass bei kleinen
+    Ringen kein distinguished Element gefunden wird.
+    Bei größeren Ringen sollte das statistisch zu vernachlässigen
+    sein."""
+    if isinstance(g, RingElement):
+        if not isinstance(h, RingElement):
+            raise TypeError(
+                'Parameter h ist nicht vom selben Typ wie Parameter g')
+
+        def mult(a, b):
+            return a * b
+
+        def exp(a, b):
+            return a ** b
+    elif isinstance(g, AdditiveGruppenElement):
+        if not isinstance(h, AdditiveGruppenElement):
+            raise TypeError(
+                'Parameter h ist nicht vom selben Typ wie Parameter g')
+
+        def mult(a, b):
+            return a + b
+
+        def exp(a, b):
+            return a * b
+    else:
+        raise TypeError(
+            'Parameter sind nicht vom Typ RingElement oder AdditiveGruppeElement')
+    if not isinstance(r, int):
+        raise TypeError('Parameter r ist nicht vom Typ  int')
+    if not isinstance(n_d, int):
+        raise TypeError('Parameter n_d ist nicht vom Typ  int')
+
+    F_r = Restklassenring(r)
+
+    walk = walk_generator(g, h, F_r, n_s)
+
+    distinguished_points = {}
+    while True:
+        a_1 = F_r.element(random.randrange(0, F_r.modulus))
+        b_1 = F_r.element(random.randrange(0, F_r.modulus))
+        x_1 = mult(exp(g, a_1.wert), exp(h, b_1.wert))
+
+        while hash(x_1) % (2 ** n_d) != 0:
+            (x_1, a_1, b_1) = walk(x_1, a_1, b_1)
+
+        if x_1 in distinguished_points:
+            break
+        else:
+            distinguished_points[x_1] = (a_1, b_1)
+
+    (a_2, b_2) = distinguished_points[x_1]
 
     if b_1 == b_2:
         raise ValueError('h kann nicht aus g erzeugt werden')
