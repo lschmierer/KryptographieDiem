@@ -74,6 +74,8 @@ def generiere_original_walk(g, h, F_r, n_s):
     if not isinstance(n_s, int):
         raise TypeError('Parameter n_s ist nicht vom Typ  int')
 
+    # So haben wir verlgeichbare (Pseudo)zufallszahlen
+    # Das hilft uns bei Vergleichbarkeit und Fehlersuche
     random.seed(0)
 
     g_pre = []
