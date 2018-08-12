@@ -180,6 +180,8 @@ def floyd_cycle_rho(g, h, r: int, walk_generator=generiere_original_walk, n_s=25
             'Parameter sind nicht vom Typ RingElement oder AdditiveGruppeElement')
     if not isinstance(r, int):
         raise TypeError('Parameter r ist nicht vom Typ  int')
+    if not isinstance(n_s, int):
+        raise TypeError('Parameter n_s ist nicht vom Typ  int')
 
     F_r = Restklassenring(r)
 
@@ -216,6 +218,8 @@ def brent_cycle_rho(g, h, r: int, walk_generator=generiere_original_walk, n_s=25
             'Parameter sind nicht vom Typ RingElement oder AdditiveGruppeElement')
     if not isinstance(r, int):
         raise TypeError('Parameter r ist nicht vom Typ  int')
+    if not isinstance(n_s, int):
+        raise TypeError('Parameter n_s ist nicht vom Typ  int')
 
     F_r = Restklassenring(r)
 
@@ -280,6 +284,8 @@ def distinguished_rho(g, h, r: int, n_d: int, walk_generator=generiere_original_
         raise TypeError('Parameter r ist nicht vom Typ  int')
     if not isinstance(n_d, int):
         raise TypeError('Parameter n_d ist nicht vom Typ  int')
+    if not isinstance(n_s, int):
+        raise TypeError('Parameter n_s ist nicht vom Typ  int')
 
     F_r = Restklassenring(r)
 
