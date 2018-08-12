@@ -80,9 +80,5 @@ class AdditiveGruppenElement(UnveraenderbaresObjekt):
         return self.__mul__(other)
 
     @abstractmethod
-    def zwei_adisch(self):
-        pass
-
-    @abstractmethod
     def __hash__(self):
         pass
