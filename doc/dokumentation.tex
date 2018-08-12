@@ -1,0 +1,161 @@
+\documentclass{scrartcl}
+\usepackage{selinput}
+\SelectInputMappings{
+  adieresis={ä},
+  germandbls={ß},
+}
+\usepackage[ngerman]{babel}
+
+\usepackage{csquotes}
+\usepackage{biblatex}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\usepackage{dirtree}
+
+\bibliography{quellen}
+
+\begin{document}
+
+\titlehead{
+  Universität Leipzig \\
+  Fakultät für Mathematik und Informatik \\
+  Institut für Informatik
+}
+\subject{Projekt Dokumentation}
+\title{Generische Methoden für das Faktorisieren und die Berechnung diskreter Logarithmen}
+%\subtitle{}
+\author{Schindler, Benjamin \and Schmierer, Lukas}
+\date{\today}
+\publishers{Dr. Claus Diem}
+\maketitle
+
+\tableofcontents
+
+\section{Projekt Organisation}
+\label{sec:organisation}
+
+\subsection{Verzeichnisstruktur}
+\label{sec:verzeichnisstruktur}
+
+drei Verzeichnisse
+
+\begin{itemize}
+\item \emph{tocas} enthählt den von bereitgestellte Python Code unverändert
+
+\item \emph{ha} (Abkürzung führ \emph{Hausaufgaben}) -> Python Code für die
+  Lösung der Hausaufgaben parallel zu der Vorlesungsreihe
+
+\item \emph{projekt}
+\end{itemize}
+
+tocas seperat, da so Änderungen von Diem einfach eingepflegt werden können
+Trennung von bereitgestelltem und eigenem Code
+
+im eigenen Teil Konvention: Module mit Suffix \emph{\_extension} fügen
+Funktionalität zu (in \emph{tocas} existierenden Klassen) hinzu
+
+Beispiel \emph{format\_extension} macht Ausgabe etwas schöner (z.B. \( \mathbb{Z} \) statt Z)
+
+ha und projekt Unteroderner tests für jupyter Notebook
+
+siehe Abbildung \ref{fig:verzeichnisstruktur}
+
+\begin{figure}
+  \fbox{
+    \begin{minipage}{0.9\textwidth}
+    \dirtree{%
+    .1 projekt\_generisches\_faktorisieren\_und\_dlp.
+    .2 tocas.
+    .3 ....
+    .2 ha.
+    .3 tests.
+    .4 ....
+    .3 format\_extension.py.
+    .3 ....
+    .2 projekt.
+    .3 tests.
+    .4 ....
+    .3 ....
+    .2 dokumentation.pdf.
+    }
+    \end{minipage}
+  }
+  \caption{Verzeichnisstruktur des Projekts}
+  \label{fig:verzeichnisstruktur}
+\end{figure}
+
+\subsection{Tests}
+\label{sec:tests}
+
+Tests als Jupyter Notebooks
+
+Name des Tests gibt Aufschluss über getestete Funktionalität
+
+\section{Implementierung}
+\label{sec:implementierung}
+
+\subsection{Elliptische Kurven}
+\label{sec:elliptische_kurven}
+
+\subsubsection{Edwards Darstellung}
+\label{sec:edwards_kurven}
+
+\subsubsection{Weierstraß Darstellung}
+\label{sec:weierstrass_kurven}
+
+\subsection{Pohlig Hellman Reduktion}
+\label{sec:pohlig_hellman}
+
+modular austauschbarer Algorithmus für die Untergruppen
+(als Funktionsparameter)
+
+\cite{Pohlig1978}
+
+\subsection{Baby Step Giant Step}
+\label{sec:baby_step_giant_step}
+
+\cite{Galbraith2012}
+
+\subsection{Rho Methode}
+\label{sec:rho}
+
+modular walk als parameter
+
+\cite{Galbraith2012}
+
+\subsubsection{Walk Funktion}
+\label{sec:walk_funktion}
+original und additiv
+
+\subsubsection{Floyd Cycle}
+\label{sec:floyd_cycle}
+
+% sqrt(πN/8)
+
+\subsubsection{Brent Cycle}
+\label{sec:brent_cycle}
+
+\cite{Brent1980}
+
+\subsubsection{Distinguished Points}
+\label{sec:distinguished_points}
+
+% sqrt(πr/2)
+
+\cite{VanOorschot1999}
+
+\subsection{Känguru Methode}
+\label{sec:kaenguru}
+
+\subsection{Vergleich}
+
+hier performance vergleichen mit diagrammen
+
+\subsection{Rho Methode für das Faktorisieren}
+\label{sec:rho_faktorisieren}
+
+\printbibliography[heading=bibintoc]
+
+\end{document}

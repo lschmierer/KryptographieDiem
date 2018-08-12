@@ -1,12 +1,13 @@
 PROJEKT_NAME = projekt_generisches_faktorisieren_und_dlp
+BUILD_DIR = build
 
-all: clean python zip
+all: clean python documentation zip
 
 clean:
 	rm -rf build
 
 python:
-	mkdir build
+	if [ ! -d "${BUILD_DIR}" ]; then mkdir ${BUILD_DIR}; fi
 	cp -r tocas build/tocas
 	rm -rf build/tocas/__pycache__
 	rm -rf build/tocas/tests/__pycache__
@@ -17,6 +18,11 @@ python:
 	rm -rf build/projekt/__pycache__
 	rm -rf build/projekt/tests/__pycache__
 
+documentation:
+	if [ ! -d "${BUILD_DIR}" ]; then mkdir ${BUILD_DIR}; fi
+	pdflatex --jobname=doc/dokumentation doc/dokumentation.tex
+	cp doc/dokumentation.pdf build/
+
 zip:
-	cd build; zip -r ${PROJEKT_NAME}.zip *
+	cd ${BUILD_DIR}; zip -r ${PROJEKT_NAME}.zip *
 	mv build/${PROJEKT_NAME}.zip ${PROJEKT_NAME}.zip
