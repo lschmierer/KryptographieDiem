@@ -5,6 +5,7 @@ all: clean python documentation zip
 
 clean:
 	rm -rf build
+	rm -f ${PROJEKT_NAME}.zip
 
 python:
 	if [ ! -d "${BUILD_DIR}" ]; then mkdir ${BUILD_DIR}; fi
