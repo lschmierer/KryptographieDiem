@@ -128,7 +128,7 @@ def kaenguru(g, h, r: int, b: int, w: int, n_d: int, n_s=256):
     while True:
         (x, x_exp) = walk(x, x_exp)
 
-        if hash(x) % (2 ** n_d) == 0:
+        if hash(x) & ((2 ** n_d) - 1) == 0:
             if x in distinguished_points:
                 break
             else:

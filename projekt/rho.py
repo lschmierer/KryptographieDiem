@@ -297,7 +297,7 @@ def distinguished_rho(g, h, r: int, n_d: int, walk_generator=generiere_original_
         b_1 = F_r.element(random.randrange(0, F_r.modulus))
         x_1 = mult(exp(g, a_1.wert), exp(h, b_1.wert))
 
-        while hash(x_1) % (2 ** n_d) != 0:
+        while hash(x_1) & ((2 ** n_d) - 1) == 0:
             (x_1, a_1, b_1) = walk(x_1, a_1, b_1)
 
         if x_1 in distinguished_points:
