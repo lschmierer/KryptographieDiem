@@ -22,6 +22,7 @@ python:
 documentation:
 	if [ ! -d "${BUILD_DIR}" ]; then mkdir ${BUILD_DIR}; fi
 	pdflatex --jobname=doc/dokumentation doc/dokumentation.tex
+	pdflatex --jobname=doc/dokumentation doc/dokumentation.tex
 	cp doc/dokumentation.pdf build/
 
 zip:

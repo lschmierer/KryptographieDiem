@@ -6,7 +6,9 @@
 }
 \usepackage[ngerman]{babel}
 
+
 \usepackage{csquotes}
+\MakeOuterQuote{"}
 \usepackage{biblatex}
 
 \usepackage{amsmath}
@@ -38,31 +40,20 @@
 
 \subsection{Verzeichnisstruktur}
 \label{sec:verzeichnisstruktur}
-
-drei Verzeichnisse
+Eine Schematische Darstellung der Verzeichnisstruktur ist in Abbildung \ref{fig:verzeichnisstruktur} zu sehen.\\
+In unserem Projekt befinden sich drei Verzeichnisse:
 
 \begin{itemize}
-\item \emph{tocas} enthählt den von bereitgestellte Python Code unverändert
+\item \emph{tocas} - Enthält den von Dr. Claus Diem bereitgestellten Python Code aus \cite{tocas} unverändert.
 
-\item \emph{ha} (Abkürzung führ \emph{Hausaufgaben}) -> Python Code für die
-  Lösung der Hausaufgaben parallel zu der Vorlesungsreihe
-
-\item \emph{projekt}
+\item \emph{ha} - Abkürzung für \emph{Hausaufgaben}. Enthält unsere Python Implementierung zur Lösung der Hausaufgaben aus der Vorlesung "Mathematische Grundlagen der Kryptographie mit öffentlichen Schlüsseln"
+\item \emph{projekt} - Enthält den im Rahmen unserer Projektarbeit geschriebenen Python Code zur Lösung des Diskreten Logarithmus Problems und zur Faktorisierung mithilfe generischer Methoden.
 \end{itemize}
+Da das \emph{tocas}-Projekt separat vorliegt, können dadurch zukünftige Änderungen und Updates in unser Projekt eingepflegt werden. Außerdem erreichen wir so eine strikte Trennung von bereitgestelltem und eigenem Code.\\
+Wenn zu bereits existierenden Klassen aus \emph{tocas} weitere Funktionalitäten hinzugefügt wurden, wurden diese in externe Module geschrieben, die den Datei-Suffix \emph{\_extension} tragen. So verschönert zum Beispiel das Modul \emph{'format\_extension.py'} die Standard-Ausgabe von Tocas (z.B. die Ausgabe für den Ring der ganzen Zahlen mit \( \mathbb{Z} \) statt Z). \\
+Innerhalb der Ordner \emph{ha} und \emph{project} befindet sich jeweils ein Unterordner \emph{tests}. In diesem sind verschiedene Tests geschrieben, die mit der Web-Applikation \emph{Jupyter Notebook} aus \cite{jupyterNotebook} ausgeführt werden können.
 
-tocas seperat, da so Änderungen von Diem einfach eingepflegt werden können
-Trennung von bereitgestelltem und eigenem Code
-
-im eigenen Teil Konvention: Module mit Suffix \emph{\_extension} fügen
-Funktionalität zu (in \emph{tocas} existierenden Klassen) hinzu
-
-Beispiel \emph{format\_extension} macht Ausgabe etwas schöner (z.B. \( \mathbb{Z} \) statt Z)
-
-ha und projekt Unteroderner tests für jupyter Notebook
-
-siehe Abbildung \ref{fig:verzeichnisstruktur}
-
-\begin{figure}
+\begin{figure}[h]
   \fbox{
     \begin{minipage}{0.9\textwidth}
     \dirtree{%
@@ -89,9 +80,24 @@ siehe Abbildung \ref{fig:verzeichnisstruktur}
 \subsection{Tests}
 \label{sec:tests}
 
-Tests als Jupyter Notebooks
+Zu jedem Teilgebiet unseres Projekts wurden zugehörige Tests als Jupyter Notebooks erstellt. Dabei gibt der Name des Tests an, welche Funktionalität getestet wird. Eine Liste aller Tests die wir im Rahmen unserer Projektarbeit geschrieben haben sind inklusive einer kurzen Beschreibung in Abbbildung \ref{fig:tests} zu sehen. [Anmerkung, Benny: Ich würde die Beschreibungen in der Abbildung dann halt noch jeweils mit 1-2 Sätzen erweitern, wenn du das so gut findest. Ansonsten könnten wir die Tests natürlich auch im nächsten Kapitel ausführlicher beschreiben]
 
-Name des Tests gibt Aufschluss über getestete Funktionalität
+\begin{figure}[h]
+ \centering
+ \renewcommand{\arraystretch}{1.5}
+ \begin{tabular}{r|p{8cm}}
+  \emph{test\_edwards\_kurven.ipynb} & Elliptische Kurven in Edwards-Darstellung  \\
+  \hline \emph{test\_weierstrass\_kurven.ipynb} & Elliptische Kurven in Weierstrass-Darstellung \\
+  \hline \emph{test\_pohlig\_hellman.ipynb} & Test des Pohlig-Hellman-Algorithmus zur Berechnung des diskreten Logarithmus Problems \\
+  \hline \emph{test\_baby\_step\_giant\_step.ipynb} & Test des Baby-Step-Giant-Step-Algorithmus Berechnung des diskreten Logarithmus Problems \\
+  \hline \emph{test\_rho.ipynb} & Test des Rho-Algorithmus in verschiedenen Varianten zur Berechnung des diskreten Logarithmus Problems \\
+  \hline \emph{test\_kaenguru.ipynb} & Test des Kängeru-Algorithmus (auch Lamda-Methode genannt) zur Berechnung des diskreten Logarithmus Problems \\
+ \end{tabular}
+ \renewcommand{\arraystretch}{1}
+ \caption{Liste aller Tests aus der Projektarbeit}
+ \label{fig:tests}
+\end{figure}
+
 
 \section{Implementierung}
 \label{sec:implementierung}
@@ -156,6 +162,7 @@ hier performance vergleichen mit diagrammen
 \subsection{Rho Methode für das Faktorisieren}
 \label{sec:rho_faktorisieren}
 
+\newpage
 \printbibliography[heading=bibintoc]
 
 \end{document}
