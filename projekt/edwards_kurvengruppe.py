@@ -120,5 +120,13 @@ class EdwardsKurvengruppenElement(AdditiveGruppenElement):
 
         return res
 
+    def zwei_adisch(self):
+        (zwei_adisch, laenge) = self.x.zwei_adisch()
+        zwei_adisch <<= laenge
+        (w, l) = self.y.zwei_adisch()
+        zwei_adisch += w
+        laenge += l
+        return (zwei_adisch, laenge)
+
     def __hash__(self):
         return hash((self.x, self.y, self.gruppe))

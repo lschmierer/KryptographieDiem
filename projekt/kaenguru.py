@@ -4,6 +4,7 @@ from tocas.AbstrakteRinge import RingElement
 from tocas.Restklassenringe import Restklassenring, RestklassenringElement
 
 import projekt.hash_extension
+import projekt.zwei_adisch_extension
 from projekt.abstrakte_gruppen import AdditiveGruppenElement
 
 
@@ -48,8 +49,6 @@ def _generiere_walk(g, h, F_r, w, n_s):
 
         g_pre.append((u, exp(g, u.wert)))
 
-    print(g_pre)
-
     def walk(x, a: RestklassenringElement):
         if not isinstance(x, type(g)):
             raise TypeError(
@@ -60,11 +59,7 @@ def _generiere_walk(g, h, F_r, w, n_s):
         if not isinstance(n_s, int):
             raise TypeError('Parameter n_s ist nicht vom Typ  int')
 
-        # Überprüfen ob n_s ein vielfaches von 2 ist um die Modulo Operation zu beschleunigen
-        if (n_s & (n_s - 1)) == 0:
-            S_x = hash(x) & (n_s - 1)
-        else:
-            S_x = hash(x) % n_s
+        S_x = x.zwei_adisch()[0] % n_s
 
         (u, g_S_x) = g_pre[S_x]
 
@@ -128,7 +123,8 @@ def kaenguru(g, h, r: int, b: int, w: int, n_d: int, n_s=256):
     while True:
         (x, x_exp) = walk(x, x_exp)
 
-        if hash(x) & ((2 ** n_d) - 1) == 0:
+        # schnelles modulo rechnen für Zweierpotenzen
+        if x.zwei_adisch()[0] & ((2 ** n_d) - 1) == 0:
             if x in distinguished_points:
                 break
             else:
@@ -138,7 +134,7 @@ def kaenguru(g, h, r: int, b: int, w: int, n_d: int, n_s=256):
         (x, y) = (y, x)
         (x_exp, y_exp) = (y_exp, x_exp)
 
-    y = distinguished_points[x]
+    y_exp = distinguished_points[x]
 
     a = x_exp - y_exp
     if exp(g, a.wert) != h:

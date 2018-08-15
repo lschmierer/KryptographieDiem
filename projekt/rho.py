@@ -1,11 +1,20 @@
 import math
 import random
 
-from tocas.AbstrakteRinge import RingElement
+from tocas.AbstrakteRinge import RingElement, RingTupel
 from tocas.Restklassenringe import Restklassenring, RestklassenringElement
+from tocas.Polynomringe import PolynomringElement
+
+from ha.polynom_restklassenring import PolynomRestklassenringElement
 
 import projekt.hash_extension
+import projekt.zwei_adisch_extension
 from projekt.abstrakte_gruppen import AdditiveGruppenElement
+
+
+def _randrange(n):
+    # Das ist schneller als random.randrange(0, n)
+    return int(random.random() * n)
 
 
 def generiere_original_walk(g, h, F_r, n_s):
@@ -47,8 +56,8 @@ def generiere_original_walk(g, h, F_r, n_s):
 
     g_pre = []
     for _ in range(n_s):
-        u = F_r.element(random.randrange(0, F_r.modulus))
-        v = F_r.element(random.randrange(0, F_r.modulus))
+        u = F_r.element(_randrange(F_r.modulus))
+        v = F_r.element(_randrange(F_r.modulus))
 
         g_pre.append((u, v, mult(exp(g, u.wert), exp(h, v.wert))))
 
@@ -68,11 +77,7 @@ def generiere_original_walk(g, h, F_r, n_s):
         if not isinstance(n_s, int):
             raise TypeError('Parameter n_s ist nicht vom Typ  int')
 
-        # Überprüfen ob n_s ein vielfaches von 2 ist um die Modulo Operation zu beschleunigen
-        if (n_s & (n_s - 1)) == 0:
-            S_x = hash(x) & (n_s - 1)
-        else:
-            S_x = hash(x) % n_s
+        S_x = x.zwei_adisch()[0] % n_s
 
         (u, v, g_S_x) = g_pre[S_x]
 
@@ -127,8 +132,8 @@ def generiere_additiv_walk(g, h, F_r, n_s):
 
     g_pre = []
     for _ in range(n_s):
-        u = F_r.element(random.randrange(0, F_r.modulus))
-        v = F_r.element(random.randrange(0, F_r.modulus))
+        u = F_r.element(_randrange(F_r.modulus))
+        v = F_r.element(_randrange(F_r.modulus))
 
         g_pre.append((u, v, mult(exp(g, u.wert), exp(h, v.wert))))
 
@@ -148,11 +153,7 @@ def generiere_additiv_walk(g, h, F_r, n_s):
         if not isinstance(n_s, int):
             raise TypeError('Parameter n_s ist nicht vom Typ  int')
 
-        # Überprüfen ob n_s ein vielfaches von 2 ist um die Modulo Operation zu beschleunigen
-        if (n_s & (n_s - 1)) == 0:
-            S_x = hash(x) & (n_s - 1)
-        else:
-            S_x = hash(x) % n_s
+        S_x = x.zwei_adisch()[0] % n_s
 
         (u, v, g_S_x) = g_pre[S_x]
 
@@ -247,7 +248,7 @@ def brent_cycle_rho(g, h, r: int, walk_generator=generiere_original_walk, n_s=25
 
 
 def distinguished_rho(g, h, r: int, n_d: int, walk_generator=generiere_original_walk, n_s=256):
-    """Pollards Rho Methode mit Brent's optimierter Suche.
+    """Pollards Rho Methode mit Distinguished Point Suche.
 
     Parameter n_d gibt die Anzahl an least-significant bits an
     die null sein müssen, sodass ein Element als distinguished
@@ -293,11 +294,11 @@ def distinguished_rho(g, h, r: int, n_d: int, walk_generator=generiere_original_
 
     distinguished_points = {}
     while True:
-        a_1 = F_r.element(random.randrange(0, F_r.modulus))
-        b_1 = F_r.element(random.randrange(0, F_r.modulus))
+        a_1 = F_r.element(_randrange(F_r.modulus))
+        b_1 = F_r.element(_randrange(F_r.modulus))
         x_1 = mult(exp(g, a_1.wert), exp(h, b_1.wert))
 
-        while hash(x_1) & ((2 ** n_d) - 1) == 0:
+        while x_1.zwei_adisch()[0] & ((2 ** n_d) - 1) == 0:
             (x_1, a_1, b_1) = walk(x_1, a_1, b_1)
 
         if x_1 in distinguished_points:
