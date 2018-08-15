@@ -6,7 +6,7 @@
 }
 \usepackage[ngerman]{babel}
 
-
+\usepackage[hidelinks]{hyperref}
 \usepackage{csquotes}
 \MakeOuterQuote{"}
 \usepackage{biblatex}
@@ -44,13 +44,13 @@ Eine Schematische Darstellung der Verzeichnisstruktur ist in Abbildung \ref{fig:
 In unserem Projekt befinden sich drei Verzeichnisse:
 
 \begin{itemize}
-\item \emph{tocas} - Enthält den von Dr. Claus Diem bereitgestellten Python Code aus \cite{tocas} unverändert.
+\item \emph{tocas} - Enthält den von Dr. Claus Diem bereitgestellten Python Code aus \emph{Tocas} \cite{tocas} unverändert.
 
 \item \emph{ha} - Abkürzung für \emph{Hausaufgaben}. Enthält unsere Python Implementierung zur Lösung der Hausaufgaben aus der Vorlesung "Mathematische Grundlagen der Kryptographie mit öffentlichen Schlüsseln"
 \item \emph{projekt} - Enthält den im Rahmen unserer Projektarbeit geschriebenen Python Code zur Lösung des Diskreten Logarithmus Problems und zur Faktorisierung mithilfe generischer Methoden.
 \end{itemize}
 Da das \emph{tocas}-Projekt separat vorliegt, können dadurch zukünftige Änderungen und Updates in unser Projekt eingepflegt werden. Außerdem erreichen wir so eine strikte Trennung von bereitgestelltem und eigenem Code.\\
-Wenn zu bereits existierenden Klassen aus \emph{tocas} weitere Funktionalitäten hinzugefügt wurden, wurden diese in externe Module geschrieben, die den Datei-Suffix \emph{\_extension} tragen. So verschönert zum Beispiel das Modul \emph{'format\_extension.py'} die Standard-Ausgabe von Tocas (z.B. die Ausgabe für den Ring der ganzen Zahlen mit \( \mathbb{Z} \) statt Z). \\
+Wenn zu bereits existierenden Klassen aus \emph{Tocas} weitere Funktionalitäten hinzugefügt wurden, wurden diese in externe Module geschrieben, die den Datei-Suffix \emph{\_extension} tragen. So verschönert zum Beispiel das Modul \emph{'format\_extension.py'} die Standard-Ausgabe von Tocas (z.B. die Ausgabe für den Ring der ganzen Zahlen mit \( \mathbb{Z} \) statt Z). \\
 Innerhalb der Ordner \emph{ha} und \emph{project} befindet sich jeweils ein Unterordner \emph{tests}. In diesem sind verschiedene Tests geschrieben, die mit der Web-Applikation \emph{Jupyter Notebook} aus \cite{jupyterNotebook} ausgeführt werden können.
 
 \begin{figure}[h]
@@ -161,6 +161,9 @@ hier performance vergleichen mit diagrammen
 
 \subsection{Rho Methode für das Faktorisieren}
 \label{sec:rho_faktorisieren}
+
+
+\cite{Pollard1975}
 
 \newpage
 \printbibliography[heading=bibintoc]
