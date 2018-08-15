@@ -11,11 +11,11 @@ from tocas import Restklassenring
 from projekt.rho import floyd_cycle_rho, brent_cycle_rho, distinguished_rho
 from projekt.kaenguru import kaenguru
 
-F = Restklassenring(104395301)
-g = F.element(287855)
-r = 61409  # = org(g) (ist prim)
+F = Restklassenring(32416190071)
+g = F.element(32316469506)
+r = 5778287 # = org(g) (ist prim)
 a = 50
-h = g ** 50 # = 34445515
+h = g ** 50 # = 2262438373
 
 
 def time_fn(fn, n=100):
@@ -43,7 +43,8 @@ def brent(n_s):
     assert brent_cycle_rho(g, h, r, n_s=n_s) == a
 
 def distinguished(n_d, n_s):
-    assert distinguished_rho(g, h, r, n_d, n_s=n_s) == a
+    #assert distinguished_rho(g, h, r, n_d, n_s=n_s) == a
+    distinguished_rho(g, h, r, n_d, n_s=n_s)
 
 def kaenguru_fn(n_d, n_s):
     assert kaenguru(g, h, r, 0, F.modulus, n_d, n_s=n_s) == a
@@ -54,6 +55,6 @@ if __name__ == '__main__':
     print('brent')
     print(*time_fn(lambda: brent(32), 10))
     print('distinguished')
-    print(*time_fn(lambda: distinguished(6, 32), 10))
+    print(*time_fn(lambda: distinguished(7, 32), 10))
     print('kaenguru')
-    print(*time_fn(lambda: kaenguru_fn(6, 32), 10))
+    print(*time_fn(lambda: kaenguru_fn(7, 32), 10))
