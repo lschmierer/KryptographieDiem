@@ -6,6 +6,7 @@
 }
 \usepackage[ngerman]{babel}
 
+\usepackage{graphicx}
 \usepackage[hidelinks]{hyperref}
 \usepackage{csquotes}
 \MakeOuterQuote{"}
@@ -83,48 +84,47 @@ Innerhalb der Ordner \emph{ha} und \emph{project} befindet sich jeweils ein Unte
 \subsection{Tests}
 \label{sec:tests}
 
-Zu jedem Teilgebiet unseres Projekts wurden zugehörige Tests als Jupyter Notebooks erstellt. Dabei gibt der Name des Tests an, welche Funktionalität getestet wird. Eine Liste aller Tests die wir im Rahmen unserer Projektarbeit geschrieben haben sind inklusive einer kurzen Beschreibung in Abbbildung \ref{fig:tests} zu sehen.
-\begin{figure}[h]
-	\centering
- 	\renewcommand{\arraystretch}{1.5}
- 	\begin{tabularx}{\linewidth}{X|p{8.8cm}}
-		\begin{minipage}{\linewidth}
-   			\emph{test\_edwards\_kurven.ipynb} \\
-   			\emph{test\_weierstrass\_kurven.ipynb}
-		\end{minipage} &
- 		\begin{minipage}{\linewidth}
-  			  \vspace{2pt} Testet grundlegende Funktionalität unserer Realisierung Elliptischer Kurven über endlichen Körpern in den Darstellungen nach Edwards und Weierstrass. \vspace{2pt}
- 		\end{minipage} \\
- 		\hline
-		\begin{minipage}{\linewidth}
-  			\emph{test\_pohlig\_hellman.ipynb}
-		\end{minipage} &
-		\begin{minipage}{\linewidth}
-		 	  \vspace{2pt} Testet das Verfahren nach Pohlig und Hellman zur Reduktion endlicher Gruppen in zyklische Untergruppen. 
-  			Dabei werden auch verschiedene Verfahren zur anschließenden Berechnung  des diskreten Logarithmus ausgeführt.   \vspace{2pt}
-		\end{minipage} \\
-		\hline
-  		\begin{minipage}{\linewidth}
-			\emph{test\_baby\_step\_giant\_step.ipynb} \\
-			\emph{test\_rho.ipynb}  \\
-			\emph{test\_kaenguru.ipynb} 
-		\end{minipage} &
-		\begin{minipage}{\linewidth}
-			\vspace{2pt} Testet die von uns implementierten Methoden zu Berechnung des diskreten Logarithmus. Neben dem Baby-Step-Giant-Step-Algorithmus und dem Känguru-Algorithmus (auch Lambda-Methode genannt) 
-			werden verschiedene Varianten des Rho-Algorithmus ausgeführt  \vspace{2pt}
-		\end{minipage} \\
-		\hline
-  		\begin{minipage}{\linewidth}
-			\emph{test\_rho\_faktorisieren.ipynb}
-		\end{minipage} &
-		\begin{minipage}{\linewidth}
-			  \vspace{2pt} Testet die Rho-Methode zur Faktorisierung ganzer Zahlen.   \vspace{2pt}
-		\end{minipage}
-	\end{tabularx}
-	\renewcommand{\arraystretch}{1}
-	\caption{Übersicht der Jupyter Notebook Tests unserer Projektarbeit}
-	\label{fig:tests}
-\end{figure}
+Zu jedem Teilgebiet unseres Projekts wurden zugehörige Tests als Jupyter Notebooks erstellt. Dabei gibt der Name des Tests an, welche Funktionalität getestet wird. Eine Liste aller Tests die wir im Rahmen unserer Projektarbeit geschrieben haben sind inklusive einer kurzen Beschreibung in Tabelle \ref{tab:tests} zu sehen.
+\begin{table}[h]
+\centering
+\begin{tabularx}{\linewidth}{X|p{8.8cm}}
+  \begin{minipage}{\linewidth}
+      \emph{test\_edwards\_kurven.ipynb} \\
+      \emph{test\_weierstrass\_kurven.ipynb}
+  \end{minipage} &
+  \begin{minipage}{\linewidth}
+        \vspace{2pt} Testet grundlegende Funktionalität unserer Realisierung Elliptischer Kurven über endlichen Körpern in den Darstellungen nach Edwards und Weierstrass. \vspace{2pt}
+  \end{minipage} \\
+  \hline
+  \begin{minipage}{\linewidth}
+      \emph{test\_pohlig\_hellman.ipynb}
+  \end{minipage} &
+  \begin{minipage}{\linewidth}
+      \vspace{2pt} Testet das Verfahren nach Pohlig und Hellman zur Reduktion endlicher Gruppen in zyklische Untergruppen. 
+      Dabei werden auch verschiedene Verfahren zur anschließenden Berechnung  des diskreten Logarithmus ausgeführt.   \vspace{2pt}
+  \end{minipage} \\
+  \hline
+    \begin{minipage}{\linewidth}
+    \emph{test\_baby\_step\_giant\_step.ipynb} \\
+    \emph{test\_rho.ipynb}  \\
+    \emph{test\_kaenguru.ipynb} 
+  \end{minipage} &
+  \begin{minipage}{\linewidth}
+    \vspace{2pt} Testet die von uns implementierten Methoden zu Berechnung des diskreten Logarithmus. Neben dem Baby-Step-Giant-Step-Algorithmus und dem Känguru-Algorithmus (auch Lambda-Methode genannt) 
+    werden verschiedene Varianten des Rho-Algorithmus ausgeführt  \vspace{2pt}
+  \end{minipage} \\
+  \hline
+    \begin{minipage}{\linewidth}
+    \emph{test\_rho\_faktorisieren.ipynb}
+  \end{minipage} &
+  \begin{minipage}{\linewidth}
+      \vspace{2pt} Testet die Rho-Methode zur Faktorisierung ganzer Zahlen.   \vspace{2pt}
+  \end{minipage}
+\end{tabularx}
+\renewcommand{\arraystretch}{1}
+\caption{Übersicht der Jupyter Notebook Tests unserer Projektarbeit}
+\label{tab:tests}
+\end{table}
 
 
 \section{Implementierung}
@@ -186,9 +186,50 @@ original und additiv
 \subsection{Känguru Methode}
 \label{sec:kaenguru}
 
-\subsection{Vergleich}
+\subsection{Vergleich zwischen Rho Methoden und Känguru Methode}
+Um die theoretischen Annahmen über die Laufzeit der verschiedenen Methoden
+zu validieren, wurden Laufzeitmessungen durchgeführt.
+Dabei wurde der diskrete Logarithmus \( a = 2778286 \) zu \( g = 3805914789 \)
+und \(h = g^a = 2262438373 \) in \( \mathbb{F}_{32416190071} \) gesucht.
+Jede Messung wurde 10 mal durchgeführt und die Messwerte anschließend gemittelt.
+Die Messergebnisse sind in Tabelle \ref{tab:benchmark} dargestellt und
+in Abbildung \ref{fig:benchmark} als Boxplot visualisiert.
 
-hier performance vergleichen mit diagrammen
+\begin{table}[h]
+  \centering
+  \begin{tabular}{l|c|c|c}
+    Methode             & min   & max   & avg   \\ \hline
+    Rho (Floyd)         & 1,020 & 2,608 & 1,897  \\ \hline
+    Rho (Brent)         & 0,838 & 3,525 & 1,880 \\ \hline
+    Rho (Distinguished) & 0,776 & 2,149 & 1,281 \\ \hline
+    Känguru             & 1,922 & 1,936 & 1,929
+    \end{tabular}
+  \caption{Laufzeit verschiedener Rho Methoden und der Känguru Methode in Sekunden}
+  \label{tab:benchmark}
+\end{table}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\textwidth]{../projekt/benchmark/plot.png}
+  \caption{Grafische Darstellung der Laufzeit verschiedener Rho Methoden und der Känguru Methode}
+  \label{fig:benchmark}
+\end{figure}
+
+Die Laufzeiten der verschiedenen Methoden verhalten sich gemäß der
+theoretischen Erwartungen aus \ref{sec:floyd_cycle},
+\ref{sec:brent_cycle}, \ref{sec:distinguished_points} und
+\ref{sec:kaenguru}.
+Die \emph{Rho} Methode ist der \emph{Kängeru} Methode überlegen,
+wobei die Zyklus Suche mit \emph{Distinguished Points} die durchschnittlich
+kürzeste Laufzeit aufweist.
+
+Es lässt sich beobachten, dass die Laufzeitmessungen der \emph{Känguru}
+Methode im Vergleich zu den anderen \emph{Rho} Methoden eine geringe Varianz
+aufweisen.
+Dies lässt sich damit erklären, dass die \emph{walk}-Funktion der
+\emph{Känguru} Methode in unserer Implementierung keine zufälligen
+Schrittgrößen nutzt und der Algorithmus somit komplett deterministisch
+ist.
 
 \subsection{Rho Methode für das Faktorisieren}
 \label{sec:rho_faktorisieren}
