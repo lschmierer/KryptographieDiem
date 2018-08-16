@@ -16,6 +16,7 @@
 \usepackage{amssymb}
 
 \usepackage{dirtree}
+\usepackage{tabularx}
 
 \bibliography{quellen}
 
@@ -37,7 +38,7 @@
 \tableofcontents
 
 \section{Problemstellung}
-Diese Projektarbeit, entstanden im Rahmen des Moduls "Mathematische Grundlagen der Kryptographie mit öffentlichen Schlüsseln", beschäftigt sich dem Lösen diskreter Logarithmen und dem Faktorisieren. Wir verwenden dazu sogenannte \emph{generische Methoden}. Diese verwenden ausschließlich allgemeine Gruppeneigenschaften ohne auf die Struktur der zugrundeliegenden Gruppe einzugehen. Es sind zwar asymptotisch schnellere Algorithmen zum lösen des diskreten Logarithmus und zur Faktorisierung bekannt \cite{diem_2011, Adleman_1979}[noch mehr Quellennachweise], jedoch können die hier vorgestellten Algorithmen auf allen endlichen Gruppen [Benny: zusätzlich zyklisch?] angewendet werden. In unseren Projekt arbeiten wir mit Restklassenkörpern, Polynomrestklassenkörpern und darauf aufbauende elliptische Kurven in unterschiedlichen Darstellungen. Die dazu benötigten Grundlagen sind in \cite{Galbraith2012} ausführlich beschrieben. 
+Diese Projektarbeit, entstanden im Rahmen des Moduls "Mathematische Grundlagen der Kryptographie mit öffentlichen Schlüsseln", beschäftigt sich dem Lösen diskreter Logarithmen und dem Faktorisieren. Wir verwenden dazu sogenannte \emph{generische Methoden}. Diese verwenden ausschließlich allgemeine Gruppeneigenschaften ohne auf die Struktur der zugrundeliegenden Gruppe einzugehen. Es sind zwar asymptotisch schnellere Algorithmen zum lösen des diskreten Logarithmus und zur Faktorisierung bekannt \cite{diem_2011, Adleman_1979}[noch mehr Quellennachweise], jedoch können die hier vorgestellten Algorithmen auf allen endlichen Gruppen [Benny: zusätzlich zyklisch?] angewendet werden. In unserem Projekt arbeiten wir mit Restklassenkörpern, Polynomrestklassenkörpern und darauf aufbauende elliptische Kurven in unterschiedlichen Darstellungen. Die dazu benötigten Grundlagen sind in \cite{Galbraith2012} ausführlich beschrieben. 
 \section{Projekt Organisation}
 \label{sec:organisation}
 
@@ -83,22 +84,46 @@ Innerhalb der Ordner \emph{ha} und \emph{project} befindet sich jeweils ein Unte
 \subsection{Tests}
 \label{sec:tests}
 
-Zu jedem Teilgebiet unseres Projekts wurden zugehörige Tests als Jupyter Notebooks erstellt.
-Dabei gibt der Name des Tests an, welche Funktionalität getestet wird.
-Eine Liste aller Tests die wir im Rahmen unserer Projektarbeit geschrieben haben sind
-inklusive einer kurzen Beschreibung in Tabelle \ref{tab:tests} zu sehen.
+Zu jedem Teilgebiet unseres Projekts wurden zugehörige Tests als Jupyter Notebooks erstellt. Dabei gibt der Name des Tests an, welche Funktionalität getestet wird. Eine Liste aller Tests die wir im Rahmen unserer Projektarbeit geschrieben haben sind inklusive einer kurzen Beschreibung in Tabelle \ref{tab:tests} zu sehen.
 \begin{table}[h]
-  \centering
-  \begin{tabular}{r|p{8cm}}
-    \emph{test\_edwards\_kurven.ipynb} & Elliptische Kurven in Edwards-Darstellung  \\
-    \hline \emph{test\_weierstrass\_kurven.ipynb} & Elliptische Kurven in Weierstrass-Darstellung \\
-    \hline \emph{test\_pohlig\_hellman.ipynb} & Test des Pohlig-Hellman-Algorithmus zur Berechnung des diskreten Logarithmus Problems \\
-    \hline \emph{test\_baby\_step\_giant\_step.ipynb} & Test des Baby-Step-Giant-Step-Algorithmus Berechnung des diskreten Logarithmus Problems \\
-    \hline \emph{test\_rho.ipynb} & Test des Rho-Algorithmus in verschiedenen Varianten zur Berechnung des diskreten Logarithmus Problems \\
-    \hline \emph{test\_kaenguru.ipynb} & Test des Kängeru-Algorithmus (auch Lamda-Methode genannt) zur Berechnung des diskreten Logarithmus Problems \\
-  \end{tabular}
-  \caption{Liste aller Tests aus der Projektarbeit}
-  \label{tab:tests}
+\centering
+\begin{tabularx}{\linewidth}{X|p{8.8cm}}
+  \begin{minipage}{\linewidth}
+      \emph{test\_edwards\_kurven.ipynb} \\
+      \emph{test\_weierstrass\_kurven.ipynb}
+  \end{minipage} &
+  \begin{minipage}{\linewidth}
+        \vspace{2pt} Testet grundlegende Funktionalität unserer Realisierung Elliptischer Kurven über endlichen Körpern in den Darstellungen nach Edwards und Weierstrass. \vspace{2pt}
+  \end{minipage} \\
+  \hline
+  \begin{minipage}{\linewidth}
+      \emph{test\_pohlig\_hellman.ipynb}
+  \end{minipage} &
+  \begin{minipage}{\linewidth}
+      \vspace{2pt} Testet das Verfahren nach Pohlig und Hellman zur Reduktion endlicher Gruppen in zyklische Untergruppen. 
+      Dabei werden auch verschiedene Verfahren zur anschließenden Berechnung  des diskreten Logarithmus ausgeführt.   \vspace{2pt}
+  \end{minipage} \\
+  \hline
+    \begin{minipage}{\linewidth}
+    \emph{test\_baby\_step\_giant\_step.ipynb} \\
+    \emph{test\_rho.ipynb}  \\
+    \emph{test\_kaenguru.ipynb} 
+  \end{minipage} &
+  \begin{minipage}{\linewidth}
+    \vspace{2pt} Testet die von uns implementierten Methoden zu Berechnung des diskreten Logarithmus. Neben dem Baby-Step-Giant-Step-Algorithmus und dem Känguru-Algorithmus (auch Lambda-Methode genannt) 
+    werden verschiedene Varianten des Rho-Algorithmus ausgeführt  \vspace{2pt}
+  \end{minipage} \\
+  \hline
+    \begin{minipage}{\linewidth}
+    \emph{test\_rho\_faktorisieren.ipynb}
+  \end{minipage} &
+  \begin{minipage}{\linewidth}
+      \vspace{2pt} Testet die Rho-Methode zur Faktorisierung ganzer Zahlen.   \vspace{2pt}
+  \end{minipage}
+\end{tabularx}
+\renewcommand{\arraystretch}{1}
+\caption{Übersicht der Jupyter Notebook Tests unserer Projektarbeit}
+\label{tab:tests}
 \end{table}
 
 
@@ -108,6 +133,9 @@ inklusive einer kurzen Beschreibung in Tabelle \ref{tab:tests} zu sehen.
 \subsection{Elliptische Kurven}
 \label{sec:elliptische_kurven}
 
+Um zu zeigen, dass unsere generischen Methoden auf verschiedenste Gruppen anwendbar sind. Mussten neben den bereits implementieren endlichen Körpern zusätzlich auch rlliptische Kurven über endliche Körper realisiert werden. 
+Die in \emph{abstrakte\_gruppen.py} eingeführten Klassen \emph{AdditiveGruppe} und \emph{AdditiveGruppenElement} dienen als Basisklassen unserer elliptischen Kurvengruppen.
+Anschließend haben wir uns 2 verschiedenen Darstellungen Elliptischer Kurven bedient, der Edwards-Darstellung und der kurzen Weierstraß-Darstellung. Diese werden in den nachfolgenden Kapitel vorgestellt.
 \subsubsection{Edwards Darstellung}
 \label{sec:edwards_kurven}
 
