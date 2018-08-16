@@ -51,7 +51,7 @@ def generiere_original_walk(g, h, F_r, n_s):
         raise TypeError('Parameter n_s ist nicht vom Typ  int')
 
     # Zum Debuggen und Vergleichbarkeit
-    random.seed(0)
+    # random.seed(0)
 
     g_pre = []
     for _ in range(n_s):
@@ -73,8 +73,6 @@ def generiere_original_walk(g, h, F_r, n_s):
         if a.ring != b.ring:
             raise TypeError(
                 'Elemente a und b liegen nicht im selben Restklassenring')
-        if not isinstance(n_s, int):
-            raise TypeError('Parameter n_s ist nicht vom Typ  int')
 
         S_x = x.zwei_adisch()[0] % n_s
 
@@ -127,7 +125,7 @@ def generiere_additiv_walk(g, h, F_r, n_s):
     if not isinstance(n_s, int):
         raise TypeError('Parameter n_s ist nicht vom Typ  int')
 
-    random.seed(0)
+    # random.seed(0)
 
     g_pre = []
     for _ in range(n_s):
@@ -149,8 +147,6 @@ def generiere_additiv_walk(g, h, F_r, n_s):
         if a.ring != b.ring:
             raise TypeError(
                 'Elemente a und b liegen nicht im selben Restklassenring')
-        if not isinstance(n_s, int):
-            raise TypeError('Parameter n_s ist nicht vom Typ  int')
 
         S_x = x.zwei_adisch()[0] % n_s
 

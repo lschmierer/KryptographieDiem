@@ -11,50 +11,51 @@ from tocas import Restklassenring
 from projekt.rho import floyd_cycle_rho, brent_cycle_rho, distinguished_rho
 from projekt.kaenguru import kaenguru
 
+
+ITERATIONS = 10
+
 F = Restklassenring(32416190071)
 g = F.element(32316469506)
-r = 5778287 # = org(g) (ist prim)
-a = 50
-h = g ** 50 # = 2262438373
+r = 5778287  # = org(g) (ist prim)
+a = 2778286
+h = g ** a  # = 3805914789
 
 
 def time_fn(fn, n=100):
-    min_time = math.inf
-    max_time = 0
-    avg_time = 0
+    times = []
 
     for _ in range(n):
         start = time.process_time()
         fn()
         elapsed = time.process_time() - start
 
-        min_time = min(min_time, elapsed)
-        max_time = max(max_time, elapsed)
-        avg_time += elapsed
+        times += [elapsed]
 
-    avg_time /= n
+    return times
 
-    return min_time, max_time, avg_time
 
 def floyd(n_s):
     assert floyd_cycle_rho(g, h, r, n_s=n_s) == a
 
+
 def brent(n_s):
     assert brent_cycle_rho(g, h, r, n_s=n_s) == a
 
+
 def distinguished(n_d, n_s):
-    #assert distinguished_rho(g, h, r, n_d, n_s=n_s) == a
-    distinguished_rho(g, h, r, n_d, n_s=n_s)
+    assert distinguished_rho(g, h, r, n_d, n_s=n_s) == a
+
 
 def kaenguru_fn(n_d, n_s):
-    assert kaenguru(g, h, r, 0, F.modulus, n_d, n_s=n_s) == a
+    assert kaenguru(g, h, r, 0, r, n_d, n_s=n_s) == a
+
 
 if __name__ == '__main__':
     print('floyd')
-    print(*time_fn(lambda: floyd(32), 10))
+    print(*time_fn(lambda: floyd(32), ITERATIONS))
     print('brent')
-    print(*time_fn(lambda: brent(32), 10))
+    print(*time_fn(lambda: brent(32), ITERATIONS))
     print('distinguished')
-    print(*time_fn(lambda: distinguished(7, 32), 10))
+    print(*time_fn(lambda: distinguished(8, 32), ITERATIONS))
     print('kaenguru')
-    print(*time_fn(lambda: kaenguru_fn(7, 32), 10))
+    print(*time_fn(lambda: kaenguru_fn(8, 32), ITERATIONS))

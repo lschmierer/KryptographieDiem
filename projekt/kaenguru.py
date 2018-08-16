@@ -56,8 +56,6 @@ def _generiere_walk(g, h, F_r, w, n_s):
         if not isinstance(a, RestklassenringElement):
             raise TypeError(
                 'Parameter a ist nicht vom Typ  RestklassenringElement')
-        if not isinstance(n_s, int):
-            raise TypeError('Parameter n_s ist nicht vom Typ  int')
 
         S_x = x.zwei_adisch()[0] % n_s
 
