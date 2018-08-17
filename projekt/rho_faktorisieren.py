@@ -1,6 +1,7 @@
 from tocas.AbstrakteRinge import Ganzzahlring
 from tocas.Restklassenringe import Restklassenring
 
+import projekt.zwei_adisch_extension
 
 def rho_faktorisieren(N, f=lambda x: x ** 2 + x.ring.element(1)):
     """Pollards Rho Methode zum Faktorisieren."""
