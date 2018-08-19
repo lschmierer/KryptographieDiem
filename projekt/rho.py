@@ -7,7 +7,6 @@ from tocas.Polynomringe import PolynomringElement
 
 from ha.polynom_restklassenring import PolynomRestklassenringElement
 
-import projekt.hash_extension
 import projekt.zwei_adisch_extension
 from projekt.abstrakte_gruppen import AdditiveGruppenElement
 
