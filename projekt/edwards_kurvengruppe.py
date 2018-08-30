@@ -13,7 +13,7 @@ class EdwardsKurvengruppe(AdditiveGruppe):
         if not isinstance(ring, Ring):
             raise TypeError('Parameter ring ist nicht vom Typ Ring')
         if not isinstance(d, RingElement):
-            raise TypeError('Parameter f ist nicht vom Typ RingElement')
+            raise TypeError('Parameter d ist nicht vom Typ RingElement')
         if d.ring != ring:
             raise ValueError('d ist nicht im Ring r')
 
@@ -96,7 +96,7 @@ class EdwardsKurvengruppenElement(AdditiveGruppenElement):
         return EdwardsKurvengruppenElement(
             (x1 * y2 + x2 * y1) / (self.gruppe.basisring.eins +
                                    self.gruppe.d * x1 * x2 * y1 * y2),
-            (y1 * y2 + x1 * x2) / (self.gruppe.basisring.eins - self.gruppe.d * x1 * x2 * y1 * y2), self.gruppe)
+            (y1 * y2 - x1 * x2) / (self.gruppe.basisring.eins - self.gruppe.d * x1 * x2 * y1 * y2), self.gruppe)
 
     def __mul__(self, other):
         super().__mul__(other)
