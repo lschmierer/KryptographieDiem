@@ -84,8 +84,8 @@ Innerhalb der Ordner \emph{ha} und \emph{project} befindet sich jeweils ein Unte
 \subsection{Tests}
 \label{sec:tests}
 
-Zu jedem Teilgebiet unseres Projekts wurden zugehörige Tests als Jupyter Notebooks erstellt. Dabei gibt der Name des Tests an, welche Funktionalität getestet wird. Eine Liste aller Tests die wir im Rahmen unserer Projektarbeit geschrieben haben sind inklusive einer kurzen Beschreibung in Tabelle \ref{tab:tests} zu sehen.
-\begin{table}[h]
+Zu jedem Teilgebiet wurden zugehörige Tests als Jupyter Notebooks erstellt. Dabei gibt der Name des Tests an, welche Funktionalität getestet wird. Eine Liste aller Tests die wir im Rahmen unserer Projektarbeit geschrieben haben sind inklusive einer kurzen Beschreibung in Tabelle \ref{tab:tests} zu sehen.
+\begin{table}[!ht]
 \centering
 \begin{tabularx}{\linewidth}{X|p{8.8cm}}
   \begin{minipage}{\linewidth}
@@ -133,18 +133,37 @@ Zu jedem Teilgebiet unseres Projekts wurden zugehörige Tests als Jupyter Notebo
 \subsection{Elliptische Kurven}
 \label{sec:elliptische_kurven}
 
-Um zu zeigen, dass unsere generischen Methoden auf verschiedenste Gruppen anwendbar sind, mussten neben den bereits implementieren endlichen Körpern zusätzlich auch rlliptische Kurven über endliche Körper realisiert werden. 
+Um zu zeigen, dass unsere generischen Methoden auf verschiedenste Gruppen anwendbar sind, mussten neben den bereits implementieren endlichen Körpern zusätzlich auch elliptische Kurven über endliche Körper realisiert werden. 
 Die in \emph{abstrakte\_gruppen.py} eingeführten Klassen \emph{AdditiveGruppe} und \emph{AdditiveGruppenElement} dienen als Basisklassen unserer elliptischen Kurvengruppen.
-Anschließend haben wir uns 2 verschiedenen Darstellungen Elliptischer Kurven bedient, der Edwards-Darstellung und der kurzen Weierstraß-Darstellung. Diese sind in den nachfolgenden Kapitel vorgestellt.
-\subsubsection{Edwards Darstellung}
+Anschließend haben wir uns 2 verschiedenen Darstellungen Elliptischer Kurven bedient, der Edwards-Darstellung und der kurzen Weierstraß-Darstellung. Diese sind beispielsweise in \cite{Galbraith2012} ausführlich beschrieben. In den nachfolgenden Kapiteln werden sie noch einmal kurz vorgestellt.
+
+\subsubsection{Edwards-Darstellung}
 \label{sec:edwards_kurven}
 
-\subsubsection{Weierstraß Darstellung}
-\label{sec:weierstrass_kurven}
 
+\subsubsection{kurze Weierstraß-Darstellung}
+\label{sec:weierstrass_kurven}
+Sei $\mathbb{F}_q$ ein endlicher Körper.
+Eine elliptische Kurve über $\mathbb{F}_q$ in kurzer Weierstraß Darstellung und affiner Schreibweise erfüllt folgende Formel:
+$$ y^2 = x^3 + ax +b$$
+mit den affinen Koordinaten $x,y \in \mathbb{F}_q$ und den Parametern $a, b \in \mathbb{F}_q$.
+Desweiteren gelten folgende Formeln: \vspace{5pt}\\
+Die Addition \ $(x_1,y_1)+(x_2,y_2)=(x_3,y_3)$\quad mit: \\
+\begin{align*}
+ %\begin{split}
+  &x_3=\frac{(y_1-y_2)^2}{(x_1-x_2)^2}-x_1-x_2
+  &y_3=\frac{(y_1-y_2)}{(x_1-x_2)}\cdot (x_1 - x_3) - y_1
+ %\end{split}
+\end{align*}\\
+das Verdoppeln \ $ 2(x_1,y_1)=(x_3,y_3) $\quad mit: \\
+\begin{align*} 
+  &x_3=\frac{(3x_1^2+a)^2}{4y_1^2}-2x_1
+  &y_3= \frac{3x_1^2+a}{2y_1} \cdot (x_1 - x_3) - y_1
+\end{align*}\\
+und die Negation: \ $-(x_1,x_2)=(x_1,-y_1) $ \vspace{5pt} \\
+Die obigen Berechnungsvorschriften wurden in der Klasse \emph{WeierstrassKurvengruppenElement} implementiert. Das neutrale Element der Gruppe ist der sogenannte \emph{Punkt im Unendlichen} der in affiner Schreibweise nicht dargestellt werden kann. Deshalb verwenden wir in unserer Implementierung des Gruppenelementes ein Attribut {\emph{isPointAtInfinity}}, welches angibt, ob es sich bei dem Punkt um das neutrale Element handelt. Bei jeder Addition und Verdopplung wird dieses Attribut abgefragt und die entsprechende Berechnung übersprungen.
 \subsection{Pohlig Hellman Reduktion}
 \label{sec:pohlig_hellman}
-
 modular austauschbarer Algorithmus für die Untergruppen
 (als Funktionsparameter)
 
