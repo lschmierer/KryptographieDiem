@@ -38,7 +38,7 @@
 \tableofcontents
 
 \section{Problemstellung}
-Diese Projektarbeit, entstanden im Rahmen des Moduls "Mathematische Grundlagen der Kryptographie mit öffentlichen Schlüsseln", beschäftigt sich dem Lösen diskreter Logarithmen und dem Faktorisieren. Wir verwenden dazu sogenannte \emph{generische Methoden}. Diese verwenden ausschließlich allgemeine Gruppeneigenschaften ohne auf die Struktur der zugrundeliegenden Gruppe einzugehen. Es sind zwar asymptotisch schnellere Algorithmen zum lösen des diskreten Logarithmus und zur Faktorisierung bekannt \cite{diem_2011, Adleman_1979}[noch mehr Quellennachweise], jedoch können die hier vorgestellten Algorithmen auf allen endlichen Gruppen [Benny: zusätzlich zyklisch?] angewendet werden. In unserem Projekt arbeiten wir mit Restklassenkörpern, Polynomrestklassenkörpern und darauf aufbauende elliptische Kurven in unterschiedlichen Darstellungen. Die dazu benötigten Grundlagen sind in \cite{Galbraith2012} ausführlich beschrieben. 
+Diese Projektarbeit, entstanden im Rahmen des Moduls "Mathematische Grundlagen der Kryptographie mit öffentlichen Schlüsseln", beschäftigt sich dem Lösen diskreter Logarithmen und dem Faktorisieren. Wir verwenden dazu sogenannte \emph{generische Methoden}. Diese verwenden ausschließlich allgemeine Gruppeneigenschaften ohne auf die Struktur der zugrundeliegenden Gruppe einzugehen. Es sind zwar asymptotisch schnellere Algorithmen zum lösen des diskreten Logarithmus und zur Faktorisierung bekannt \cite{diem_2011, Adleman_1979}[noch mehr Quellennachweise], jedoch können die hier vorgestellten Algorithmen auf allen endlichen zyklischen Gruppen angewendet werden. In unserem Projekt arbeiten wir mit Restklassenkörpern, Polynomrestklassenkörpern und darauf aufbauende elliptische Kurven in unterschiedlichen Darstellungen. Die dazu benötigten Grundlagen sind in \cite{Galbraith2012} ausführlich beschrieben. 
 \section{Projekt Organisation}
 \label{sec:organisation}
 
@@ -150,7 +150,8 @@ Die Addition \ $(x_1,y_1)+(x_2,y_2)=(x_3,y_3)$\quad mit: \\
   &y_3=\frac{y_1 y_2 - x_1 x_2}{1 - d x_1  x_2 y_1  y_2}
 \end{align*}\\
 und die Negation: \ $-(x_1,x_2)=(-x_1,y_1) $ \vspace{5pt} \\
-Daraus ergibt sich das Neutrale Element  $(0, 1)$
+Daraus ergibt sich das Neutrale Element  $(0, 1)$\\
+Die obigen Berechnungsvorschriften wurden in der Klasse  \emph{EdwardsKurvengruppenElement} implementiert.
 \subsubsection{kurze Weierstraß-Darstellung}
 \label{sec:weierstrass_kurven}
 Sei $\mathbb{F}_q$ ein endlicher Körper.
@@ -172,18 +173,13 @@ das Verdoppeln \ $ 2(x_1,y_1)=(x_3,y_3) $\quad mit: \\
 \end{align*}\\
 und die Negation: \ $-(x_1,x_2)=(x_1,-y_1) $ \vspace{5pt} \\
 Die obigen Berechnungsvorschriften wurden in der Klasse \emph{WeierstrassKurvengruppenElement} implementiert. Das neutrale Element der Gruppe ist der sogenannte \emph{Punkt im Unendlichen} der in affiner Schreibweise nicht dargestellt werden kann. Deshalb verwenden wir in unserer Implementierung des Gruppenelementes ein Attribut {\emph{isPointAtInfinity}}, welches angibt, ob es sich bei dem Punkt um das neutrale Element handelt. Bei jeder Addition und Verdopplung wird dieses Attribut abgefragt und die entsprechende Berechnung übersprungen.
-\subsection{Pohlig Hellman Reduktion}
+\subsection{Pohlig-Hellman Reduktion}
 \label{sec:pohlig_hellman}
-modular austauschbarer Algorithmus für die Untergruppen
-(als Funktionsparameter)
-
-\cite{Pohlig1978}
-
-\subsection{Baby Step Giant Step}
+Die Reduktion nach Pohlig und Hellman zur Lösung des diskreten Logarithmus wurde zum ersten mal in \cite{Pohlig1978} eingeführt. Unsere Implementation befindet sich im Modul \emph{pohlig\_hellman}. In dem Verfahren wird die ursprüngliche Gruppe in deren zyklischen Untergruppen zerlegt. Anschließend wird versucht den diskreten Logarithmus in den kleineren Untergruppen zu berechnen, um anschließend mittels chinesischem Restklassensatz die Lösung in unserer ursprünglichen Gruppe zu berechnen. Dazu muss die Faktorisierung der Gruppenordnung bekannt sein und als Funktionsparameter übergeben werden. Der Algorithmus arbeitet nur dann wirklich effektiv, wenn die Gruppenordnung aus möglichst kleinen Primfaktoren besteht.\\
+Der Algorithmus zur Berechnung des diskreten Logarithmus in den Untergruppen ist in unserer Implementation modular austauschbarer und wird als Funktionsparameter übergeben (Standard ist die erschöpfende Suche). Es können also alle hier vorgestellten Algorithmen verwendet werden.
+\subsection{Baby-Step Giant-Step}
 \label{sec:baby_step_giant_step}
-
-\cite{Galbraith2012}
-
+Der Baby-Step Giant-Step Algorithmus ist eine Modifikation des naiven Algorithmus zur Lösung des diskreten Logarithmus  \cite{Galbraith2012}. Dabei beschleunigen wir die Suche, indem wir Zwischenergebnisse effizient abspeichern. Dazu verwenden wir Pythons native \emph{Dictionary}-Datenstruktur. Dabei handelt es sich um eine Hash-Tabelle. Die schnellen Lesezugriffen ermöglichen eine effiziente Überprüfung, ob sich ein Element bereits in unserer Hash-Tabelle befindet.
 \subsection{Rho Methode}
 \label{sec:rho}
 
