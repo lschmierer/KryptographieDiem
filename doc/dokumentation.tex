@@ -182,34 +182,82 @@ Der Algorithmus zur Berechnung des diskreten Logarithmus in den Untergruppen ist
 Der Baby-Step Giant-Step Algorithmus ist eine Modifikation des naiven Algorithmus zur Lösung des diskreten Logarithmus  \cite{Galbraith2012}. Dabei beschleunigen wir die Suche, indem wir Zwischenergebnisse effizient abspeichern. Dazu verwenden wir Pythons native \emph{Dictionary}-Datenstruktur. Dabei handelt es sich um eine Hash-Tabelle. Die schnellen Lesezugriffen ermöglichen eine effiziente Überprüfung, ob sich ein Element bereits in unserer Hash-Tabelle befindet.
 \subsection{Rho Methode}
 \label{sec:rho}
+Die \emph{Rho}-Methode von Pollard hat im Vergleich zum Baby-Step Giant-Step Algorithmus den Vorteil,
+dass sie deutlich weniger Speicherplatz benötigt.
+Dadurch eignet sie sich besser für die Berechnung des DLP auf aktuelle Computer-Hardware.
 
-modular walk als parameter
+Die \emph{Rho}-Methoden basieren auf sogenannten \emph{pseudorandom walks}.
+Sie bestehen prinzipiell aus einem Algorthmus zur Zyklussuche
+und einer Walk Funktion.
+Die Zyklussuche ist generisch über die Walk Funktion.
 
-\cite{Galbraith2012}
+Es wurden verschiedene Zyklussuchen und Walk Funktion
+implementiert.
+Dabei haben wir uns an den Ausführungen in \cite{Galbraith2012}
+orientiert.
+Unsere Implementierungen ist in der Datei \emph{rho.py} zu finden.
 
 \subsubsection{Walk Funktion}
 \label{sec:walk_funktion}
-original und additiv
+Es wurden zwei verschiende \emph{walk}-Funktionen implementiert.
+Diese sind Pollards originaler rho walk und der additive rho walk.
+Beide Methoden sind sich in ihrer Charakteristik allerdings sehr ähnlich.
+
+Die Schrittgrößen werden jeweils zu Beginn pseudozufällig bestimmt.
+
+Alle Zyklussuch-Methoden können mit beiden Walk Funktionen genutztz werden.
+Das wurde erreicht, indem die Walk Funktion als Funktion übergeben werden kann.
 
 \subsubsection{Floyd Cycle}
 \label{sec:floyd_cycle}
-
-% sqrt(πN/8)
+In der originalen Ausführung des Rho Algorithmus nutztz Pollard
+den \emph{Floyd Cycle} Algorithmus zur Zyklussuche.
+Bei dieser laufen zwei pseudorandom Walks jeweils bei 0 und 1 los,
+wobei einer doppelt so schnell läuft wie der andere.
+Wenn eine Kolision gefunden wurde, ist das DLP gelöst.
+\cite{Galbraith2012}
 
 \subsubsection{Brent Cycle}
 \label{sec:brent_cycle}
-
-\cite{Brent1980}
+Als eine effizientere Methode im Vergleich zur Floyd Cycle Suche
+haben wir die Zyklussuche nach Brent \cite{Brent1980} implementiert.
+Bei dieser Methode müssen wie bei der Floyd Suche nur zwei Elemente gespeichert werden.
+\cite{Galbraith2012}
 
 \subsubsection{Distinguished Points}
 \label{sec:distinguished_points}
+Die effizienteste Methode die wir implementiert haben ist die
+\emph{distinguished points} Methode.
+Bei dieser Methode werden bestimmte Zahlen als ``besonders'' gekennzeichnet.
+Welche Zahlen dies sind ist prinzipiell willkürlich.
+Wir haben dabei Zahlen gewählt deren letzen \emph{n} Stellen in einer
+zwei adischen Darstellung 0 sind.
 
-% sqrt(πr/2)
+Bei der distinguished points Methode wird von einer zufälligen Zahl aus
+der Walk gestartet und dann beedenet wenn ein ``besonderer'' Punkt
+gefunden wurde.
+Dies wird so lange wiederholt bis der gleiche Punkt zweimal gefunden wurde.
 
+Während die beiden zuerst vorgestellten Methoden immer nur zwei Punkt abspeichern müssen,
+muss bei der distinguished points Methode jeder gefundene ``besondere'' Punkt gespeichert werden.
+Der Speicheraufwand ist allerdings trozdem noch bei weitem geringer als beispielsweise beim
+Baby-Step Giant-Step Algorithmus.
 \cite{VanOorschot1999}
 
 \subsection{Känguru Methode}
 \label{sec:kaenguru}
+Eine weitere Methode die auf pseudorandom Wals basiert ist die
+\emph{Känguru} oder \(\lambda\)-Methode.
+Während die Känguru Methode im allgemeinen langsamer als die Rho
+Methode mit distinguished points ist, hat sie einen weiteren Anwendungsfall.
+Mit ihr lässt sich der diskrete Logarithmus sehr effizient berechnen,
+wenn vorher bekannt ist, dass er in einem bestimmten Bereich liegt.
+
+Bei der Känguru Methode ist die Walk Funktion im Vergleich zur Rho Methode
+komplett deterministisch und nicht pseudorandom.
+Sie arbeitet auch mit distinguished points.
+Unsere Implementierung ist in der Datei \emph{kaenguru.py} zu finden.
+\cite{Galbraith2012}
 
 \subsection{Vergleich zwischen Rho Methoden und Känguru Methode}
 Um die theoretischen Annahmen über die Laufzeit der verschiedenen Methoden
