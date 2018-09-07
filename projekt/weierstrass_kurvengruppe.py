@@ -92,7 +92,7 @@ class WeierstrassKurvengruppenElement(AdditiveGruppenElement):
         return self.x == other.x and self.y == other.y
 
     def __neg__(self):
-        return WeierstrassKurvengruppenElement(self.x, -self.y, self.gruppe)
+        return WeierstrassKurvengruppenElement(self.x, -self.y, self.gruppe, self.isPointAtInfinity)
 
     def __add__(self, other):
         if not isinstance(other, WeierstrassKurvengruppenElement):
