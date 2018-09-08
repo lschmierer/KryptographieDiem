@@ -76,7 +76,7 @@ class EdwardsKurvengruppenElement(AdditiveGruppenElement):
         return self.drucke_element()
 
     def __eq__(self, other):
-        if not super().__eq__():
+        if not super().__eq__(other):
             return False
         return self.x == other.x and self.y == other.y
 
