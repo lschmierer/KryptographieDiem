@@ -284,7 +284,7 @@ in Abbildung \ref{fig:benchmark} als Boxplot visualisiert.
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.8\textwidth]{../projekt/benchmark/plot.png}
+  \includegraphics[width=0.6\textwidth]{../projekt/benchmark/plot.png}
   \caption{Grafische Darstellung der Laufzeit verschiedener Rho Methoden und der Känguru Methode}
   \label{fig:benchmark}
 \end{figure}
@@ -307,6 +307,19 @@ ist.
 
 \subsection{Rho Methode für das Faktorisieren}
 \label{sec:rho_faktorisieren}
+Die Rho Methode lässt sich generell auch für das Faktorisieren nutzen.
+In unserer Implementierung haben wir dabei wieder die \emph{Floyd-Cycle} Suche genutzt.
+Dies ist darin begründet, dass uns diese Zyklussuche als die am einfachsten
+verständliche erschien.
+In den von uns zur Berechnung verwendeten Größenordnungen haben wir den Nachteil in der
+etwas längeren Laufzeit im Vergleich zu den anderen Zykluss als zu vernachlässigen
+eingeschätzt.
+
+Die implementierte Funktion lässt sich mir einem Parameter aufrufen.
+Dies ist die zu faktorisierende Zahl.
+Als Rückgabe erhält man einen Primfaktor dieser übergebenen Zahl.
+Um weitere Primfaktoren zu erhalten muss die Rho Methode erneut gestartet werden.
+Unsere Implementierung ist in \emph{rho\_faktorisieren.py} zu finden.
 
 [schnellere Algorithmen: elliptic-curve factorization method (ECM), Quadratic sieve, General number field sieve]
 
