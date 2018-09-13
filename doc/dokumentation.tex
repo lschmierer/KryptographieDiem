@@ -216,6 +216,11 @@ den \emph{Floyd Cycle} Algorithmus zur Zyklussuche.
 Bei dieser laufen zwei pseudorandom Walks jeweils bei 0 und 1 los,
 wobei einer doppelt so schnell läuft wie der andere.
 Wenn eine Kolision gefunden wurde, ist das DLP gelöst.
+
+Die \emph{Floyd Cycle} Suche ist nicht besonders effizient.
+Im Durchschnitt benötigt sie \( 2.47(l_t + l_h) \) Operationen.
+\( l_t \) ist hierbei die Länge des Schwanzes und \( l_h \) die
+Länge des Zyklus.
 \cite{Galbraith2012}
 
 \subsubsection{Brent Cycle}
@@ -224,6 +229,11 @@ Als eine effizientere Methode im Vergleich zur Floyd Cycle Suche
 haben wir die Zyklussuche nach Brent \cite{Brent1980} implementiert.
 Bei dieser Methode müssen wie bei der Floyd Suche nur zwei Elemente gespeichert werden.
 \cite{Galbraith2012}
+
+Brent führt in seiner Veröffentlichung theoretisch aus warum, warum seine
+Zyklussuche im allgemeinen Fall schneller ist.
+Dabei zeigt er einen Laufzeitvorteil von 36 Prozent.
+\cite{Brent1980}
 
 \subsubsection{Distinguished Points}
 \label{sec:distinguished_points}
