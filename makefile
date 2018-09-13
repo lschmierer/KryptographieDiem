@@ -1,6 +1,7 @@
 PROJEKT_NAME = projekt_generisches_faktorisieren_und_dlp
 BUILD_DIR = build
-BENCHMARK_RESULT_FILE = projekt/benchmark/results.txt
+BENCHMARK_DLP_RESULT_FILE = projekt/benchmark/results_dlp.txt
+BENCHMARK_PARALLEL_RESULT_FILE = projekt/benchmark/results_parallel.txt
 
 all: clean python documentation zip
 
@@ -42,8 +43,14 @@ zip:
 	cd ${BUILD_DIR}; zip -r ${PROJEKT_NAME}.zip *
 	mv build/${PROJEKT_NAME}.zip ${PROJEKT_NAME}.zip
 
-bench:
-	python3 projekt/benchmark/bench_dlp.py > ${BENCHMARK_RESULT_FILE}
+bench_dlp:
+	python3 projekt/benchmark/bench_dlp.py > ${BENCHMARK_DLP_RESULT_FILE}
 
-plot:
-	python3 projekt/benchmark/plot.py ${BENCHMARK_RESULT_FILE}
+bench_parallel:
+	python3 projekt/benchmark/bench_parallel.py > ${BENCHMARK_PARALLEL_RESULT_FILE}
+
+plot_dlp:
+	python3 projekt/benchmark/plot.py ${BENCHMARK_DLP_RESULT_FILE}
+
+plot_parallel:
+	python3 projekt/benchmark/plot.py ${BENCHMARK_PARALLEL_RESULT_FILE}
