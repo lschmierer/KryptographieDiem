@@ -46,7 +46,7 @@ def parallel(n_d, n_s, worker):
 if __name__ == '__main__':
     print('distinguished')
     print(*time_fn(lambda: distinguished(8, 32), ITERATIONS))
-    print('parallel (5 cores)')
+    print('parallel (6 cores)')
     print(*time_fn(lambda: parallel(8, 32, WORKER1), ITERATIONS))
     print('parallel (11 cores)')
     print(*time_fn(lambda: parallel(8, 32, WORKER2), ITERATIONS))
