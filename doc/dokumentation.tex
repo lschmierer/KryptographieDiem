@@ -272,7 +272,7 @@ der Datei \emph{kaenguru.py} zu finden.
 
 \subsection{Vergleich zwischen Rho Methoden und Känguru Methode}
 Um die theoretischen Annahmen über die Laufzeit der verschiedenen Methoden
-zu validieren, wurden Laufzeitmessungen durchgeführt.
+zu validieren, wurden Laufzeitmessungen durchgeführt. Alle Berechnungen wurden auf dem Rechenserver \emph{miserv100} der Universität Leipzig ausgeführt ($12$ Kerne mit $3.07$ GHz, $196$ GB RAM).
 Dabei wurde der diskrete Logarithmus \( a = 2778286 \) zu \( g = 3805914789 \)
 und \(h = g^a = 2262438373 \) in \( \mathbb{F}_{32416190071} \) gesucht.
 Jede Messung wurde 10 mal durchgeführt und die Messwerte anschließend gemittelt.
@@ -282,11 +282,17 @@ in Abbildung \ref{fig:benchmark} als Boxplot visualisiert.
 \begin{table}[h]
   \centering
   \begin{tabular}{l|c|c|c}
+    %Hier mal noch die alten Messwerte!
+    %Methode             & min   & max   & avg   \\ \hline
+    %Rho (Floyd)         & 1,020 & 2,608 & 1,897  \\ \hline
+    %Rho (Brent)         & 0,838 & 3,525 & 1,880 \\ \hline
+    %Rho (Distinguished) & 0,776 & 2,149 & 1,281 \\ \hline
+    %Känguru             & 1,922 & 1,936 & 1,929
     Methode             & min   & max   & avg   \\ \hline
-    Rho (Floyd)         & 1,020 & 2,608 & 1,897  \\ \hline
-    Rho (Brent)         & 0,838 & 3,525 & 1,880 \\ \hline
-    Rho (Distinguished) & 0,776 & 2,149 & 1,281 \\ \hline
-    Känguru             & 1,922 & 1,936 & 1,929
+    Rho (Floyd)         & 1.440 & 4.147 & 2.349  \\ \hline
+    Rho (Brent)         & 1.351 & 3.563 & 2.173 \\ \hline
+    Rho (Distinguished) & 1.298 & 2.283 & 1.8611 \\ \hline
+    Känguru             & 2.543 & 2.680 & 2.583
     \end{tabular}
   \caption{Laufzeit verschiedener Rho Methoden und der Känguru Methode in Sekunden}
   \label{tab:benchmark}
@@ -294,7 +300,7 @@ in Abbildung \ref{fig:benchmark} als Boxplot visualisiert.
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.6\textwidth]{../projekt/benchmark/plot.png}
+  \includegraphics[width=0.6\textwidth]{../projekt/benchmark/plot_miserv_dlp.png}
   \caption{Grafische Darstellung der Laufzeit verschiedener Rho Methoden und der Känguru Methode}
   \label{fig:benchmark}
 \end{figure}
@@ -315,6 +321,35 @@ Dies lässt sich damit erklären, dass die \emph{walk}-Funktion der
 Schrittgrößen nutzt und der Algorithmus somit komplett deterministisch
 ist.
 
+\subsection{Parallelisierung der Rho-Methode}
+
+Um eine bessere Laufzeit zu erhalten, wurde die \emph{Rho}-Methode in der distinguished points Variante parallelisiert. 
+Die Implementierung ist in \emph{parallel\_rho.py} zu finden. \\
+Für dessen Validierung wurde der selbe diskrete Logarithmus aus dem vorherigen Kapitel berechnet, mit der gleichen Anzahl an Wiederholungen.
+Die Berechnungen wurden wieder auf \emph{miserv100} ausgeführt.
+Dabei wurden 2 verschiedene Parallelisierungsgrade mit 6 und 11 Threads verwendet. 
+Die Messergebnisse sind in Tabelle \ref{tab:benchmark:parallel} dargestellt und in Abbildung \ref{fig:benchmark:parallel} als Boxplot visualisiert. \\
+Es ist eine deutliche Beschleunigung der Laufzeit zu beobachten
+
+\begin{table}[h]
+  \centering
+  \begin{tabular}{l|c|c|c}
+    Methode             & min   & max   & avg   \\ \hline
+    Rho (Distinguished) & 0,776 & 2,149 & 1,281 \\ \hline
+    Rho (parallel, 6 Threads) & 0,776 & 2,149 & 1,281 \\ \hline
+    Rho (parallel, 11 Threads) & 0,776 & 2,149 & 1,281 \\ \hline
+    \end{tabular}
+  \caption{Laufzeit der Rho-Methode in der Distinguished-Points-Variante ohne Parallelisierung, sowie parallelisiert mit 6 und 11 Threads in Sekunden}
+  \label{tab:benchmark:parallel}
+\end{table}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.6\textwidth]{../projekt/benchmark/plot_miserv_parallel.png}
+  \caption{Grafische Darstellung der Rho-Methode in der Distinguished-Points-Variante ohne Parallelisierung, sowie parallelisiert mit 6 und 11 Threads}
+  \label{fig:benchmark:parallel}
+\end{figure}
+
 \subsection{Rho Methode für das Faktorisieren}
 \label{sec:rho_faktorisieren}
 Die Rho Methode lässt sich generell auch für das Faktorisieren nutzen.
@@ -322,10 +357,10 @@ In unserer Implementierung haben wir dabei wieder die \emph{Floyd-Cycle} Suche g
 Dies ist darin begründet, dass uns diese Zyklussuche als die am einfachsten
 verständliche erschien.
 In den von uns zur Berechnung verwendeten Größenordnungen haben wir den Nachteil in der
-etwas längeren Laufzeit im Vergleich zu den anderen Zykluss als zu vernachlässigen
+etwas längeren Laufzeit im Vergleich zu den anderen Zyklen als zu vernachlässigen
 eingeschätzt.
 
-Die implementierte Funktion lässt sich mir einem Parameter aufrufen.
+Die implementierte Funktion lässt sich mit einem Parameter aufrufen.
 Dies ist die zu faktorisierende Zahl.
 Als Rückgabe erhält man einen Primfaktor dieser übergebenen Zahl.
 Um weitere Primfaktoren zu erhalten muss die Rho Methode erneut gestartet werden.
