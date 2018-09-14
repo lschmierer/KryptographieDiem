@@ -11,7 +11,8 @@ from tocas import Restklassenring
 from projekt.rho import distinguished_rho
 from projekt.parallel_rho import parallel_rho
 
-WORKER = 3
+WORKER1 = 6
+WORKER2 = 11
 ITERATIONS = 10
 
 F = Restklassenring(32416190071)
@@ -38,12 +39,14 @@ def distinguished(n_d, n_s):
     assert distinguished_rho(g, h, r, n_d, n_s=n_s) == a
 
 
-def parallel(n_d, n_s):
-    assert parallel_rho(g, h, r, n_d, n_s=n_s, worker=WORKER) == a
+def parallel(n_d, n_s, worker):
+    assert parallel_rho(g, h, r, n_d, n_s=n_s, worker=worker) == a
 
 
 if __name__ == '__main__':
     print('distinguished')
     print(*time_fn(lambda: distinguished(8, 32), ITERATIONS))
-    print('parallel')
-    print(*time_fn(lambda: parallel(8, 32), ITERATIONS))
+    print('parallel (5 cores)')
+    print(*time_fn(lambda: parallel(8, 32, WORKER1), ITERATIONS))
+    print('parallel (11 cores)')
+    print(*time_fn(lambda: parallel(8, 32, WORKER2), ITERATIONS))
