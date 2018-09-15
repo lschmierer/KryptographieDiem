@@ -34,7 +34,7 @@ def time_fn(fn, n=100):
     for _ in range(n):
         start = time.monotonic()
         fn()
-        elapsed = timemonotonic() - start
+        elapsed = time.monotonic() - start
 
         times += [elapsed]
 
