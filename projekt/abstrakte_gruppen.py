@@ -4,6 +4,7 @@ from tocas.AbstrakterAnfang import UnveraenderbaresObjekt
 
 
 class AdditiveGruppe(UnveraenderbaresObjekt):
+    """Abstrakte Klasse für additive Gruppen, angelehnt an Klasse Ring."""
 
     def __eq__(self, other):
         if not type(self) == type(other):
@@ -23,6 +24,7 @@ class AdditiveGruppe(UnveraenderbaresObjekt):
 
 
 class AdditiveGruppenElement(UnveraenderbaresObjekt):
+    """Abstrakte Klasse für Elemente aus additiber Gruppen, angelehnt an Klasse RingElement."""
 
     @abstractmethod
     def __init__(self):
@@ -33,7 +35,6 @@ class AdditiveGruppenElement(UnveraenderbaresObjekt):
         pass
 
     def drucke_element_mit_klammern(self):
-
         return self.drucke_element()
 
     def __str__(self):
@@ -81,6 +82,12 @@ class AdditiveGruppenElement(UnveraenderbaresObjekt):
 
     @abstractmethod
     def zwei_adisch(self):
+        """Gibt eine zwei adische Darstellung zurück.
+
+        Der Rückgabewert ist ein Tupel der aus der zwei adischen Darstellung
+        (als int) und der maximalen Anzahl an Bits, die ein Element in der Umgebung
+        in zwei adischer Form besitzen kann, besteht.
+        """
         pass
 
     @abstractmethod

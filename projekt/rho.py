@@ -161,7 +161,11 @@ def generiere_additiv_walk(g, h, F_r, n_s):
 
 
 def floyd_cycle_rho(g, h, r: int, walk_generator=generiere_original_walk, n_s=256):
-    """Pollards Rho Methode mittels Floyd Cycle Suche."""
+    """Pollards Rho Methode mittels Floyd Cycle Suche.
+    
+    h = g ^ a mit r Ordnung von h
+    
+    Parameter n_s definiert die Länge des Walks."""
     if isinstance(g, RingElement):
         if not isinstance(h, RingElement):
             raise TypeError(
@@ -199,7 +203,11 @@ def floyd_cycle_rho(g, h, r: int, walk_generator=generiere_original_walk, n_s=25
 
 
 def brent_cycle_rho(g, h, r: int, walk_generator=generiere_original_walk, n_s=256):
-    """Pollards Rho Methode mit Brent's optimierter Suche."""
+    """Pollards Rho Methode mit Brent's optimierter Suche.
+    
+    h = g ^ a mit r Ordnung von h
+    
+    Parameter n_s definiert die Länge des Walks."""
     if isinstance(g, RingElement):
         if not isinstance(h, RingElement):
             raise TypeError(
@@ -243,6 +251,8 @@ def brent_cycle_rho(g, h, r: int, walk_generator=generiere_original_walk, n_s=25
 
 def distinguished_rho(g, h, r: int, n_d: int, walk_generator=generiere_original_walk, n_s=256):
     """Pollards Rho Methode mit Distinguished Point Suche.
+    
+    h = g ^ a mit r Ordnung von h
 
     Parameter n_d gibt die Anzahl an least-significant bits an
     die null sein müssen, sodass ein Element als distinguished
@@ -251,7 +261,9 @@ def distinguished_rho(g, h, r: int, n_d: int, walk_generator=generiere_original_
     Ganzzahlen als Hash erzeugt), kann es sein, dass bei kleinen
     Ringen kein distinguished Element gefunden wird.
     Bei größeren Ringen sollte das statistisch zu vernachlässigen
-    sein."""
+    sein.
+    
+    Parameter n_s definiert die Länge des Walks."""
     if isinstance(g, RingElement):
         if not isinstance(h, RingElement):
             raise TypeError(

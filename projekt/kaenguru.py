@@ -70,7 +70,14 @@ def _generiere_walk(g, h, F_r, w, n_s):
 
 
 def kaenguru(g, h, r: int, b: int, w: int, n_d: int, n_s=256):
-    """Känguru (Lambda) Methode um diskrete Logarithmen zwischen b und b + w zu finden."""
+    """Känguru (Lambda) Methode um diskrete Logarithmen zwischen b und b + w zu finden.
+    
+    h = g ^ a mit r Ordnung von h
+    
+    Parameter n_d gibt die Anzahl an least-significant bits an
+    die null sein müssen, sodass ein Element als distinguished
+    Element makiert wird.
+    Parameter n_s definiert die Länge des Walks."""
     if isinstance(g, RingElement):
         if not isinstance(h, RingElement):
             raise TypeError(

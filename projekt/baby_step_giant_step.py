@@ -56,11 +56,11 @@ def baby_step_giant_step(g, h, r: int):
         x = mult(g, x)
     u = exp(g, -m)
     y, j = h, 0
-    while(hashtable.get(y) is None):
+    while hashtable.get(y) is None:
         y = mult(y, u)
         j += 1
     i = hashtable.get(y)
-    if(i is not None):
+    if i is not None:
         return i + m * j
     else:
         raise ValueError('h kann nicht aus g erzeugt werden')

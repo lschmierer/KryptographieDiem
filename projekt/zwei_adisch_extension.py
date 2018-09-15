@@ -7,7 +7,13 @@ from tocas.Polynomringe import PolynomringElement
 from ha.polynom_restklassenring import PolynomRestklassenringElement
 
 import projekt.hash_extension
-from projekt.abstrakte_gruppen import AdditiveGruppenElement
+
+"""Zwei adische Darstellung für verschiedene Ringe.
+
+Der Rückgabewert ist ein Tupel der aus der zwei adischen Darstellung
+(als int) und der maximalen Anzahl an Bits, die ein Element in der Umgebung
+in zwei adischer Form besitzen kann, besteht.
+"""
 
 
 def _ring_tupel_zwei_adisch(self):

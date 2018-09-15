@@ -4,6 +4,8 @@ from tocas.Polynomringe import Polynomring, PolynomringElement
 
 from ha.polynom_restklassenring import PolynomRestklassenring, PolynomRestklassenringElement
 
+"""hash() Implementierungen für alle gegebenen Ringe und RingElemente."""
+
 
 def _ring_tupel_hash(self):
     return hash((self.laenge, tuple(self.koeffizienten)))
