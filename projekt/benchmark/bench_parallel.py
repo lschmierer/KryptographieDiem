@@ -32,9 +32,9 @@ def time_fn(fn, n=100):
     times = []
 
     for _ in range(n):
-        start = time.process_time()
+        start = time.monotonic()
         fn()
-        elapsed = time.process_time() - start
+        elapsed = timemonotonic() - start
 
         times += [elapsed]
 
