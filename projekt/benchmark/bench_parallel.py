@@ -15,11 +15,17 @@ WORKER1 = 6
 WORKER2 = 11
 ITERATIONS = 10
 
-F = Restklassenring(32416190071) 
-g = F.element(32316469506)
-r = 5778287  # = org(g) (ist prim)
-a = 2778286
-h = g ** a  # = 3805914789
+#F = Restklassenring(32416190071) 
+#g = F.element(32316469506)
+#r = 5778287  # = org(g) (ist prim)
+#a = 2778286
+#h = g ** a  # = 3805914789
+
+F = Restklassenring(1624571841187) 
+g = F.element(1580023)
+r = 12893427311  # = org(g) (ist prim)
+a = 67782867
+h = F.element(541805201268) # g ** a 
 
 
 def time_fn(fn, n=100):
