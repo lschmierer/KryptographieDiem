@@ -38,13 +38,13 @@
 \tableofcontents
 
 \section{Problemstellung}
-Diese Projektarbeit, entstanden im Rahmen des Moduls "Mathematische Grundlagen der Kryptographie mit öffentlichen Schlüsseln", beschäftigt sich dem Lösen diskreter Logarithmen und dem Faktorisieren. Wir verwenden dazu sogenannte \emph{generische Methoden}. Diese verwenden ausschließlich allgemeine Gruppeneigenschaften ohne auf die Struktur der zugrundeliegenden Gruppe einzugehen. Es sind zwar asymptotisch schnellere Algorithmen zum lösen des diskreten Logarithmus und zur Faktorisierung bekannt \cite{diem_2011, Adleman_1979}[noch mehr Quellennachweise], jedoch können die hier vorgestellten Algorithmen auf allen endlichen zyklischen Gruppen angewendet werden. In unserem Projekt arbeiten wir mit Restklassenkörpern, Polynomrestklassenkörpern und darauf aufbauende elliptische Kurven in unterschiedlichen Darstellungen. Die dazu benötigten Grundlagen sind in \cite{Galbraith2012} ausführlich beschrieben. 
+Diese Projektarbeit, entstanden im Rahmen des Moduls "Mathematische Grundlagen der Kryptographie mit öffentlichen Schlüsseln", beschäftigt sich dem Lösen diskreter Logarithmen und dem Faktorisieren. Wir verwenden dazu sogenannte \emph{generische Methoden}. Diese verwenden ausschließlich allgemeine Gruppeneigenschaften ohne auf die Struktur der zugrundeliegenden Gruppe einzugehen. Es sind zwar asymptotisch schnellere Algorithmen zum lösen des diskreten Logarithmus und zur Faktorisierung bekannt \cite{diem_2011, Adleman_1979, ECM, NFS}, jedoch können die hier vorgestellten Algorithmen auf allen endlichen zyklischen Gruppen angewendet werden. In unserem Projekt arbeiten wir mit Restklassenkörpern, Polynomrestklassenkörpern und darauf aufbauende elliptische Kurven in unterschiedlichen Darstellungen. Die dazu benötigten Grundlagen sind in \cite{Galbraith2012} ausführlich beschrieben. 
 \section{Projekt Organisation}
 \label{sec:organisation}
 
 \subsection{Verzeichnisstruktur}
 \label{sec:verzeichnisstruktur}
-Eine Schematische Darstellung der Verzeichnisstruktur ist in Abbildung \ref{fig:verzeichnisstruktur} zu sehen.\\
+Eine schematische Darstellung der Verzeichnisstruktur ist in Abbildung \ref{fig:verzeichnisstruktur} zu sehen.\\
 In unserem Projekt befinden sich drei Verzeichnisse:
 
 \begin{itemize}
@@ -53,8 +53,10 @@ In unserem Projekt befinden sich drei Verzeichnisse:
 \item \emph{ha} - Abkürzung für \emph{Hausaufgaben}. Enthält unsere Python Implementierung zur Lösung der Hausaufgaben aus der Vorlesung "Mathematische Grundlagen der Kryptographie mit öffentlichen Schlüsseln"
 \item \emph{projekt} - Enthält den im Rahmen unserer Projektarbeit geschriebenen Python Code zur Lösung des Diskreten Logarithmus Problems und zur Faktorisierung mithilfe generischer Methoden.
 \end{itemize}
-Da das \emph{tocas}-Projekt separat vorliegt, können dadurch zukünftige Änderungen und Updates in unser Projekt eingepflegt werden. Außerdem erreichen wir so eine strikte Trennung von bereitgestelltem und eigenem Code.\\
-Wenn zu bereits existierenden Klassen aus \emph{Tocas} weitere Funktionalitäten hinzugefügt wurden, wurden diese in externe Module geschrieben, die den Datei-Suffix \emph{\_extension} tragen. So verschönert zum Beispiel das Modul \emph{'format\_extension.py'} die Standard-Ausgabe von Tocas (z.B. die Ausgabe für den Ring der ganzen Zahlen mit \( \mathbb{Z} \) statt Z). \\
+Da das \emph{tocas}-Projekt separat vorliegt, können dadurch zukünftige Änderungen und Updates in unser Projekt eingepflegt werden. Außerdem erreichen wir so eine strikte Trennung von bereitgestelltem und eigenem Code.
+
+Wenn zu bereits existierenden Klassen aus \emph{Tocas} weitere Funktionalitäten hinzugefügt wurden, wurden diese in externe Module geschrieben, die den Datei-Suffix \emph{\_extension} tragen. So verschönert zum Beispiel das Modul \emph{format\_extension.py} die Standard-Ausgabe von Tocas (z.B. die Ausgabe für den Ring der ganzen Zahlen mit \( \mathbb{Z} \) statt Z).
+
 Innerhalb der Ordner \emph{ha} und \emph{project} befindet sich jeweils ein Unterordner \emph{tests}. In diesem sind verschiedene Tests geschrieben, die mit der Web-Applikation \emph{Jupyter Notebook} aus \cite{jupyterNotebook} ausgeführt werden können.
 
 \begin{figure}[h]
@@ -107,11 +109,12 @@ Zu jedem Teilgebiet wurden zugehörige Tests als Jupyter Notebooks erstellt. Dab
     \begin{minipage}{\linewidth}
     \emph{test\_baby\_step\_giant\_step.ipynb} \\
     \emph{test\_rho.ipynb}  \\
+    \emph{test\_parallel\_rho.ipynb}
     \emph{test\_kaenguru.ipynb} 
   \end{minipage} &
   \begin{minipage}{\linewidth}
-    \vspace{2pt} Testet die von uns implementierten Methoden zu Berechnung des diskreten Logarithmus. Neben dem Baby-Step-Giant-Step-Algorithmus und dem Känguru-Algorithmus (auch Lambda-Methode genannt) 
-    werden verschiedene Varianten des Rho-Algorithmus ausgeführt  \vspace{2pt}
+    \vspace{2pt} Testet die von uns implementierten Methoden zu Berechnung des diskreten Logarithmus. Neben dem Baby-Step-Giant-Step-Algorithmus und dem Känguru-Algorithmus (auch $\lambda$-Methode genannt), 
+    werden verschiedene Varianten des Rho-Algorithmus geprüft.  \vspace{2pt}
   \end{minipage} \\
   \hline
     \begin{minipage}{\linewidth}
@@ -133,7 +136,7 @@ Zu jedem Teilgebiet wurden zugehörige Tests als Jupyter Notebooks erstellt. Dab
 \subsection{Elliptische Kurven}
 \label{sec:elliptische_kurven}
 
-Um zu zeigen, dass unsere generischen Methoden auf verschiedenste Gruppen anwendbar sind, mussten neben den bereits implementieren endlichen Körpern zusätzlich auch elliptische Kurven über endliche Körper realisiert werden. 
+Um zu zeigen, dass unsere generischen Methoden auf verschiedenste Gruppen anwendbar sind, mussten neben den bereits implementierten endlichen Körpern zusätzlich auch elliptische Kurven über endliche Körper realisiert werden. 
 Die in \emph{abstrakte\_gruppen.py} eingeführten Klassen \emph{AdditiveGruppe} und \emph{AdditiveGruppenElement} dienen als Basisklassen unserer elliptischen Kurvengruppen.
 Anschließend haben wir uns 2 verschiedenen Darstellungen Elliptischer Kurven bedient, der Edwards-Darstellung und der kurzen Weierstraß-Darstellung. Diese sind beispielsweise in \cite{Galbraith2012} ausführlich beschrieben. In den nachfolgenden Kapiteln werden sie noch einmal kurz vorgestellt.
 
@@ -172,107 +175,100 @@ das Verdoppeln \ $ 2(x_1,y_1)=(x_3,y_3) $\quad mit: \\
   &y_3= \frac{3x_1^2+a}{2y_1} \cdot (x_1 - x_3) - y_1
 \end{align*}\\
 und die Negation: \ $-(x_1,x_2)=(x_1,-y_1) $ \vspace{5pt} \\
-Die obigen Berechnungsvorschriften wurden in der Klasse \emph{WeierstrassKurvengruppenElement} implementiert. Das neutrale Element der Gruppe ist der sogenannte \emph{Punkt im Unendlichen} der in affiner Schreibweise nicht dargestellt werden kann. Deshalb verwenden wir in unserer Implementierung des Gruppenelementes ein Attribut {\emph{isPointAtInfinity}}, welches angibt, ob es sich bei dem Punkt um das neutrale Element handelt. Bei jeder Addition und Verdopplung wird dieses Attribut abgefragt und die entsprechende Berechnung übersprungen.
+Die obigen Berechnungsvorschriften wurden in der Klasse \emph{WeierstrassKurvengruppenElement} implementiert. Das neutrale Element der Gruppe ist der sogenannte \emph{Punkt im Unendlichen} der in affiner Schreibweise nicht dargestellt werden kann. Deshalb verwenden wir in unserer Implementierung der Gruppenelemente ein Attribut {\emph{isPointAtInfinity}}, welches angibt, ob es sich bei dem Punkt um das neutrale Element handelt. Bei jeder Addition und Verdopplung wird dieses Attribut abgefragt und die entsprechende Berechnung übersprungen.
 \subsection{Pohlig-Hellman Reduktion}
 \label{sec:pohlig_hellman}
-Die Reduktion nach Pohlig und Hellman zur Lösung des diskreten Logarithmus wurde zum ersten mal in \cite{Pohlig1978} eingeführt. Unsere Implementation befindet sich im Modul \emph{pohlig\_hellman}. In dem Verfahren wird die ursprüngliche Gruppe in deren zyklischen Untergruppen zerlegt. Anschließend wird versucht den diskreten Logarithmus in den kleineren Untergruppen zu berechnen, um anschließend mittels chinesischem Restklassensatz die Lösung in unserer ursprünglichen Gruppe zu berechnen. Dazu muss die Faktorisierung der Gruppenordnung bekannt sein und als Funktionsparameter übergeben werden. Der Algorithmus arbeitet nur dann wirklich effektiv, wenn die Gruppenordnung aus möglichst kleinen Primfaktoren besteht.\\
-Der Algorithmus zur Berechnung des diskreten Logarithmus in den Untergruppen ist in unserer Implementation modular austauschbarer und wird als Funktionsparameter übergeben (Standard ist die erschöpfende Suche). Es können also alle hier vorgestellten Algorithmen verwendet werden.
+Die Reduktion nach Pohlig und Hellman zur Lösung des diskreten Logarithmus wurde zum ersten mal in \cite{Pohlig1978} eingeführt. Unsere Implementation befindet sich im Modul \emph{pohlig\_hellman}. In dem Verfahren wird die ursprüngliche Gruppe in deren zyklischen Untergruppen zerlegt. Anschließend wird versucht den diskreten Logarithmus in den kleineren Untergruppen zu berechnen, um anschließend mittels chinesischem Restklassensatz die Lösung in unserer ursprünglichen Gruppe zu berechnen. Dazu muss die Faktorisierung der Gruppenordnung bekannt sein und als Funktionsparameter übergeben werden. Der Algorithmus arbeitet nur dann wirklich effektiv, wenn die Gruppenordnung aus möglichst kleinen Primfaktoren besteht.
+
+Das Verfahren zur Berechnung des diskreten Logarithmus in den Untergruppen ist in unserer Implementation modular austauschbarer und wird als Funktionsparameter übergeben (Standard ist die erschöpfende Suche). Es können also alle hier vorgestellten Algorithmen verwendet werden.
 \subsection{Baby-Step Giant-Step}
 \label{sec:baby_step_giant_step}
 Der Baby-Step Giant-Step Algorithmus ist eine Modifikation des naiven Algorithmus zur Lösung des diskreten Logarithmus  \cite{Galbraith2012}. Dabei beschleunigen wir die Suche, indem wir Zwischenergebnisse effizient abspeichern. Dazu verwenden wir Pythons native \emph{Dictionary}-Datenstruktur. Dabei handelt es sich um eine Hash-Tabelle. Die schnellen Lesezugriffen ermöglichen eine effiziente Überprüfung, ob sich ein Element bereits in unserer Hash-Tabelle befindet.
-\subsection{Rho Methode}
+\subsection{\emph{Rho}-Methode}
 \label{sec:rho}
-Die \emph{Rho}-Methode von Pollard hat im Vergleich zum Baby-Step Giant-Step Algorithmus den Vorteil,
+Die \emph{Rho-Methode} von Pollard hat im Vergleich zum Baby-Step Giant-Step Algorithmus den Vorteil,
 dass sie deutlich weniger Speicherplatz benötigt.
 Dadurch eignet sie sich besser für die Berechnung des DLP auf aktueller Computer-Hardware.
 
 Die \emph{Rho}-Methoden basieren auf sogenannten \emph{pseudorandom walks}.
 Sie bestehen prinzipiell aus einem Algorthmus zur Zyklussuche
-und einer Walk Funktion.
-Die Zyklussuche ist generisch über die Walk Funktion.
+und einer walk-Funktion.
+Die Zyklussuche ist generisch über die walk-Funktion.
 
-Es wurden verschiedene Zyklussuchen und Walk Funktion
+Es wurden verschiedene Zyklussuchen und walk-Funktionen
 implementiert.
 Dabei haben wir uns an den Ausführungen in \cite{Galbraith2012}
 orientiert.
 Unsere Implementierungen sind in der Datei \emph{rho.py} zu finden.
 
-\subsubsection{Walk Funktion}
+\subsubsection{walk-Funktion}
 \label{sec:walk_funktion}
 Es wurden zwei verschiende \emph{walk}-Funktionen implementiert.
-Diese sind Pollards originaler rho walk und Pollards additiver rho walk.
+Diese sind Pollards \emph{originaler rho walk} und Pollards \emph{additiver rho walk}.
 Beide Methoden sind sich in ihrer Charakteristik allerdings sehr ähnlich.
 
 Die Schrittgrößen werden jeweils zu Beginn pseudozufällig bestimmt.
 Dadurch benötigt jeder Schritt später immer nur eine Gruppenoperation.
 
-Alle Zyklussuch-Methoden können mit beiden Walk Funktionen genutzt werden.
-Das wurde erreicht, indem die Walk Funktion als Funktion übergeben werden kann.
+Da die walk-Funktion beim Aufruf der Zyklussuch-Methode übergeben wird, können diese mit beiden walk-Funktionen kombiniert werden.
 
 \subsubsection{Floyd Cycle}
 \label{sec:floyd_cycle}
-In der originalen Ausführung des Rho Algorithmus nutztz Pollard
+In der originalen Ausführung des Rho-Algorithmus nutzt Pollard
 den \emph{Floyd Cycle} Algorithmus zur Zyklussuche.
-Bei dieser laufen zwei pseudorandom Walks jeweils bei 0 und 1 los,
+Bei dieser laufen zwei pseudozufällige walks jeweils bei 0 und 1 los,
 wobei einer doppelt so schnell läuft wie der andere.
 Wenn eine Kolision gefunden wurde, ist das DLP gelöst.
 
-Die \emph{Floyd Cycle} Suche ist nicht besonders effizient.
+Die Floyd Cycle Suche ist nicht besonders effizient.
 Im Durchschnitt benötigt sie \( 2.47(l_t + l_h) \) Operationen.
 \( l_t \) ist hierbei die Länge des Schwanzes und \( l_h \) die
 Länge des Zyklus.
 \cite{Galbraith2012}
-
 \subsubsection{Brent Cycle}
 \label{sec:brent_cycle}
-Als eine effizientere Methode im Vergleich zur Floyd Cycle Suche
-haben wir die Zyklussuche nach Brent \cite{Brent1980} implementiert.
-Bei dieser Methode müssen wie bei der Floyd Suche nur zwei Elemente gespeichert werden.
-\cite{Galbraith2012}
-
-Brent führt in seiner Veröffentlichung theoretisch aus warum, warum seine
-Zyklussuche im allgemeinen Fall schneller ist.
+Brent führt in \cite{Brent1980}  eine effizientere Zyklussuche im Vergleich zur Floyd Cycle Suche ein. In einer theoretischen Betrachtung wird dabei ausgeführt, warum seine Zyklussuche im allgemeinen Fall schneller ist.
 Dabei zeigt er einen Laufzeitvorteil von 36 Prozent.
-\cite{Brent1980}
-
+Bei der Methode müssen wie bei der Floyd Suche nur zwei Elemente gespeichert werden \cite{Galbraith2012}.
 \subsubsection{Distinguished Points}
 \label{sec:distinguished_points}
-Die effizienteste Methode die wir implementiert haben ist die
+Die effizienteste von uns implementierte Methode ist die
 \emph{distinguished points} Methode.
 Bei dieser Methode werden bestimmte Zahlen als "besonders" gekennzeichnet.
-Welche Zahlen dies sind ist prinzipiell willkürlich.
+Welche Zahlen dies sind, ist prinzipiell willkürlich.
 Wir haben dabei Zahlen gewählt deren letzen \emph{n} Stellen in einer
 zwei adischen Darstellung 0 sind.
 
 Bei der distinguished points Methode wird von einer zufälligen Zahl aus
-der Walk gestartet und dann beedenet wenn ein "besonderer" Punkt
+der Walk gestartet und dann beendet, wenn ein "besonderer" Punkt
 gefunden wurde.
 Dies wird so lange wiederholt bis der gleiche Punkt zweimal gefunden wurde.
 
-Während die beiden zuerst vorgestellten Methoden immer nur zwei Punkt abspeichern müssen,
+Während die beiden zuerst vorgestellten Methoden immer nur zwei Punkte abspeichern müssen,
 muss bei der distinguished points Methode jeder gefundene "besondere" Punkt gespeichert werden.
 Der Speicheraufwand ist allerdings trozdem noch bei weitem geringer als beispielsweise beim
 Baby-Step Giant-Step Algorithmus.
 \cite{VanOorschot1999}
 
-\subsection{Känguru Methode}
+\subsection{Känguru-Methode}
 \label{sec:kaenguru}
-Eine weitere Methode die auf pseudorandom Wals basiert ist die
+Eine weitere Methode die auf pseudorandom walks basiert ist die
 \emph{Känguru} oder \(\lambda\)-Methode.
-Während die Känguru Methode im allgemeinen langsamer als die Rho
-Methode mit distinguished points ist, hat sie einen weiteren Anwendungsfall.
+Während die Känguru-Methode im allgemeinen langsamer als die Rho-Methode
+ mit distinguished points ist, hat sie einen weiteren Anwendungsfall.
 Mit ihr lässt sich der diskrete Logarithmus sehr effizient berechnen,
 wenn vorher bekannt ist, dass er in einem bestimmten Bereich liegt.
 
-Bei der Känguru Methode ist die Walk Funktion im Vergleich zur Rho Methode
-komplett deterministisch und nicht pseudorandom.
+Bei der Känguru-Methode ist die walk-Funktion im Vergleich zur Rho-Methode
+komplett deterministisch und nicht pseudozufällig.
 Unsere Implementierung arbeitet auch mit distinguished points und ist in
 der Datei \emph{kaenguru.py} zu finden.
 \cite{Galbraith2012}
 
-\subsection{Vergleich zwischen Rho Methoden und Känguru Methode}
+\subsection{Vergleich zwischen Rho-Methoden und der Känguru-Methode}
 Um die theoretischen Annahmen über die Laufzeit der verschiedenen Methoden
 zu validieren, wurden Laufzeitmessungen durchgeführt.
+
 Dabei wurde der diskrete Logarithmus \( a = 2778286 \) zu \( g = 3805914789 \)
 und \(h = g^a = 2262438373 \) in \( \mathbb{F}_{32416190071} \) gesucht.
 Jede Messung wurde 10 mal durchgeführt und die Messwerte anschließend gemittelt.
@@ -288,14 +284,14 @@ in Abbildung \ref{fig:benchmark} als Boxplot visualisiert.
     Rho (Distinguished) & 0,776 & 2,149 & 1,281 \\ \hline
     Känguru             & 1,922 & 1,936 & 1,929
     \end{tabular}
-  \caption{Laufzeit verschiedener Rho Methoden und der Känguru Methode in Sekunden}
+  \caption{Laufzeit verschiedener Rho-Methoden und der Känguru-Methode in Sekunden}
   \label{tab:benchmark}
 \end{table}
 
 \begin{figure}[h]
   \centering
   \includegraphics[width=0.6\textwidth]{../projekt/benchmark/plot_dlp.png}
-  \caption{Grafische Darstellung der Laufzeit verschiedener Rho Methoden und der Känguru Methode}
+  \caption{Grafische Darstellung der Laufzeit verschiedener Rho-Methoden und der Känguru-Methode in Sekunden}
   \label{fig:benchmark}
 \end{figure}
 
@@ -303,24 +299,25 @@ Die Laufzeiten der verschiedenen Methoden verhalten sich gemäß der
 theoretischen Erwartungen aus \ref{sec:floyd_cycle},
 \ref{sec:brent_cycle}, \ref{sec:distinguished_points} und
 \ref{sec:kaenguru}.
-Die \emph{Rho} Methode ist der \emph{Kängeru} Methode überlegen,
-wobei die Zyklus Suche mit \emph{Distinguished Points} die durchschnittlich
+Die Rho-Methode ist der Kängeru-Methode überlegen,
+wobei die Zyklussuche mit distinguished points die durchschnittlich
 kürzeste Laufzeit aufweist.
 
-Es lässt sich beobachten, dass die Laufzeitmessungen der \emph{Känguru}
-Methode im Vergleich zu den anderen \emph{Rho} Methoden eine geringe Varianz
+Es lässt sich beobachten, dass die Laufzeitmessungen der Känguru-Methode im Vergleich zu den anderen Rho-Methoden eine geringe Varianz
 aufweisen.
-Dies lässt sich damit erklären, dass die \emph{walk}-Funktion der
-\emph{Känguru} Methode in unserer Implementierung keine zufälligen
+Dies lässt sich damit erklären, dass die walk-Funktion der
+Känguru-Methode in unserer Implementierung keine zufälligen
 Schrittgrößen nutzt und der Algorithmus somit komplett deterministisch
-ist.
+arbeitet.
 
 \subsection{Parallelisierung der Rho-Methode}
 
-Um eine bessere Laufzeit zu erhalten, wurde die \emph{Rho}-Methode in der distinguished points Variante parallelisiert. 
-Die Implementierung ist in \emph{parallel\_rho.py} zu finden. \\
+Um eine bessere Laufzeit zu erhalten, wurde die Rho-Methode in der distinguished points Variante parallelisiert. 
+Die Implementierung ist in \emph{parallel\_rho.py} zu finden.
+
 Es wurde der diskrete Logarithmus \( a = 67782867 \) zu \( g = 1580023 \)
-und \(h = g^a = 541805201268 \) in \( \mathbb{F}_{1624571841187} \) berechnet.\\
+und \(h = g^a = 541805201268 \) in \( \mathbb{F}_{1624571841187} \) berechnet.
+
 Alle Berechnungen wurden auf dem Rechenserver \emph{miserv100} der Universität Leipzig ausgeführt ($12$ Kerne mit $3.07$ GHz, $196$ GB RAM).
 Dabei wurden verschiedene Parallelisierungsgrade mit bis zu 10 Threads verwendet. 
 Die Berechnungen wurden 10 mal wiederholt. Die Ergebnisse sind in Tabelle \ref{tab:benchmark:parallel} dargestellt und in Abbildung \ref{fig:benchmark:parallel} als Boxplot visualisiert. \\
@@ -336,38 +333,34 @@ Es ist eine deutliche Beschleunigung der Laufzeit durch die Parallelisierung zu 
     Rho (parallel, 8 Threads) & 3.135 & 21.540 & 10.070 \\ \hline
     Rho (parallel, 10 Threads) & 3.413 & 19.295 & 11.619 \\ \hline
     \end{tabular}
-  \caption{Laufzeit der Rho-Methode in der Distinguished-Points-Variante ohne Parallelisierung, sowie parallelisiert mit 6 und 11 Threads in Sekunden}
+  \caption{Laufzeit der Rho-Methode in der distinguished points Variante mit und ohne Parallelisierung in Sekunden}
   \label{tab:benchmark:parallel}
 \end{table}
 
 \begin{figure}[h]
   \centering
   \includegraphics[width=0.75\textwidth]{../projekt/benchmark/plot_miserv_parallel.png}
-  \caption{Grafische Darstellung der Rho-Methode in der Distinguished-Points-Variante ohne Parallelisierung, sowie parallelisiert mit 6 und 11 Threads}
+  \caption{Grafische Darstellung der Laufzeit der Rho-Methode in der distinguished points Variante mit und ohne Parallelisierung in Sekunden}
   \label{fig:benchmark:parallel}
 \end{figure}
 
-\subsection{Rho Methode für das Faktorisieren}
+\subsection{Rho-Methode zur Faktorisierung}
 \label{sec:rho_faktorisieren}
-Die Rho Methode lässt sich generell auch für das Faktorisieren nutzen.
-In unserer Implementierung haben wir dabei wieder die \emph{Floyd-Cycle} Suche genutzt.
-Dies ist darin begründet, dass uns diese Zyklussuche als die am einfachsten
-verständliche erschien.
+Die Rho-Methode lässt sich generell auch für das Faktorisieren nutzen \cite{Pollard1975}.
+Es sind jedoch auch schnellere Verfahren zur Faktorisierung bekannt \cite{ECM,QS,NFS}.
+
+In unserer Implementierung haben wir die Floyd-Cycle Suche genutzt,
+da diese Zyklussuche am einfachsten umzusetzen war.
 In den von uns zur Berechnung verwendeten Größenordnungen haben wir den Nachteil in der
 etwas längeren Laufzeit im Vergleich zu den anderen Zyklen als zu vernachlässigen
 eingeschätzt.
 
-Die implementierte Funktion lässt sich mit einem Parameter aufrufen.
-Dies ist die zu faktorisierende Zahl.
-Als Rückgabe erhält man einen Primfaktor dieser übergebenen Zahl.
-Um weitere Primfaktoren zu erhalten muss die Rho Methode erneut gestartet werden.
+Die implementierte Funktion lässt sich mit einem Parameter aufrufen, dies ist die zu faktorisierende Zahl.
+Als Rückgabe erhält man einen einzelnen Primfaktor der übergebenen Zahl.
+Um weitere Primfaktoren zu erhalten muss die Rho-Methode erneut gestartet werden.
 Unsere Implementierung ist in \emph{rho\_faktorisieren.py} zu finden.
 
-[schnellere Algorithmen: elliptic-curve factorization method (ECM), Quadratic sieve, General number field sieve]
-
-\cite{Pollard1975}
-
-\newpage
+\ \\
 \printbibliography[heading=bibintoc]
 
 \end{document}
