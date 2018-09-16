@@ -197,7 +197,7 @@ def floyd_cycle_rho(g, h, r: int, walk_generator=generiere_original_walk, n_s=25
         (x_2, a_2, b_2) = walk(*walk(x_2, a_2, b_2))
 
     if b_1 == b_2:
-        raise ValueError('h kann nicht aus g erzeugt werden')
+        raise ValueError('h konnte nicht aus g erzeugt werden')
 
     return ((a_2 - a_1) * (b_1 - b_2) ** -1).wert
 
@@ -244,7 +244,7 @@ def brent_cycle_rho(g, h, r: int, walk_generator=generiere_original_walk, n_s=25
         step += 1
 
     if b_1 == b_2:
-        raise ValueError('h kann nicht aus g erzeugt werden')
+        raise ValueError('h konnte nicht aus g erzeugt werden')
 
     return ((a_2 - a_1) * (b_1 - b_2) ** -1).wert
 
@@ -315,6 +315,6 @@ def distinguished_rho(g, h, r: int, n_d: int, walk_generator=generiere_original_
     (a_2, b_2) = distinguished_points[x_1]
 
     if b_1 == b_2:
-        raise ValueError('h kann nicht aus g erzeugt werden')
+        raise ValueError('h konnte nicht aus g erzeugt werden')
 
     return ((a_2 - a_1) * (b_1 - b_2) ** -1).wert
