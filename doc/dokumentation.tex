@@ -188,7 +188,8 @@ Der Baby-Step Giant-Step Algorithmus ist eine Modifikation des naiven Algorithmu
 \label{sec:rho}
 Die \emph{Rho-Methode} von Pollard hat im Vergleich zum Baby-Step Giant-Step Algorithmus den Vorteil,
 dass sie deutlich weniger Speicherplatz benötigt.
-Dadurch eignet sie sich besser für die Berechnung des DLP auf aktueller Computer-Hardware.
+Dadurch eignet sie sich besser für die Berechnung des DLP auf aktueller Computer-Hardware. 
+Es handelt sich um einen Monte Carlo Algorithmus, der bei großen Gruppen mit einer hohen Wahrscheinlichkeit eine Lösung findet.
 
 Die \emph{Rho}-Methoden basieren auf sogenannten \emph{pseudorandom walks}.
 Sie bestehen prinzipiell aus einem Algorthmus zur Zyklussuche
@@ -238,6 +239,8 @@ Bei dieser Methode werden bestimmte Zahlen als "besonders" gekennzeichnet.
 Welche Zahlen dies sind, ist prinzipiell willkürlich.
 Wir haben dabei Zahlen gewählt deren letzen \emph{n} Stellen in einer
 zwei adischen Darstellung 0 sind.
+Bei kleinen Gruppen kann es sein, dass der Algorithmus keine solche Zahl findet. 
+In diesem Fall terminiert der Algorithmus nicht.
 
 Bei der distinguished points Methode wird von einer zufälligen Zahl aus
 der Walk gestartet und dann beendet, wenn ein "besonderer" Punkt
