@@ -3,7 +3,7 @@ BUILD_DIR = build
 BENCHMARK_DLP_RESULT_FILE = projekt/benchmark/results_dlp.txt
 BENCHMARK_PARALLEL_RESULT_FILE = projekt/benchmark/results_parallel.txt
 
-all: clean python documentation zip
+all: clean python documentation api_documentation zip
 
 clean:
 	rm -rf build
@@ -38,6 +38,13 @@ documentation:
 	cd doc; pdflatex dokumentation.tex
 	cd doc; pdflatex dokumentation.tex
 	cp doc/dokumentation.pdf build/
+
+api_documentation:
+	if [ ! -d "${BUILD_DIR}" ]; then mkdir ${BUILD_DIR}; fi
+	sphinx-apidoc -o apidoc/ tocas
+	sphinx-apidoc -o apidoc/ ha
+	sphinx-apidoc -o apidoc/ projekt
+	sphinx-build apidoc build/apidoc
 
 zip:
 	cd ${BUILD_DIR}; zip -r ${PROJEKT_NAME}.zip *
