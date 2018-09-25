@@ -65,3 +65,6 @@ plot_dlp:
 
 plot_parallel:
 	python3 projekt/benchmark/plot.py ${BENCHMARK_PARALLEL_RESULT_FILE}
+
+plot_order:
+	python3 projekt/benchmark/plot_order.py ${BENCHMARK_ORDER_RESULT_FILE}

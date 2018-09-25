@@ -1,1 +1,8 @@
-distinguished
+order
+1 5
+baby_step_giant_step
+1.0478916666666667 1.0478916666666667
+floyd
+2.755706 3
+brent
+1.3193006666666662 3

@@ -69,6 +69,8 @@ def kaenguru_fn(g, h, r, a, n_d, n_s):
 
 
 if __name__ == '__main__':
+    print('order')
+    print(*p)
     print('baby_step_giant_step')
     print(*bench(lambda g, h, r, a: bsgs(g, h, r, a)))
     print('floyd')
