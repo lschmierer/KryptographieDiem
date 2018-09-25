@@ -1,5 +1,6 @@
 import os
 import sys
+import signal
 
 sys.path.append(os.getcwd())
 
@@ -15,18 +16,31 @@ from projekt.kaenguru import kaenguru
 
 ITERATIONS = 3
 
-p = [100003, 1000003, 10000019, 100000007, 1000000007, 10000000019, 100000000003, 1000000000039]
-g = [17, 9, 5556, 1536, 2, 36322, 71664, 19978 ]
+p = [100003, 1000003, 10000019, 100000007, 1000000007,
+     10000000019, 100000000003, 1000000000039]
+g = [17, 9, 5556, 1536, 2, 36322, 71664, 19978]
 r = [2381, 166667, 1523, 101833, 500000003, 73259, 1543067, 26005097]
 
 
+def signal_handler(signum, frame):
+    raise Exception()
+
+
 def time_fn(fn, n=100):
+    signal.signal(signal.SIGALRM, signal_handler)
+
     times = []
 
     for _ in range(n):
-        start = time.process_time()
-        fn()
-        elapsed = time.process_time() - start
+        while True:
+            try:
+                signal.alarm(10)
+                start = time.process_time()
+                fn()
+                elapsed = time.process_time() - start
+                break
+            except:
+                continue
 
         times += [elapsed]
 
