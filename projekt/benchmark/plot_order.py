@@ -16,8 +16,15 @@ if __name__ == '__main__':
                 data += [[float(x) for x in line.split()]]
             i += 1
 
-    for i in range(1, len(labels)):
-        plt.plot(data[0], data[i], label=labels[i])
+    x = list(map(int, data[0]))
+    del labels[0]
+    del data[0]
+
+    for i in range(len(labels)):
+        plt.plot(x, data[i], label=labels[i])
+    ax = plt.gca()
+    ax.xaxis.set_major_locator(MaxNLocator(integer=True))
+    plt.xlabel('Ordnung')
     plt.ylabel('Laufzeit in Sekunden')
     plt.legend()
     plt.show()
