@@ -1,5 +1,6 @@
 import os
 import sys
+import math
 import signal
 
 sys.path.append(os.getcwd())
@@ -74,8 +75,8 @@ def brent(g, h, r, a, n_s):
     assert brent_cycle_rho(g, h, r, n_s=n_s) == a
 
 
-def distinguished(g, h, r, a, n_d, n_s):
-    assert distinguished_rho(g, h, r, n_d, n_s=n_s) == a
+def distinguished(g, h, r, a, n_s):
+    assert distinguished_rho(g, h, r, int(math.log10(r)), n_s=n_s) == a
 
 
 def kaenguru_fn(g, h, r, a, n_d, n_s):
@@ -83,8 +84,8 @@ def kaenguru_fn(g, h, r, a, n_d, n_s):
 
 
 if __name__ == '__main__':
-    print('order')
-    print(*p)
+    print('r')
+    print(*r)
     print('baby_step_giant_step')
     print(*bench(lambda g, h, r, a: bsgs(g, h, r, a)))
     print('floyd')
@@ -92,6 +93,6 @@ if __name__ == '__main__':
     print('brent')
     print(*bench(lambda g, h, r, a: brent(g, h, r, a, 32)))
     print('distinguished')
-    print(*bench(lambda g, h, r, a: distinguished(g, h, r, a, 8, 32)))
+    print(*bench(lambda g, h, r, a: distinguished(g, h, r, a, 32)))
     print('kaenguru')
     print(*bench(lambda g, h, r, a: kaenguru_fn(g, h, r, a, 8, 32)))
