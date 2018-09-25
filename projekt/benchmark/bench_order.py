@@ -80,8 +80,8 @@ def distinguished(g, h, r, a, n_s):
     assert distinguished_rho(g, h, r, int(math.log10(r)), n_s=n_s) == a
 
 
-def kaenguru_fn(g, h, r, a, n_d, n_s):
-    assert kaenguru(g, h, r, 0, r, n_d, n_s=n_s) == a
+def kaenguru_fn(g, h, r, a, n_s):
+    assert kaenguru(g, h, r, 0, r, int(math.log10(r)), n_s=n_s) == a
 
 
 if __name__ == '__main__':
@@ -96,4 +96,4 @@ if __name__ == '__main__':
     print('distinguished')
     print(*bench(lambda g, h, r, a: distinguished(g, h, r, a, 32)))
     print('kaenguru')
-    print(*bench(lambda g, h, r, a: kaenguru_fn(g, h, r, a, 8, 32)))
+    print(*bench(lambda g, h, r, a: kaenguru_fn(g, h, r, a, 32)))
