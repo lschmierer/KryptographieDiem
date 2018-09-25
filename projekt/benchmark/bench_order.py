@@ -36,7 +36,7 @@ def time_fn(fn, n=100):
     for _ in range(n):
         while True:
             try:
-                signal.alarm(10)
+                signal.alarm(20)
                 start = time.process_time()
                 fn()
                 elapsed = time.process_time() - start
