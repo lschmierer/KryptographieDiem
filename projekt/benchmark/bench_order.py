@@ -45,7 +45,7 @@ def time_fn(fn, n=100):
                 fn()
                 elapsed = time.process_time() - start
                 break
-            except e:
+            except Exception, e:
                 print(e)
                 continue
 
