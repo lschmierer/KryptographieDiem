@@ -1,7 +1,6 @@
 import sys
 
 import matplotlib.pyplot as plt
-from matplotlib.ticker import MaxNLocator
 
 if __name__ == '__main__':
     labels = []
@@ -22,8 +21,7 @@ if __name__ == '__main__':
 
     for i in range(len(labels)):
         plt.plot(x, data[i], label=labels[i])
-    ax = plt.gca()
-    ax.xaxis.set_major_locator(MaxNLocator(integer=True))
+    plt.xscale('log')
     plt.xlabel('Ordnung')
     plt.ylabel('Laufzeit in Sekunden')
     plt.legend()
