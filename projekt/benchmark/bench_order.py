@@ -77,11 +77,11 @@ def brent(g, h, r, a, n_s):
 
 
 def distinguished(g, h, r, a, n_s):
-    assert distinguished_rho(g, h, r, round(math.log10(r)), n_s=n_s) == a
+    assert distinguished_rho(g, h, r, round(math.log10(r)), n_s=2*int(math.log10(r))) == a
 
 
 def kaenguru_fn(g, h, r, a, n_s):
-    assert kaenguru(g, h, r, 1, r, round(math.log10(r))-1, n_s=n_s) == a
+    assert kaenguru(g, h, r, 0, r, round(math.log10(r)), n_s=2*int(math.log10(r))) == a
 
 
 if __name__ == '__main__':
