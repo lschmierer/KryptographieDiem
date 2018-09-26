@@ -40,7 +40,7 @@ def time_fn(fn, n=100):
     for _ in range(n):
         while True:
             try:
-                signal.alarm(60)
+                signal.alarm(120)
                 start = time.process_time()
                 fn()
                 elapsed = time.process_time() - start
@@ -74,15 +74,15 @@ def bsgs(g, h, r, a):
 
 
 def floyd(g, h, r, a, n_s):
-    assert floyd_cycle_rho(g, h, round(math.log10(r)), n_s=2*int(math.log10(r))) == a
+    assert floyd_cycle_rho(g, h, r, n_s=2*int(math.log10(r))) == a
 
 
 def brent(g, h, r, a, n_s):
-    assert brent_cycle_rho(g, h, round(math.log10(r)), n_s=2*int(math.log10(r))) == a
+    assert brent_cycle_rho(g, h, r, n_s=2*int(math.log10(r))) == a
 
 
 def distinguished(g, h, r, a, n_s):
-    assert distinguished_rho(g, h, r, round(math.log10(r)), n_s=2*int(math.log10(r))) == a
+    assert distinguished_rho(g, h, r, r, n_s=2*int(math.log10(r))) == a
 
 
 def kaenguru_fn(g, h, r, a, n_s):
