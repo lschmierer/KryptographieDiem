@@ -40,12 +40,13 @@ def time_fn(fn, n=100):
     for _ in range(n):
         while True:
             try:
-                signal.alarm(20)
+                signal.alarm(120)
                 start = time.process_time()
                 fn()
                 elapsed = time.process_time() - start
                 break
             except:
+                print("Time Out!")
                 continue
 
         times += [elapsed]
