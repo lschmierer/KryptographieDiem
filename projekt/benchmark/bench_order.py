@@ -73,11 +73,11 @@ def bsgs(g, h, r, a):
 
 
 def floyd(g, h, r, a, n_s):
-    assert floyd_cycle_rho(g, h, round(math.log10(r), n_s=2*int(math.log10(r))) == a
+    assert floyd_cycle_rho(g, h, round(math.log10(r)), n_s=2*int(math.log10(r))) == a
 
 
 def brent(g, h, r, a, n_s):
-    assert brent_cycle_rho(g, h, round(math.log10(r), n_s=2*int(math.log10(r))) == a
+    assert brent_cycle_rho(g, h, round(math.log10(r)), n_s=2*int(math.log10(r))) == a
 
 
 def distinguished(g, h, r, a, n_s):
