@@ -86,7 +86,7 @@ def distinguished(g, h, r, a, n_s):
 
 
 def kaenguru_fn(g, h, r, a, n_s):
-    assert kaenguru(g, h, r, 0, r, round(math.log10(r)), n_s=2*int(math.log10(r))) == a
+    assert kaenguru(g, h, r, 0, r, round(math.log10(r), n_s=2*int(math.log10(r))) == a
 
 
 if __name__ == '__main__':
